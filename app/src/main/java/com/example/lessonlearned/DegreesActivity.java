@@ -33,7 +33,7 @@ public class DegreesActivity extends BaseActivity implements DegreeViewAdapter.I
 
     @Override
     public void onItemClick(View view, int position) {
-        // Humza to hook in here.
+        // Humza can hook in here.
         Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 }
