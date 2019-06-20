@@ -35,12 +35,10 @@ public class DegreeViewAdapter extends RecyclerView.Adapter<DegreeViewAdapter.Vi
         holder.myTextView.setText(degree);
     }
 
-
     @Override
     public int getItemCount() {
         return degrees.size();
     }
-
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
