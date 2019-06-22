@@ -1,37 +1,54 @@
 package com.example.lessonlearned;
 
 import android.content.Intent;
-//<<<<<<< HEAD
-//=======
-//import android.support.v7.app.AppCompatActivity;
-//>>>>>>> 0788b08cf290e8a98002f465b6344c8a0eb87764
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends BaseActivity {
 
-//<<<<<<< HEAD
-//    protected final void onCreate(Bundle savedInstanceState) {
-//        // After SignUp/Login bring them here
-//        // (We need to actually show them a list of schools but lets just do this for the first prototype)
-//        super.onCreate(savedInstanceState, R.layout.activity_main);
-//        Intent degreeIntent = new Intent(this, DegreesActivity.class);
-//        startActivity(degreeIntent);
-//=======
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView signUp = findViewById(R.id.textView6);
-        signUp.setOnClickListener(new View.OnClickListener() {
+        final TextView login = findViewById(R.id.login);
+        final TextView numberText = findViewById(R.id.phoneText);
+
+        login.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, Loginpage.class);
-                startActivity(myIntent);
+
+                String number = numberText.getText().toString().trim();
+
+                if(number.isEmpty() || number.length() != 10){
+                    numberText.requestFocus();
+                    Toast.makeText(MainActivity.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Intent degreeIntent = new Intent(MainActivity.this, VerifyPhone.class);
+                    degreeIntent.putExtra("phoneNumber", number);
+                    startActivity(degreeIntent);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            Intent degreeIntent = new Intent(MainActivity.this,
+                    DegreesActivity.class);
+            degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(degreeIntent);
+        }
     }
 }
 
