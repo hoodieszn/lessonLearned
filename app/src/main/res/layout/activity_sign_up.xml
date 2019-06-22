@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".signUp" >
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/registration">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="192dp"
+            android:layout_height="109dp"
+            android:layout_marginStart="116dp"
+            android:layout_marginTop="404dp"
+            android:layout_marginBottom="204dp"
+            android:backgroundTint="#E1B5CAB3"
+            android:text="STUDENT"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_wrapHeight="126"
+            tools:layout_conversion_wrapWidth="231" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="192dp"
+            android:layout_height="109dp"
+            android:layout_marginStart="116dp"
+            android:layout_marginTop="204dp"
+            android:backgroundTint="#E1B5CAB3"
+            android:text="TUTOR"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_wrapHeight="126"
+            tools:layout_conversion_wrapWidth="231" />
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
