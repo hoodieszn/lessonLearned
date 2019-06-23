@@ -85,8 +85,7 @@ public class VerifyPhone extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isComplete() && task.isSuccessful()){
 
-                            Intent degreeIntent = new Intent(VerifyPhone.this,
-                                    DegreesActivity.class);
+                            Intent degreeIntent = new Intent(VerifyPhone.this, DegreesActivity.class);
                             degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(degreeIntent);
 
