@@ -21,7 +21,8 @@ public class DegreesActivity extends BaseActivity implements DegreeViewAdapter.I
 
 
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_degrees);
+        super.onCreate(savedInstanceState);
+        super.setContentView(R.layout.activity_degrees);
 
         RecyclerView recyclerView = findViewById(R.id.degrees);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -50,7 +51,16 @@ public class DegreesActivity extends BaseActivity implements DegreeViewAdapter.I
 
     @Override
     public void onItemClick(View view, int position) {
-        // Humza can hook in here.
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent tutorsIntent = new Intent(DegreesActivity.this, TutorsActivity.class);
+        tutorsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        //ToDo: fix these, right now they're just extra intent vals
+
+        tutorsIntent.putExtra("InstitutionName", "University of Waterloo");
+        tutorsIntent.putExtra("InstitutionId", "0");
+
+        tutorsIntent.putExtra("CategoryName", adapter.getItem(position));
+        tutorsIntent.putExtra("CategoryId", position);
+        startActivity(tutorsIntent);
     }
 }
