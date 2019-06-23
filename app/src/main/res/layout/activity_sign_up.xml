@@ -11,7 +11,7 @@
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/registration">
+        android:background="#C8EBE4E4">
 
         <Button
             android:id="@+id/button"
@@ -34,6 +34,7 @@
             android:layout_height="109dp"
             android:layout_marginStart="116dp"
             android:layout_marginTop="204dp"
+            android:background="#FFFFFF"
             android:backgroundTint="#E1B5CAB3"
             android:text="TUTOR"
             app:layout_constraintStart_toStartOf="parent"
