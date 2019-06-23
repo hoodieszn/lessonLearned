@@ -1,6 +1,7 @@
 package com.example.lessonlearned;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,14 @@ public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.View
     @Override
     public void onBindViewHolder(TutorViewAdapter.ViewHolder holder, int position) {
         TutorsActivity.User tutor = tutors.get(position);
-        holder.myTextView.setText(tutor.name + "\n" + tutor.courses.toString().replaceAll("[ \\[ \\] ]", "") + "\n$" + tutor.price + " /hour");
+        holder.tutorName.setText(tutor.name);
+        holder.tutorPrice.setText("$" + tutor.price + "/hour");
+
+        String courses = tutor.courses.toString().replaceAll("[ \\[ \\] ]", " ").trim();
+        int maxChars = 35;
+
+        if (courses.length() > maxChars) courses = courses.substring(0, maxChars - 3).concat(" ...");
+        holder.tutorCourses.setText(courses);
     }
 
     @Override
@@ -40,11 +48,14 @@ public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.View
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
+        TextView tutorName, tutorPrice, tutorCourses;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.tutorName);
+            tutorName = itemView.findViewById(R.id.tutorName);
+            tutorPrice = itemView.findViewById(R.id.tutorPrice);
+            tutorCourses = itemView.findViewById(R.id.tutorCourses);
+
             itemView.setOnClickListener(this);
         }
 
