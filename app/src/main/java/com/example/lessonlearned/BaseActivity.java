@@ -14,10 +14,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
 
         Toolbar toolBar = findViewById(R.id.app_bar);
-        toolBar.setTitle("Lesson Learned");
-        toolBar.setTitleTextAppearance(this, R.style.Acme);
-        toolBar.setTitleTextColor(0xFFFFFFFF);
-
         setSupportActionBar(toolBar);
     }
 
