@@ -66,6 +66,8 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent tutorProfile = new Intent(getApplicationContext(), tutorProfile.class);
+        startActivity(tutorProfile);
     }
 
 }
