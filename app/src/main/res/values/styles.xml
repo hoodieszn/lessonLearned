@@ -16,5 +16,9 @@
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Acme">
+        <item name="android:fontFamily">@font/acme</item>
+        <item name="android:textSize">28sp</item>
+    </style>
 
 </resources>
