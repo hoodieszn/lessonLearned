@@ -33,9 +33,10 @@ public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.View
         Tutor tutor = tutors.get(position);
         holder.tutorName.setText(tutor.name);
         holder.tutorPrice.setText("$" + tutor.price + "/hour");
+        holder.tutorDistance.setText(tutor.distance + " km");
 
         String courses = tutor.courses.toString().replaceAll("[ \\[ \\] ]", " ").trim();
-        int maxChars = 35;
+        int maxChars = 30;
 
         if (courses.length() > maxChars) courses = courses.substring(0, maxChars - 3).concat(" ...");
         holder.tutorCourses.setText(courses);
@@ -48,12 +49,13 @@ public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.View
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tutorName, tutorPrice, tutorCourses;
+        TextView tutorName, tutorPrice, tutorDistance, tutorCourses;
 
         ViewHolder(View itemView) {
             super(itemView);
             tutorName = itemView.findViewById(R.id.tutorName);
             tutorPrice = itemView.findViewById(R.id.tutorPrice);
+            tutorDistance = itemView.findViewById(R.id.tutorDistance);
             tutorCourses = itemView.findViewById(R.id.tutorCourses);
 
             itemView.setOnClickListener(this);
