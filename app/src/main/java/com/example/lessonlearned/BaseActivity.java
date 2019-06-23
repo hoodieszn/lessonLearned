@@ -16,12 +16,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         Toolbar toolBar = findViewById(R.id.app_bar);
         toolBar.setTitle("Lesson Learned");
         toolBar.setTitleTextAppearance(this, R.style.Acme);
+        toolBar.setTitleTextColor(0xFFFFFFFF);
+
         setSupportActionBar(toolBar);
     }
 
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem accounts = menu.findItem(R.id.accounts);
-        boolean studentAccount = false; // ToDo: Actually figure out what type of account
+        boolean studentAccount = true; // ToDo: Actually figure out what type of account
         accounts.setVisible(!studentAccount);
         return true;
     }
