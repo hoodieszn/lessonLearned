@@ -11,12 +11,12 @@ import android.widget.TextView;
 import java.util.List;
 
 public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.ViewHolder>  {
-    private List<TutorsActivity.User> tutors;
+    private List<Tutor> tutors;
     private LayoutInflater mInflater;
     private TutorViewAdapter.ItemClickListener tutorlickListener;
 
     // data is passed into the constructor
-    TutorViewAdapter(Context context, List<TutorsActivity.User> data) {
+    TutorViewAdapter(Context context, List<Tutor> data) {
         this.mInflater = LayoutInflater.from(context);
         this.tutors = data;
     }
@@ -30,7 +30,7 @@ public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.View
 
     @Override
     public void onBindViewHolder(TutorViewAdapter.ViewHolder holder, int position) {
-        TutorsActivity.User tutor = tutors.get(position);
+        Tutor tutor = tutors.get(position);
         holder.tutorName.setText(tutor.name);
         holder.tutorPrice.setText("$" + tutor.price + "/hour");
 
@@ -66,7 +66,7 @@ public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.View
     }
 
     // convenience method for getting data at click position
-    TutorsActivity.User getItem(int id) {
+    Tutor getItem(int id) {
         return tutors.get(id);
     }
 
