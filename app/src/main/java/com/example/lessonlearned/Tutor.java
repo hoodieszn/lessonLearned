@@ -9,12 +9,14 @@ public class Tutor {
     String institution;
     List<String> courses;
     double price;
+    double distance;
 
-    public Tutor(String phone, String name, String institution, List<String> courses, double price){
+    public Tutor(String phone, String name, String institution, List<String> courses, double price, double distance){
         this.phone = phone;
         this.name = name;
         this.institution = institution;
         this.courses = courses;
         this.price = price;
+        this.distance = distance;
     }
 }
