@@ -8,25 +8,13 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="243dp"
-        android:background="@drawable/background"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <!--&gt;>>>>>> 0788b08cf290e8a98002f465b6344c8a0eb87764-->
-
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="323dp"
+        android:layout_marginTop="243dp"
         android:orientation="vertical"
         android:padding="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/background"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
         <TextView
