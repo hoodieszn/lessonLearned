@@ -14,7 +14,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
 
         Toolbar toolBar = findViewById(R.id.app_bar);
-        toolBar.setTitle("Lesson Learned");
         setSupportActionBar(toolBar);
     }
 
