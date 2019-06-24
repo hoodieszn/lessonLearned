@@ -21,4 +21,9 @@
         <item name="android:textSize">28sp</item>
     </style>
 
+    <style name="AppTheme.TutorProfile">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
 </resources>
