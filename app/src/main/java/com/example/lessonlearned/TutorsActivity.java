@@ -91,9 +91,9 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
         tutorList = Arrays.asList(new Tutor("2222222222", "John", "University of Waterloo", Arrays.asList("CS449", "CS370"), 10, 3),
                 new Tutor("3333333333", "Gill", "University of Waterloo", Arrays.asList("CS136", "MATH128"), 20, 5),
                 new Tutor("4444444444", "Bob", "University of Waterloo", Arrays.asList("MATH239", "CS240", "STAT231", "STAT232", "STAT233", "STAT234", "STAT235"), 5, 7),
-                new Tutor("4444444444", "Erin", "University of Waterloo", Arrays.asList("MATH330", "CS250", "STAT241"), 5, 1),
-                new Tutor("4444444444", "Mike", "University of Waterloo", Arrays.asList("MATH249", "CS270", "STAT331"), 15, 0.5),
-                new Tutor("4444444444", "Samantha", "University of Waterloo", Arrays.asList("MATH239", "CS240", "STAT231"), 8, 9));
+                new Tutor("5555555555", "Erin", "University of Waterloo", Arrays.asList("MATH330", "CS250", "STAT241"), 5, 1),
+                new Tutor("6666666666", "Mike", "University of Waterloo", Arrays.asList("MATH249", "CS270", "STAT331"), 15, 0.5),
+                new Tutor("7777777777", "Samantha", "University of Waterloo", Arrays.asList("MATH239", "CS240", "STAT231"), 8, 9));
 
         RecyclerView recyclerView = findViewById(R.id.tutors);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -107,8 +107,12 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
     @Override
     public void onItemClick(View view, int position) {
         Intent tutorProfile = new Intent(getApplicationContext(), tutorProfile.class);
+        Tutor currentTutor = tutorListAdapter.getItem(position);
+        tutorProfile.putExtra("name", currentTutor.name);
+        tutorProfile.putExtra("phone", currentTutor.phone);
+        tutorProfile.putExtra("institution", currentTutor.institution);
         startActivity(tutorProfile);
-        Toast.makeText(this, "You clicked " + tutorListAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "You clicked " + tutorListAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
 }
