@@ -90,6 +90,16 @@
                         android:text="Computer Science Student"
                         android:textSize="16sp"
                         />
+
+                    <TextView
+                        android:id="@+id/tutorPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/Role"
+                        android:fontFamily="sans-serif"
+                        android:text="Computer Science Student"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </RelativeLayout>
 

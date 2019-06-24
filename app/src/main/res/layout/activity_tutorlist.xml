@@ -85,4 +85,12 @@
             android:isScrollContainer="true" />
     </ScrollView>
 
+    <RelativeLayout
+        android:id="@+id/dimTutorList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C0000000"
+        android:visibility="gone" >
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

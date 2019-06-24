@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,9 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
 
     List<Tutor> tutorList;
     TutorViewAdapter tutorListAdapter;
+
+    final static int tutorProfileRequest = 0;
+    RelativeLayout dimmer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,8 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
         tutorListAdapter = new TutorViewAdapter(this, tutorList);
         tutorListAdapter.setClickListener(this);
         recyclerView.setAdapter(tutorListAdapter);
+
+        dimmer = findViewById(R.id.dimTutorList);
     }
 
     @Override
@@ -111,8 +117,18 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
         tutorProfile.putExtra("name", currentTutor.name);
         tutorProfile.putExtra("phone", currentTutor.phone);
         tutorProfile.putExtra("institution", currentTutor.institution);
-        startActivity(tutorProfile);
-//        Toast.makeText(this, "You clicked " + tutorListAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        tutorProfile.putExtra("price", currentTutor.price);
+
+        dimmer.setVisibility(View.VISIBLE);
+        startActivityForResult(tutorProfile, tutorProfileRequest);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == tutorProfileRequest) {
+            if (resultCode == RESULT_CANCELED) {
+                dimmer.setVisibility(View.GONE);
+            }
+        }
     }
 
 }
