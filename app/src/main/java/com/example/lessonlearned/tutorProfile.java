@@ -49,11 +49,16 @@ public class tutorProfile extends Activity {
         String name = tutorInfo.getStringExtra("name");
         final String phone = tutorInfo.getStringExtra("phone");
         String institution = tutorInfo.getStringExtra("institution");
+        double price = tutorInfo.getDoubleExtra("price", 0);
 
         TextView tutorName = findViewById(R.id.Name);
         tutorName.setText(name);
+
         TextView tutorRole = findViewById(R.id.Role);
         tutorRole.setText(institution);
+
+        TextView tutorPrice = findViewById(R.id.tutorPrice);
+        tutorPrice.setText(String.format("$%s / hour", price));
 
         contact_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,5 +71,12 @@ public class tutorProfile extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 }
