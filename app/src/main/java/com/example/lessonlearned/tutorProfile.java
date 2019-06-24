@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 public class tutorProfile extends Activity {
 
@@ -42,11 +43,23 @@ public class tutorProfile extends Activity {
 
         Button contact_button = findViewById(R.id.contactButton);
 
+        Intent tutorInfo = getIntent();
+
+        //populate tutor profile
+        String name = tutorInfo.getStringExtra("name");
+        final String phone = tutorInfo.getStringExtra("phone");
+        String institution = tutorInfo.getStringExtra("institution");
+
+        TextView tutorName = findViewById(R.id.Name);
+        tutorName.setText(name);
+        TextView tutorRole = findViewById(R.id.Role);
+        tutorRole.setText(institution);
+
         contact_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("smsto:6478640648"));
+                intent.setData(Uri.parse("smsto:" + phone));
                 intent.putExtra("sms_body", "Hello, I would like to arrange a time for tutoring");
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
