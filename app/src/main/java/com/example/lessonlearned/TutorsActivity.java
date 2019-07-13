@@ -10,7 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.lessonlearned.Models.Tutor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
