@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Tutor;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class TutorsActivity extends BaseActivity implements TutorViewAdapter.ItemClickListener{
+public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener{
     public ArrayList<String> sortOptions;
     private int sortSelected;
 
@@ -30,7 +31,7 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
     private int categoryId;
 
     List<Tutor> tutorList;
-    TutorViewAdapter tutorListAdapter;
+    TutorsViewAdapter tutorListAdapter;
 
     final static int tutorProfileRequest = 0;
     RelativeLayout dimmer;
@@ -76,9 +77,9 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
                     @Override
                     public int compare(Tutor lhs, Tutor rhs) {
                         if (selected == "Distance")
-                            return Double.compare(lhs.distance, rhs.distance);
+                            return Double.compare(lhs.getDistance(), rhs.getDistance());
                         else
-                            return Double.compare(lhs.price, rhs.price);
+                            return Double.compare(lhs.getPrice(), rhs.getPrice());
                     }
                 });
 
@@ -92,19 +93,17 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
 
         });
 
-        // Temporarily initializing tutorList with hardcoding tutors
-        tutorList = Arrays.asList(new Tutor("2222222222", "John", "University of Waterloo", Arrays.asList("CS449", "CS370"), 10, 3),
-                new Tutor("3333333333", "Gill", "University of Waterloo", Arrays.asList("CS136", "MATH128"), 20, 5),
-                new Tutor("4444444444", "Bob", "University of Waterloo", Arrays.asList("MATH239", "CS240", "STAT231", "STAT232", "STAT233", "STAT234", "STAT235"), 5, 7),
-                new Tutor("5555555555", "Erin", "University of Waterloo", Arrays.asList("MATH330", "CS250", "STAT241"), 5, 1),
-                new Tutor("6666666666", "Mike", "University of Waterloo", Arrays.asList("MATH249", "CS270", "STAT331"), 15, 0.5),
-                new Tutor("7777777777", "Samantha", "University of Waterloo", Arrays.asList("MATH239", "CS240", "STAT231"), 8, 9));
+        // Temp: will be rest client call in future
+        tutorList = Arrays.asList(new Tutor(1, "Gill", 2, "Mathematics", 20, "3333333333", 43.731548, -79.762421,
+                                    Arrays.asList(new Course(2, "CS350", 1), new Course(3, "CS351", 1))),
+                        new Tutor(2, "John", 2, "Mathematics", 10, "4444444444", 43.731548, -73.762421,
+                                Arrays.asList(new Course(3, "CS349", 1))));
 
         RecyclerView recyclerView = findViewById(R.id.tutors);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        tutorListAdapter = new TutorViewAdapter(this, tutorList);
+        tutorListAdapter = new TutorsViewAdapter(this, tutorList);
         tutorListAdapter.setClickListener(this);
         recyclerView.setAdapter(tutorListAdapter);
 
@@ -113,12 +112,12 @@ public class TutorsActivity extends BaseActivity implements TutorViewAdapter.Ite
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent tutorProfile = new Intent(getApplicationContext(), tutorProfile.class);
+        Intent tutorProfile = new Intent(getApplicationContext(), TutorProfileActivity.class);
         Tutor currentTutor = tutorListAdapter.getItem(position);
-        tutorProfile.putExtra("name", currentTutor.name);
-        tutorProfile.putExtra("phone", currentTutor.phone);
-        tutorProfile.putExtra("institution", currentTutor.institution);
-        tutorProfile.putExtra("price", currentTutor.price);
+        tutorProfile.putExtra("name", currentTutor.getName());
+        tutorProfile.putExtra("phone", currentTutor.getPhone());
+        tutorProfile.putExtra("institution", "University of Waterloo");
+        tutorProfile.putExtra("price", currentTutor.getPrice());
 
         dimmer.setVisibility(View.VISIBLE);
         startActivityForResult(tutorProfile, tutorProfileRequest);

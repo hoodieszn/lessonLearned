@@ -7,37 +7,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Tutor;
 
 import java.util.List;
 
-public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.ViewHolder>  {
+public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.ViewHolder>  {
     private List<Tutor> tutors;
     private LayoutInflater mInflater;
-    private TutorViewAdapter.ItemClickListener tutorlickListener;
+    private TutorsViewAdapter.ItemClickListener tutorlickListener;
 
     // data is passed into the constructor
-    TutorViewAdapter(Context context, List<Tutor> data) {
+    TutorsViewAdapter(Context context, List<Tutor> data) {
         this.mInflater = LayoutInflater.from(context);
         this.tutors = data;
     }
 
     // inflates the row layout from xml when needed
     @Override
-    public TutorViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TutorsViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.tutorview_row, parent, false);
-        return new TutorViewAdapter.ViewHolder(view);
+        return new TutorsViewAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(TutorViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(TutorsViewAdapter.ViewHolder holder, int position) {
         Tutor tutor = tutors.get(position);
-        holder.tutorName.setText(tutor.name);
-        holder.tutorPrice.setText("$" + tutor.price + "/hour");
-        holder.tutorDistance.setText(tutor.distance + " km");
+        holder.tutorName.setText(tutor.getName());
+        holder.tutorPrice.setText("$" + tutor.getPrice() + "/hour");
+        holder.tutorDistance.setText(tutor.getDistance() + " km");
 
-        String courses = tutor.courses.toString().replaceAll("[ \\[ \\] ]", " ").trim();
+        String courses = "";
         int maxChars = 30;
+
+        for (Course c: tutor.getCourses()) {
+            courses += c.getName() + "   ";
+        }
 
         if (courses.length() > maxChars) courses = courses.substring(0, maxChars - 3).concat(" ...");
         holder.tutorCourses.setText(courses);
@@ -74,7 +79,7 @@ public class TutorViewAdapter extends RecyclerView.Adapter<TutorViewAdapter.View
     }
 
     // allows clicks events to be caught
-    void setClickListener(TutorViewAdapter.ItemClickListener itemClickListener) {
+    void setClickListener(TutorsViewAdapter.ItemClickListener itemClickListener) {
         this.tutorlickListener = itemClickListener;
     }
 

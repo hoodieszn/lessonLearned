@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class tutorProfile extends Activity {
+public class TutorProfileActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

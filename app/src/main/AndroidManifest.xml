@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".tutorProfile"
+        <activity android:name=".TutorProfileActivity"
             android:theme="@style/AppTheme.TutorProfile"
             ></activity>
-        <activity android:name=".signUp" />
-        <activity android:name=".VerifyPhone" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".VerifyPhoneActivity" />
         <activity android:name=".DegreesActivity" /> <!-- android:theme="@style/AppTheme"> -->
-        <activity android:name=".Loginpage" /> <!-- &gt;>>>>>> 0788b08cf290e8a98002f465b6344c8a0eb87764 -->
+        <activity android:name=".LoginActivity" /> <!-- &gt;>>>>>> 0788b08cf290e8a98002f465b6344c8a0eb87764 -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

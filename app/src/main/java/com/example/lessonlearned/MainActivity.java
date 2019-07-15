@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, signUp.class));
+                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
             }
         });
 
@@ -93,8 +93,9 @@ public class MainActivity extends BaseActivity {
                     numberText.requestFocus();
                     Toast.makeText(MainActivity.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
 
-                }else {
-                    Intent degreeIntent = new Intent(MainActivity.this, VerifyPhone.class);
+                }
+                else {
+                    Intent degreeIntent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
                     degreeIntent.putExtra("phoneNumber", number);
                     startActivity(degreeIntent);
                 }
@@ -106,8 +107,7 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
-            Intent degreeIntent = new Intent(MainActivity.this,
-                    DegreesActivity.class);
+            Intent degreeIntent = new Intent(MainActivity.this, DegreesActivity.class);
             degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(degreeIntent);
         }

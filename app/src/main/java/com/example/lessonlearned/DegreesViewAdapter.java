@@ -8,16 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.lessonlearned.Models.Degree;
+
 import java.util.List;
 
-public class DegreeViewAdapter extends RecyclerView.Adapter<DegreeViewAdapter.ViewHolder> {
+public class DegreesViewAdapter extends RecyclerView.Adapter<DegreesViewAdapter.ViewHolder> {
 
-    private List<String> degrees;
+    private List<Degree> degrees;
     private LayoutInflater mInflater;
     private ItemClickListener degreeClickListener;
 
     // data is passed into the constructor
-    DegreeViewAdapter(Context context, List<String> data) {
+    DegreesViewAdapter(Context context, List<Degree> data) {
         this.mInflater = LayoutInflater.from(context);
         this.degrees = data;
     }
@@ -31,8 +33,8 @@ public class DegreeViewAdapter extends RecyclerView.Adapter<DegreeViewAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String degree = degrees.get(position);
-        holder.myTextView.setText(degree);
+        String degreeName = degrees.get(position).getName();
+        holder.myTextView.setText(degreeName);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class DegreeViewAdapter extends RecyclerView.Adapter<DegreeViewAdapter.Vi
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
+    Degree getItem(int id) {
         return degrees.get(id);
     }
 
