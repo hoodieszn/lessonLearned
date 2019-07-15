@@ -21,7 +21,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-public class VerifyPhone extends AppCompatActivity {
+public class VerifyPhoneActivity extends AppCompatActivity {
 
     private String verificationId = "";
     private FirebaseAuth firebaseAuth;
@@ -92,12 +92,13 @@ public class VerifyPhone extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isComplete() && task.isSuccessful()){
 
-                            Intent degreeIntent = new Intent(VerifyPhone.this, DegreesActivity.class);
+                            Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
                             degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(degreeIntent);
 
-                        }else{
-                            Toast.makeText(VerifyPhone.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(VerifyPhoneActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -123,7 +124,7 @@ public class VerifyPhone extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(VerifyPhone.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(VerifyPhoneActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
 }

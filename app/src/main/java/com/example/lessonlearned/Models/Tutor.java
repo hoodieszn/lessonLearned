@@ -11,12 +11,12 @@ public class Tutor {
     private String phone;
     private double latitude;
     private double longitude;
-    private List<String> courses;
+    private List<Course> courses;
     private double distance;
 
     // Constructor
 
-    public Tutor(int id, String name,  int degreeId, String degree, double price, String phone, double latitude, double longitude, List<String> courses){
+    public Tutor(int id, String name,  int degreeId, String degree, double price, String phone, double latitude, double longitude, List<Course> courses){
         this.id = id;
         this.name = name;
         this.degreeId = degreeId;
@@ -59,7 +59,7 @@ public class Tutor {
         return degreeId;
     }
 
-    public List<String> getCourses() {
+    public List<Course> getCourses() {
         return courses;
     }
 
@@ -81,7 +81,7 @@ public class Tutor {
         this.id = id;
     }
 
-    public void setCourses(List<String> courses) {
+    public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
 

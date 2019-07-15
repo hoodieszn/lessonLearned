@@ -1,28 +1,28 @@
 package com.example.lessonlearned.Models;
 
 public class School {
-    private int schoolId;
+    private int id;
     private String name;
 
     // Constructor
 
-    public School(int schoolId, String name){
-        this.schoolId = schoolId;
+    public School(int id, String name){
+        this.id = id;
         this.name = name;
     }
 
     // Getters and Setters
 
-    public int getSchoolId() {
-        return schoolId;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setSchoolId(int schoolId) {
-        this.schoolId = schoolId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
