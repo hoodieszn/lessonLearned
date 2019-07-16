@@ -6,5 +6,9 @@
     <string name="title_activity_verify_phone_number">VerifyPhoneNumber</string>
     <string name="phone">Enter your phone number</string>
     <string name="login">Login</string>
+    <string-array name="array_name">
+        <item>Student</item>
+        <item>Tutor</item>
+    </string-array>
 
 </resources>

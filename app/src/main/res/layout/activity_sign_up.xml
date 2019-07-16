@@ -1,46 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     android:orientation="vertical"
-    tools:context=".SignUpActivity" >
+    tools:context=".SignUpActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/relativeLayout2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#C8EBE4E4">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="192dp"
-            android:layout_height="109dp"
-            android:layout_marginStart="116dp"
-            android:layout_marginTop="404dp"
-            android:layout_marginBottom="204dp"
-            android:backgroundTint="#E1B5CAB3"
-            android:text="STUDENT"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_conversion_wrapHeight="126"
-            tools:layout_conversion_wrapWidth="231" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="734dp">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="192dp"
-            android:layout_height="109dp"
-            android:layout_marginStart="116dp"
-            android:layout_marginTop="204dp"
-            android:background="#FFFFFF"
-            android:backgroundTint="#E1B5CAB3"
-            android:text="TUTOR"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_conversion_wrapHeight="126"
-            tools:layout_conversion_wrapWidth="231" />
-    </android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="318dp"
+                android:layout_height="478dp"
+                android:layout_marginStart="54dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="54dp"
+                android:layout_marginBottom="107dp"
+                android:background="#60ffffff"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0">
 
-</LinearLayout>
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/editText4"
+                        android:layout_width="273dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="22dp"
+                        android:layout_marginBottom="23dp"
+                        android:ems="10"
+                        android:foregroundTint="#00F5F5F5"
+                        android:hint="@string/phone"
+                        android:inputType="phone"
+                        android:paddingLeft="10dp"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toTopOf="@+id/editText6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+                    <EditText
+                        android:id="@+id/editText"
+                        android:layout_width="274dp"
+                        android:layout_height="21dp"
+                        android:layout_marginStart="26dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="27dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="#30FFFFFF"
+                        android:ems="10"
+                        android:foregroundTint="#00F5F5F5"
+                        android:hint="Email"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toTopOf="@+id/editText4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+
+                    <EditText
+                        android:id="@+id/editText3"
+                        android:layout_width="274dp"
+                        android:layout_height="21dp"
+                        android:layout_marginStart="26dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="27dp"
+                        android:layout_marginBottom="22dp"
+                        android:background="#30FFFFFF"
+                        android:ems="10"
+                        android:foregroundTint="#00F5F5F5"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="10dp"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toTopOf="@+id/editText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                    <EditText
+                        android:id="@+id/editText6"
+                        android:layout_width="119dp"
+                        android:layout_height="26dp"
+                        android:layout_marginStart="26dp"
+                        android:layout_marginTop="23dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="#30ffffff"
+                        android:ems="10"
+                        android:foregroundTint="#00F5F5F5"
+                        android:hint="Type of User?"
+                        android:inputType="textPersonName"
+                        android:paddingLeft="5dp"
+                        android:textAlignment="textStart"
+                        app:layout_constraintEnd_toStartOf="@+id/spinner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="263dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginBottom="28dp"
+                        android:gravity="center"
+                        android:text="Please enter your personal information"
+                        android:textAlignment="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/editText3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/button3"
+                        android:layout_width="319dp"
+                        android:layout_height="93dp"
+                        android:background="#804BB1B6"
+                        android:font="@font/acme"
+                        android:text="REGISTER"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="146dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="23dp"
+                        android:layout_marginEnd="21dp"
+                        android:entries="@array/array_name"
+                        android:textAlignment="textStart"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editText6"
+                        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+                </android.support.constraint.ConstraintLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="213dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="97dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="98dp"
+                android:font="@font/acme"
+                android:fontFamily="@font/acme"
+                android:lineSpacingExtra="8sp"
+                android:text="WELCOME"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.666"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+</ScrollView>
