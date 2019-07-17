@@ -159,7 +159,7 @@ public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.It
                         if (selected == "Distance")
                             return Double.compare(22, 23);
                         else
-                            return Double.compare(lhs.getTutor().getPrice(), rhs.getTutor().getPrice());
+                            return Double.compare(lhs.getPrice(), rhs.getPrice());
                     }
                 });
 
@@ -180,7 +180,7 @@ public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.It
         tutorProfile.putExtra("name", currentPosting.getTutor().getName());
         tutorProfile.putExtra("phone", currentPosting.getTutor().getPhone());
         tutorProfile.putExtra("institution", "University of Waterloo");
-        tutorProfile.putExtra("price", currentPosting.getTutor().getPrice());
+        tutorProfile.putExtra("price", currentPosting.getPrice());
 
         dimmer.setVisibility(View.VISIBLE);
         startActivityForResult(tutorProfile, tutorProfileRequest);

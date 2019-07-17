@@ -6,12 +6,14 @@ public class TutorPosting {
     private int id;
     private List<Course> postingCourses;
     private String postText;
+    private double price;
     private Tutor tutor;
 
-    public TutorPosting(int id, List<Course> postingCourses, String postText, Tutor tutor) {
+    public TutorPosting(int id, List<Course> postingCourses, String postText, double price, Tutor tutor) {
         this.id = id;
         this.postingCourses = postingCourses;
         this.postText = postText;
+        this.price = price;
         this.tutor = tutor;
     }
 
@@ -45,5 +47,13 @@ public class TutorPosting {
 
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

@@ -37,7 +37,7 @@ public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.Vi
         // Populate card with posting and tutor information
         if (holder != null) {
             holder.tutorName.setText(posting.getTutor().getName());
-            holder.tutorPrice.setText("$" + Double.toString(posting.getTutor().getPrice()) + "/hour");
+            holder.tutorPrice.setText("$" + Double.toString(posting.getPrice()) + "/hour");
             holder.tutorDistance.setText("0.5 km");
 
             String courses = "";
