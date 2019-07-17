@@ -3,8 +3,9 @@ package com.example.lessonlearned;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -13,19 +14,27 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class TutorProfileActivity extends Activity {
+import com.example.lessonlearned.Models.UserReview;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TutorPostingActivity extends Activity {
+
+    private List<UserReview> userReviews = new ArrayList<>(); //GET
+    private List<String> comments = new ArrayList<>();
+    private List<String> commentOwners = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_profile);
+        setContentView(R.layout.activity_tutor_posting);
 
+        //set the popup width and height based on the device's dimensions
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-
         getWindow().setLayout((int)(width*.7), (int)(height*.6));
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
@@ -36,7 +45,7 @@ public class TutorProfileActivity extends Activity {
         getWindow().setAttributes(params);
 
         RatingBar ratingBar = findViewById(R.id.ratingBar);
-        Float tutorRating = 3.0f; // 3.0 is from your database
+        Float tutorRating = 4.0f; // 3.0 is from your database
 
         // To show rating on RatingBar
         ratingBar.setRating(tutorRating);
@@ -71,6 +80,29 @@ public class TutorProfileActivity extends Activity {
                 }
             }
         });
+
+        //GET
+        UserReview test1 = new UserReview(1, 1, "Josh Freeman", 1, "This is a the test comment 2", 45);
+        UserReview test2 = new UserReview(2, 2, "Haley Freeman", 1, "This is a the test comment 2", 45);
+        userReviews.add(test1);
+        userReviews.add(test2);
+
+        initComments();
+    }
+
+    private void initComments(){
+        for(int i=0; i<userReviews.size(); i++){
+            comments.add(userReviews.get(i).getComment());
+            commentOwners.add("-" + userReviews.get(i).getStudentName());
+        }
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        RecyclerView commentSection = findViewById(R.id.commentSection);
+        CommentsViewAdapter adapter = new CommentsViewAdapter(comments, commentOwners);
+        commentSection.setAdapter(adapter);
+        commentSection.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

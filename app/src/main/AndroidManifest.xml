@@ -9,9 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".TutorProfileActivity"
-            android:theme="@style/AppTheme.TutorProfile"
-            ></activity>
+        <activity
+            android:name=".CommentsViewAdapter"
+            android:label="@string/title_activity_comments_view_adapter"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".TutorPostingActivity"
+            android:theme="@style/AppTheme.TutorProfile" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".VerifyPhoneActivity" />
         <activity android:name=".DegreesActivity" /> <!-- android:theme="@style/AppTheme"> -->
