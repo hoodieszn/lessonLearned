@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
+import com.example.lessonlearned.Models.Student;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
@@ -40,7 +41,19 @@ public class JSONParser {
             String userTypeString = jsonUser.getString("userType");
             UserType userType = userTypeString.equalsIgnoreCase(UserType.STUDENT.toString()) ? UserType.STUDENT : UserType.TUTOR;
 
-            User currentUser = new User(id, UUID, schoolId, name, phone, latitude, longitude, userType);
+            User currentUser = null;
+
+            if (userType == UserType.STUDENT){
+
+                // JSONArray jsonContactedTutors = jsonUser.getJSONArray("contactedTutors");
+                ArrayList<Integer> contactedTutorIds = new ArrayList<Integer>();
+
+                currentUser = new Student(id, UUID, schoolId, name, phone, latitude, longitude, userType, contactedTutorIds);
+            }
+            else if (userType == UserType.TUTOR){
+
+            }
+
             Context.setUser(currentUser);
 
             try {
@@ -149,8 +162,8 @@ public class JSONParser {
                     reviews.add(new UserReview(reviewUserId, reviewTutorId, reviewText, reviewRating));
                 }
 
-                Tutor tutor = new Tutor(tutorId, tutorName, degreeId, degreeName, price, tutorPhone, lat, lon, courses, rating, reviews);
-                TutorPosting posting = new TutorPosting(id, courses, postText, tutor);
+                Tutor tutor = new Tutor(tutorId, "" , schoolId, tutorName, tutorPhone, lat, lon, UserType.TUTOR, degreeId, degreeName, courses, rating, reviews);
+                TutorPosting posting = new TutorPosting(id, courses, postText, price, tutor);
                 tutorPostings.add(posting);
             }
 

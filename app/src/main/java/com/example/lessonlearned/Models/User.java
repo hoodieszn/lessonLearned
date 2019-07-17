@@ -3,14 +3,14 @@ package com.example.lessonlearned.Models;
 import java.util.List;
 
 public class User {
-    private int id;
-    private String firebaseId;
-    private int schoolId;
-    private String name;
-    private String phone;
-    private double latitude;
-    private double longitude;
-    private UserType userType;
+    protected int id;
+    protected String firebaseId;
+    protected int schoolId;
+    protected String name;
+    protected String phone;
+    protected double latitude;
+    protected double longitude;
+    protected UserType userType;
 
     // Constructor
 
