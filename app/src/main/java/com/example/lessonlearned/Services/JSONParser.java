@@ -161,10 +161,11 @@ public class JSONParser {
 
                     int reviewUserId = jsonReview.getInt("userId");
                     int reviewTutorId = jsonReview.getInt("tutorId");
+                    String reviewerName = jsonReview.getString("studentName");
                     String reviewText = jsonReview.getString("reviewText");
                     double reviewRating = jsonReview.getInt("rating");
 
-                    reviews.add(new UserReview(reviewUserId, reviewTutorId, reviewText, reviewRating));
+                    reviews.add(new UserReview(reviewUserId, reviewerName, reviewTutorId, reviewText, reviewRating));
                 }
 
                 Tutor tutor = new Tutor(tutorId, "" , schoolId, schoolName, tutorName, tutorPhone, lat, lon, UserType.TUTOR, degreeId, degreeName, courses, rating, reviews);

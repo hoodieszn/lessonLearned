@@ -174,7 +174,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent tutorProfile = new Intent(getApplicationContext(), TutorProfileActivity.class);
+        Intent tutorProfile = new Intent(getApplicationContext(), TutorPostingActivity.class);
         TutorPosting currentPosting = tutorPostingAdapter.getItem(position);
 
         tutorProfile.putExtra("name", currentPosting.getTutor().getName());
