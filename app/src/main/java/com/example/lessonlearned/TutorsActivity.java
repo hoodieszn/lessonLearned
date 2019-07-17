@@ -112,7 +112,7 @@ public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.It
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent tutorProfile = new Intent(getApplicationContext(), TutorProfileActivity.class);
+        Intent tutorProfile = new Intent(getApplicationContext(), TutorPostingActivity.class);
         Tutor currentTutor = tutorListAdapter.getItem(position);
         tutorProfile.putExtra("name", currentTutor.getName());
         tutorProfile.putExtra("phone", currentTutor.getPhone());

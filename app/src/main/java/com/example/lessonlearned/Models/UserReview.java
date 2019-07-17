@@ -3,13 +3,15 @@ package com.example.lessonlearned.Models;
 public class UserReview {
     private int id;
     private int userId;
+    private String studentName;
     private int tutorId;
     private String comment;
     private double rating;
 
-    public UserReview(int id, int userId, int tutorId, String comment, double rating) {
+    public UserReview(int id, int userId, String studentName, int tutorId, String comment, double rating) {
         this.id = id;
         this.userId = userId;
+        this.studentName = studentName;
         this.tutorId = tutorId;
         this.comment = comment;
         this.rating = rating;
@@ -21,6 +23,10 @@ public class UserReview {
 
     public int getUserId() {
         return userId;
+    }
+
+    public String getStudentName() {
+        return studentName;
     }
 
     public int getTutorId() {
