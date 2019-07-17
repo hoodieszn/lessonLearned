@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.lessonlearned.Models.UserType;
+import com.example.lessonlearned.Singletons.Context;
+import com.example.lessonlearned.Services.RESTClientRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -19,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import org.json.JSONException;
+
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 public class VerifyPhoneActivity extends AppCompatActivity {
@@ -79,7 +86,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             signInWithCredential(credential);
         } catch (Exception e){
-            Toast toast = Toast.makeText(this, "Verification Code is wrong", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "Verification Code is wrong: " + e, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER,0,0);
             toast.show();
         }
@@ -91,6 +98,14 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isComplete() && task.isSuccessful()){
+
+                            // Sign in is complete, get the User Object
+                            try {
+                                RESTClientRequest.getUser(goToLandingPage());
+                            }
+                            catch (JSONException e){
+                                Log.d("JSONException", e.toString());
+                            }
 
                             Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
                             degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -127,4 +142,21 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             Toast.makeText(VerifyPhoneActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     };
+
+    public Callable<Void> goToLandingPage(){
+        return new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if (Context.getUser().getUserType() == UserType.STUDENT) {
+                    Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
+                    degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(degreeIntent);
+                }
+                else {
+                    Toast.makeText(VerifyPhoneActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();
+                }
+                return null;
+            }
+        };
+    }
 }
