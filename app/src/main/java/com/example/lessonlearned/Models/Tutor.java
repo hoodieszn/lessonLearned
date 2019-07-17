@@ -14,9 +14,9 @@ public class Tutor extends User{
 
     // Constructor
 
-    public Tutor(int id, String firebaseId, int schoolId, String name, String phone, double latitude, double longitude, UserType userType,
+    public Tutor(int id, String firebaseId, int schoolId, String schoolName, String name, String phone, double latitude, double longitude, UserType userType,
                  int degreeId, String degree, List<Course> courses, double rating, List<UserReview> reviews) {
-        super(id, firebaseId, schoolId, name, phone, latitude, longitude, userType);
+        super(id, firebaseId, schoolId, schoolName, name, phone, latitude, longitude, userType);
         this.degreeId = degreeId;
         this.degree = degree;
         this.courses = courses;

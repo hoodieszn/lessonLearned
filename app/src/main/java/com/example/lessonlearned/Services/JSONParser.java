@@ -2,6 +2,7 @@ package com.example.lessonlearned.Services;
 
 import android.util.Log;
 
+import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
 import com.example.lessonlearned.Models.Student;
@@ -16,7 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -45,10 +48,11 @@ public class JSONParser {
 
             if (userType == UserType.STUDENT){
 
-                // JSONArray jsonContactedTutors = jsonUser.getJSONArray("contactedTutors");
-                ArrayList<Integer> contactedTutorIds = new ArrayList<Integer>();
+                // TODO: should be parsed from json
+                List<ContactedTutor> contactedTutorIds = Arrays.asList(new ContactedTutor(1, "SecondUsser", "2049956727"),
+                        new ContactedTutor(4, "TestTutor", "9999999999"));
 
-                currentUser = new Student(id, UUID, schoolId, name, phone, latitude, longitude, userType, contactedTutorIds);
+                currentUser = new Student(id, UUID, schoolId, "University of Waterloo", name, phone, latitude, longitude, userType, contactedTutorIds);
             }
             else if (userType == UserType.TUTOR){
 
@@ -110,6 +114,7 @@ public class JSONParser {
 
     public static void parsePostingsResponse(int degreeId, final Callable<Void> callback, JSONObject response){
         final int schoolId = Context.getUser().getSchoolId();
+        final String schoolName = Context.getUser().getSchoolName();
         final String degreeName = Context.getDegrees().get(degreeId).getName();
 
         final ArrayList<TutorPosting> tutorPostings = new ArrayList<TutorPosting>();
@@ -162,7 +167,7 @@ public class JSONParser {
                     reviews.add(new UserReview(reviewUserId, reviewTutorId, reviewText, reviewRating));
                 }
 
-                Tutor tutor = new Tutor(tutorId, "" , schoolId, tutorName, tutorPhone, lat, lon, UserType.TUTOR, degreeId, degreeName, courses, rating, reviews);
+                Tutor tutor = new Tutor(tutorId, "" , schoolId, schoolName, tutorName, tutorPhone, lat, lon, UserType.TUTOR, degreeId, degreeName, courses, rating, reviews);
                 TutorPosting posting = new TutorPosting(id, courses, postText, price, tutor);
                 tutorPostings.add(posting);
             }
