@@ -4,25 +4,43 @@ import android.content.Intent;
 
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.text.Editable;
 import android.widget.EditText;
 
-
+import com.example.lessonlearned.Models.UserType;
+import com.example.lessonlearned.Singletons.Context;
+import com.example.lessonlearned.Services.RESTClientRequest;
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONException;
+
+import java.util.concurrent.Callable;
 
 
 public class MainActivity extends BaseActivity {
 
+    private ProgressBar spinner;
+    private RelativeLayout dimmer;
+    private TextView login;
+    private TextView signUp;
+    private EditText numberText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView login = findViewById(R.id.login);
-        final TextView signUp = findViewById(R.id.textView4);
+
+        login = findViewById(R.id.login);
+        signUp = findViewById(R.id.signUpText);
+        spinner = findViewById(R.id.progressSpinner);
+        dimmer = findViewById(R.id.dimMainPage);
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,7 +48,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        final EditText numberText = findViewById(R.id.phoneText);
+        numberText = findViewById(R.id.phoneText);
 
         numberText.addTextChangedListener(new PhoneNumberFormattingTextWatcher() {
             private boolean backspacingFlag = false;
@@ -95,9 +113,9 @@ public class MainActivity extends BaseActivity {
 
                 }
                 else {
-                    Intent degreeIntent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
-                    degreeIntent.putExtra("phoneNumber", number);
-                    startActivity(degreeIntent);
+                    Intent phoneIntent = new Intent(MainActivity.this, VerifyPhoneActivity.class);
+                    phoneIntent.putExtra("phoneNumber", number);
+                    startActivity(phoneIntent);
                 }
             }
         });
@@ -107,10 +125,44 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
-            Intent degreeIntent = new Intent(MainActivity.this, DegreesActivity.class);
-            degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(degreeIntent);
+
+            // Disable inputs
+            startLoadingState();
+
+            // Already signed in, get the User Object
+            try {
+                RESTClientRequest.getUser(goToLandingPage());
+            }
+            catch (JSONException e){
+                Log.d("JSONException", e.toString());
+            }
         }
+    }
+
+    public Callable<Void> goToLandingPage(){
+        return new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if (Context.getUser().getUserType() == UserType.STUDENT) {
+                    Intent degreeIntent = new Intent(MainActivity.this, DegreesActivity.class);
+                    degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(degreeIntent);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();
+                }
+                return null;
+            }
+        };
+    }
+
+    public void startLoadingState(){
+        signUp.setClickable(false);
+        login.setClickable(false);
+        numberText.setEnabled(false);
+        dimmer.setVisibility(View.VISIBLE);
+        spinner.setVisibility(View.VISIBLE);
     }
 }
 
