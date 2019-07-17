@@ -26,7 +26,7 @@ public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.Vi
     // inflates the row layout from xml when needed
     @Override
     public TutorsViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.tutorview_row, parent, false);
+        View view = mInflater.inflate(R.layout.tutors_adapter_row, parent, false);
         return new TutorsViewAdapter.ViewHolder(view);
     }
 

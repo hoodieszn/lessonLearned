@@ -85,7 +85,7 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent tutorsIntent = new Intent(DegreesActivity.this, TutorsActivity.class);
+        Intent tutorsIntent = new Intent(DegreesActivity.this, TutorsListActivity.class);
         tutorsIntent.putExtra("degreeId", adapter.getItem(position).getId());
 
         startActivity(tutorsIntent);

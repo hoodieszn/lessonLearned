@@ -6,6 +6,7 @@ public class User {
     protected int id;
     protected String firebaseId;
     protected int schoolId;
+    protected String schoolName;
     protected String name;
     protected String phone;
     protected double latitude;
@@ -14,10 +15,11 @@ public class User {
 
     // Constructor
 
-    public User(int id, String firebaseId, int schoolId, String name, String phone, double latitude, double longitude, UserType userType) {
+    public User(int id, String firebaseId, int schoolId, String schoolName, String name, String phone, double latitude, double longitude, UserType userType) {
         this.id = id;
         this.firebaseId = firebaseId;
         this.schoolId = schoolId;
+        this.schoolName = schoolName;
         this.name = name;
         this.phone = phone;
         this.latitude = latitude;
@@ -59,6 +61,10 @@ public class User {
         return userType;
     }
 
+    public String getSchoolName() {
+        return schoolName;
+    }
+
     // Setters
 
     public void setId(int id) {
@@ -91,5 +97,9 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 }

@@ -27,7 +27,7 @@ public class DegreesViewAdapter extends RecyclerView.Adapter<DegreesViewAdapter.
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.degreeview_row, parent, false);
+        View view = mInflater.inflate(R.layout.degrees_adapter_row, parent, false);
         return new ViewHolder(view);
     }
 
