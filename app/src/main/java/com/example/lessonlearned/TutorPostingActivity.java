@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.lessonlearned.Models.Course;
+import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.UserReview;
 
 import java.util.ArrayList;
@@ -22,6 +24,9 @@ import java.util.List;
 public class TutorPostingActivity extends Activity {
 
     private List<UserReview> userReviews = new ArrayList<>(); //GET
+    private List<Course> postingCourses = new ArrayList<>();
+    private double price;
+    private Tutor tutor;
     private List<String> comments = new ArrayList<>();
     private List<String> commentOwners = new ArrayList<>();
 
@@ -82,8 +87,8 @@ public class TutorPostingActivity extends Activity {
         });
 
         //GET
-        UserReview test1 = new UserReview(1, 1, "Josh Freeman", 1, "This is a the test comment 2", 45);
-        UserReview test2 = new UserReview(2, 2, "Haley Freeman", 1, "This is a the test comment 2", 45);
+        UserReview test1 = new UserReview(1, "Josh Freeman", 1, "This is a the test comment 2", 45);
+        UserReview test2 = new UserReview(2, "Haley Freeman", 1, "This is a the test comment 2", 45);
         userReviews.add(test1);
         userReviews.add(test2);
 
