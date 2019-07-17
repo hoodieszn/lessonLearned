@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TutorsActivity" />
-
+        <activity android:name=".StudentProfileActivity" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

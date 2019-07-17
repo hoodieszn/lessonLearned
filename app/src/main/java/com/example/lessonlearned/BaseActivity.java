@@ -1,11 +1,16 @@
 package com.example.lessonlearned;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.lessonlearned.Models.User;
+import com.example.lessonlearned.Models.UserType;
+import com.example.lessonlearned.Singletons.Context;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -18,9 +23,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem accounts = menu.findItem(R.id.accounts);
-        boolean studentAccount = true; // ToDo: Actually figure out what type of account
-        accounts.setVisible(!studentAccount);
+        MenuItem profileIcon = menu.findItem(R.id.profileIcon);
+
+        if (Context.getUser() != null){
+            profileIcon.setVisible(true);
+        }
+        else {
+            profileIcon.setVisible(false);
+        }
         return true;
     }
 
@@ -32,10 +42,22 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        if (item.getItemId() == R.id.profileIcon) {
+            // Handle My Profile click
 
-        if (id == R.id.accounts) {
-            // Handle Account click
+            User user = Context.getUser();
+
+            if (user != null){
+                if (user.getUserType() == UserType.STUDENT){
+                    // Navigate to student Profile page
+                    Intent studentProfileIntent = new Intent(BaseActivity.this, StudentProfileActivity.class);
+                    startActivity(studentProfileIntent);
+                }
+                else if (user.getUserType() == UserType.TUTOR){
+
+                }
+            }
+
             return true;
         }
 
