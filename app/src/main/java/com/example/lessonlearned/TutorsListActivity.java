@@ -34,7 +34,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener{
+public class TutorsListActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener{
 
     private String schoolName;
     private String degreeName;
@@ -118,11 +118,11 @@ public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.It
             public Void call() throws Exception {
                 tutorPostings = Context.getTutorPostings();
 
-                layoutManager = new LinearLayoutManager(TutorsActivity.this);
+                layoutManager = new LinearLayoutManager(TutorsListActivity.this);
                 recyclerView.setLayoutManager(layoutManager);
 
-                tutorPostingAdapter = new TutorsViewAdapter(TutorsActivity.this, tutorPostings);
-                tutorPostingAdapter.setClickListener(TutorsActivity.this);
+                tutorPostingAdapter = new TutorsViewAdapter(TutorsListActivity.this, tutorPostings);
+                tutorPostingAdapter.setClickListener(TutorsListActivity.this);
 
                 recyclerView.setAdapter(tutorPostingAdapter);
 
@@ -210,7 +210,7 @@ public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.It
                 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        Toast.makeText(TutorsActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -230,7 +230,7 @@ public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.It
                 });
             }
             catch (SecurityException e){
-                Toast.makeText(TutorsActivity.this, "Error: " + e, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TutorsListActivity.this, "Error: " + e, Toast.LENGTH_SHORT).show();
             }
         }
     }

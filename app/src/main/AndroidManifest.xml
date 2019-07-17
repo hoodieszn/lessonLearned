@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TutorsActivity" />
+        <activity android:name=".TutorsListActivity" />
         <activity android:name=".StudentProfileActivity" />
         <meta-data
             android:name="preloaded_fonts"

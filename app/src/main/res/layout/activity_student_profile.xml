@@ -39,9 +39,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:text="Tutors I've Contacted"
+        android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,26 +80,32 @@
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
         android:background="#7EBEBEBE"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/studentPhone" />
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/scrollView3"
+        android:layout_width="410dp"
+        android:layout_height="366dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/divider2">
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/contactedTutorsList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:scrollbarAlwaysDrawVerticalTrack="true" />
     </ScrollView>
 
