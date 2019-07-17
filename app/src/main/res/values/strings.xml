@@ -6,5 +6,7 @@
     <string name="title_activity_verify_phone_number">VerifyPhoneNumber</string>
     <string name="phone">Enter your phone number</string>
     <string name="login">Login</string>
+    <string name="title_activity_comments_view_adapter">CommentsViewAdapter</string>
+    <string name="title_activity_comments">CommentsActivity</string>
 
 </resources>
