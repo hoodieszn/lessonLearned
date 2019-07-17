@@ -1,123 +1,186 @@
 package com.example.lessonlearned;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.lessonlearned.Models.Course;
-import com.example.lessonlearned.Models.Tutor;
+import com.example.lessonlearned.Models.Degree;
+import com.example.lessonlearned.Models.TutorPosting;
+import com.example.lessonlearned.Singletons.Context;
+import com.example.lessonlearned.Services.RESTClientRequest;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener{
-    public ArrayList<String> sortOptions;
+
+    private String schoolName;
+    private String degreeName;
+    private int degreeId;
+
+    // Sort Options
+    private ArrayList<String> sortOptions;
     private int sortSelected;
+    private Spinner sortDropdown;
 
-    private String institutionName;
-    private int institutionId;
+    // List of Tutor Postings
+    List<TutorPosting> tutorPostings;
 
-    private String categoryName;
-    private int categoryId;
+    // View Elements and Layouts
+    TutorsViewAdapter tutorPostingAdapter;
+    RecyclerView recyclerView;
+    LinearLayoutManager layoutManager;
 
-    List<Tutor> tutorList;
-    TutorsViewAdapter tutorListAdapter;
-
+    // Indicator for if a Posting has been clicked
     final static int tutorProfileRequest = 0;
     RelativeLayout dimmer;
+
+    private static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_tutorlist);
 
-        // For now just getting the institution and category selected
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_MULTIPLE_REQUEST);
+        }
+        else {
+            handleLocation();
+        }
+
+        // Find out which degree was selected
+
         Intent categoryIntent = getIntent();
+        degreeId = categoryIntent.getIntExtra("degreeId", 0);
 
-        institutionName = categoryIntent.getStringExtra("InstitutionName");
-        institutionId = categoryIntent.getIntExtra("InstitutionId", 0);
+        Degree selectedDegree = Context.getDegrees().get(degreeId);
+        degreeName = selectedDegree.getName();
+        schoolName = selectedDegree.getSchoolName();
 
-        categoryName = categoryIntent.getStringExtra("CategoryName");
-        categoryId = categoryIntent.getIntExtra("CategoryId", 0);
+        // Get view/layout elements on screen
+
+        dimmer = findViewById(R.id.dimTutorList);
+        recyclerView = findViewById(R.id.tutors);
+
+        // Fetch Postings from server
+
+        try {
+            RESTClientRequest.getPostingsForDegree(degreeId, populatePostings());
+        }
+        catch (JSONException e){
+            Log.d("JSONException", e.toString());
+        }
+
+        // Set title for page
 
         TextView tutorsTitle = this.findViewById(R.id.tutorsTitle);
-        tutorsTitle.setText(institutionName + " " + categoryName + " Tutors in your area");
+        tutorsTitle.setText(schoolName + " " + degreeName + " Tutors in your area");
+
+        // Load Sort Options and Link Sort Adapter
 
         sortOptions = new ArrayList<String>() {{
             add("Price");
             add("Distance");
         }};
 
-        final Spinner sortDropdown = this.findViewById(R.id.sortBtn);
+        sortDropdown = this.findViewById(R.id.sortBtn);
 
+    }
+
+    public Callable<Void> populatePostings(){
+        return new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                tutorPostings = Context.getTutorPostings();
+
+                layoutManager = new LinearLayoutManager(TutorsActivity.this);
+                recyclerView.setLayoutManager(layoutManager);
+
+                tutorPostingAdapter = new TutorsViewAdapter(TutorsActivity.this, tutorPostings);
+                tutorPostingAdapter.setClickListener(TutorsActivity.this);
+
+                recyclerView.setAdapter(tutorPostingAdapter);
+
+                // Listeners for different sort options
+
+                initSortListeners();
+
+                return null;
+            }
+        };
+    }
+
+    private void initSortListeners(){
         final ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(this, R.layout.sort_spinner, sortOptions);
+
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortDropdown.setAdapter(sortAdapter);
 
-        sortSelected = 0;
-        sortDropdown.setSelection(0);
+        // Default Sort Option Selected
 
+        sortSelected = 0;
+        sortDropdown.setSelection(sortSelected);
 
         sortDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 final String selected = parentView.getItemAtPosition(position).toString();
 
-                //default sort is by price
-                Collections.sort(tutorList, new Comparator<Tutor>() {
+                // Default sort is by price
+
+                Collections.sort(tutorPostings, new Comparator<TutorPosting>() {
                     @Override
-                    public int compare(Tutor lhs, Tutor rhs) {
+                    public int compare(TutorPosting lhs, TutorPosting rhs) {
                         if (selected == "Distance")
-                            return Double.compare(lhs.getDistance(), rhs.getDistance());
+                            return Double.compare(22, 23);
                         else
-                            return Double.compare(lhs.getPrice(), rhs.getPrice());
+                            return Double.compare(lhs.getTutor().getPrice(), rhs.getTutor().getPrice());
                     }
                 });
 
-                tutorListAdapter.notifyDataSetChanged();
+                if (tutorPostingAdapter != null) tutorPostingAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
+            public void onNothingSelected(AdapterView<?> parentView) { }
 
         });
-
-        // Temp: will be rest client call in future
-        tutorList = Arrays.asList(new Tutor(1, "Gill", 2, "Mathematics", 20, "3333333333", 43.731548, -79.762421,
-                                    Arrays.asList(new Course(2, "CS350", 1), new Course(3, "CS351", 1))),
-                        new Tutor(2, "John", 2, "Mathematics", 10, "4444444444", 43.731548, -73.762421,
-                                Arrays.asList(new Course(3, "CS349", 1))));
-
-        RecyclerView recyclerView = findViewById(R.id.tutors);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        tutorListAdapter = new TutorsViewAdapter(this, tutorList);
-        tutorListAdapter.setClickListener(this);
-        recyclerView.setAdapter(tutorListAdapter);
-
-        dimmer = findViewById(R.id.dimTutorList);
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Intent tutorProfile = new Intent(getApplicationContext(), TutorProfileActivity.class);
-        Tutor currentTutor = tutorListAdapter.getItem(position);
-        tutorProfile.putExtra("name", currentTutor.getName());
-        tutorProfile.putExtra("phone", currentTutor.getPhone());
+        TutorPosting currentPosting = tutorPostingAdapter.getItem(position);
+
+        tutorProfile.putExtra("name", currentPosting.getTutor().getName());
+        tutorProfile.putExtra("phone", currentPosting.getTutor().getPhone());
         tutorProfile.putExtra("institution", "University of Waterloo");
-        tutorProfile.putExtra("price", currentTutor.getPrice());
+        tutorProfile.putExtra("price", currentPosting.getTutor().getPrice());
 
         dimmer.setVisibility(View.VISIBLE);
         startActivityForResult(tutorProfile, tutorProfileRequest);
@@ -131,4 +194,44 @@ public class TutorsActivity extends BaseActivity implements TutorsViewAdapter.It
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        handleLocation();
+    }
+
+    private void handleLocation(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            try {
+                LocationManager lm = (LocationManager)getSystemService(android.content.Context.LOCATION_SERVICE);
+
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        Toast.makeText(TutorsActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+                });
+            }
+            catch (SecurityException e){
+                Toast.makeText(TutorsActivity.this, "Error: " + e, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

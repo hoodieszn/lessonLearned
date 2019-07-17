@@ -12,11 +12,16 @@ public class Tutor {
     private double latitude;
     private double longitude;
     private List<Course> courses;
+    private double rating;
+    private List<UserReview> reviews;
+
+    // Calculated field
     private double distance;
 
     // Constructor
 
-    public Tutor(int id, String name,  int degreeId, String degree, double price, String phone, double latitude, double longitude, List<Course> courses){
+    public Tutor(int id, String name, int degreeId, String degree, double price, String phone, double latitude,
+                 double longitude, List<Course> courses, double rating, List<UserReview> reviews) {
         this.id = id;
         this.name = name;
         this.degreeId = degreeId;
@@ -25,8 +30,9 @@ public class Tutor {
         this.phone = phone;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.distance = 1; // Temporary
         this.courses = courses;
+        this.rating = rating;
+        this.reviews = reviews;
     }
 
     // Getters
@@ -71,6 +77,14 @@ public class Tutor {
         return phone;
     }
 
+    public double getRating() {
+        return rating;
+    }
+
+    public List<UserReview> getReviews() {
+        return reviews;
+    }
+
     // Setters
 
     public void setName(String name) {
@@ -111,5 +125,13 @@ public class Tutor {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public void setReviews(List<UserReview> reviews) {
+        this.reviews = reviews;
     }
 }

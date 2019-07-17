@@ -1,4 +1,4 @@
-package com.example.lessonlearned.Singletons;
+package com.example.lessonlearned.Services;
 import com.loopj.android.http.*;
 
 public class RESTClient {

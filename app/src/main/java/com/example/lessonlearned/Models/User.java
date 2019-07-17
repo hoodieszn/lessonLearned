@@ -4,7 +4,7 @@ import java.util.List;
 
 public class User {
     private int id;
-    private int firebaseId;
+    private String firebaseId;
     private int schoolId;
     private String name;
     private String phone;
@@ -14,7 +14,7 @@ public class User {
 
     // Constructor
 
-    public User(int id, int firebaseId, int schoolId, String name, String phone, double latitude, double longitude, UserType userType) {
+    public User(int id, String firebaseId, int schoolId, String name, String phone, double latitude, double longitude, UserType userType) {
         this.id = id;
         this.firebaseId = firebaseId;
         this.schoolId = schoolId;
@@ -31,7 +31,7 @@ public class User {
         return id;
     }
 
-    public int getFirebaseId() {
+    public String getFirebaseId() {
         return firebaseId;
     }
 
@@ -65,7 +65,7 @@ public class User {
         this.id = id;
     }
 
-    public void setFirebaseId(int firebaseId) {
+    public void setFirebaseId(String firebaseId) {
         this.firebaseId = firebaseId;
     }
 
