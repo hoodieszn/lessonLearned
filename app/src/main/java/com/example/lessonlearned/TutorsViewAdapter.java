@@ -8,49 +8,54 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.lessonlearned.Models.Course;
-import com.example.lessonlearned.Models.Tutor;
+import com.example.lessonlearned.Models.TutorPosting;
 
 import java.util.List;
 
 public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.ViewHolder>  {
-    private List<Tutor> tutors;
+    private List<TutorPosting> postings;
     private LayoutInflater mInflater;
     private TutorsViewAdapter.ItemClickListener tutorlickListener;
 
     // data is passed into the constructor
-    TutorsViewAdapter(Context context, List<Tutor> data) {
+    TutorsViewAdapter(Context context, List<TutorPosting> data) {
         this.mInflater = LayoutInflater.from(context);
-        this.tutors = data;
+        this.postings = data;
     }
 
     // inflates the row layout from xml when needed
     @Override
     public TutorsViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.tutorview_row, parent, false);
+        View view = mInflater.inflate(R.layout.tutors_adapter_row, parent, false);
         return new TutorsViewAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(TutorsViewAdapter.ViewHolder holder, int position) {
-        Tutor tutor = tutors.get(position);
-        holder.tutorName.setText(tutor.getName());
-        holder.tutorPrice.setText("$" + tutor.getPrice() + "/hour");
-        holder.tutorDistance.setText(tutor.getDistance() + " km");
+        TutorPosting posting = postings.get(position);
 
-        String courses = "";
-        int maxChars = 30;
+        // Populate card with posting and tutor information
+        if (holder != null) {
+            holder.tutorName.setText(posting.getTutor().getName());
+            holder.tutorPrice.setText("$" + Double.toString(posting.getPrice()) + "/hour");
+            holder.tutorDistance.setText("0.5 km");
 
-        for (Course c: tutor.getCourses()) {
-            courses += c.getName() + "   ";
+            String courses = "";
+            int maxChars = 30;
+
+            for (Course c : posting.getPostingCourses()) {
+                courses += c.getName() + "   ";
+            }
+
+            if (courses.length() > maxChars)
+                courses = courses.substring(0, maxChars - 3).concat(" ...");
+            holder.tutorCourses.setText(courses);
         }
-
-        if (courses.length() > maxChars) courses = courses.substring(0, maxChars - 3).concat(" ...");
-        holder.tutorCourses.setText(courses);
     }
 
     @Override
     public int getItemCount() {
-        return tutors.size();
+        return postings.size();
     }
 
     // stores and recycles views as they are scrolled off screen
@@ -74,8 +79,8 @@ public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.Vi
     }
 
     // convenience method for getting data at click position
-    Tutor getItem(int id) {
-        return tutors.get(id);
+    TutorPosting getItem(int id) {
+        return postings.get(id);
     }
 
     // allows clicks events to be caught

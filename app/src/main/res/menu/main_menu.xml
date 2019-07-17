@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/accounts"
+        android:id="@+id/profileIcon"
         android:title="Accounts"
         android:icon="@drawable/ic_account"
         app:showAsAction="always" />
