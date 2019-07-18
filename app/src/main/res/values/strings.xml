@@ -10,5 +10,7 @@
         <item>Student</item>
         <item>Tutor</item>
     </string-array>
+    <string name="title_activity_comments_view_adapter">CommentsViewAdapter</string>
+    <string name="title_activity_comments">CommentsActivity</string>
 
 </resources>

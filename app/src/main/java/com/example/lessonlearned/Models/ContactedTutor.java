@@ -4,11 +4,13 @@ public class ContactedTutor {
     private int tutorId;
     private String tutorName;
     private String tutorPhone;
+    private boolean reported;
 
-    public ContactedTutor(int tutorId, String tutorName, String tutorPhone) {
+    public ContactedTutor(int tutorId, String tutorName, String tutorPhone, boolean reported) {
         this.tutorId = tutorId;
         this.tutorName = tutorName;
         this.tutorPhone = tutorPhone;
+        this.reported = reported;
     }
 
     public int getTutorId() {
@@ -33,5 +35,13 @@ public class ContactedTutor {
 
     public void setTutorPhone(String tutorPhone) {
         this.tutorPhone = tutorPhone;
+    }
+
+    public boolean isReported() {
+        return reported;
+    }
+
+    public void setReported(boolean reported) {
+        this.reported = reported;
     }
 }
