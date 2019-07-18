@@ -2,6 +2,7 @@ package com.example.lessonlearned.Services;
 
 import android.util.Log;
 
+import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
 import com.example.lessonlearned.Models.Tutor;
@@ -10,6 +11,8 @@ import com.example.lessonlearned.Models.User;
 import com.example.lessonlearned.Models.UserReview;
 import com.example.lessonlearned.Models.UserType;
 import com.example.lessonlearned.Singletons.Context;
+import com.example.lessonlearned.TutorPostingActivity;
+import com.example.lessonlearned.TutorsListActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -46,7 +49,7 @@ public class RESTClientRequest {
         }
     }
 
-    public static void getDegrees(final Callable<Void> callback) throws JSONException{
+    public static void getDegrees(final DegreesActivity context) throws JSONException{
         User currentUser = Context.getUser();
 
         if (currentUser != null){
@@ -54,7 +57,7 @@ public class RESTClientRequest {
 
             RESTClient.get(schoolId + "/degrees", null, new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    JSONParser.parseDegreesResponse(callback, response);
+                    JSONParser.parseDegreesResponse(response, context);
                 }
 
                 @Override
@@ -66,12 +69,12 @@ public class RESTClientRequest {
         }
     }
 
-    public static void getPostingsForDegree(final int degreeId, final Callable<Void> callback) throws JSONException{
+    public static void getPostingsForDegree(final int degreeId, final TutorsListActivity context) throws JSONException{
         if (Context.getUser() != null) {
 
             RESTClient.get(degreeId + "/postings", null, new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    JSONParser.parsePostingsResponse(degreeId, callback, response);
+                    JSONParser.parsePostingsResponse(response, context);
                 }
 
                 @Override
@@ -81,6 +84,25 @@ public class RESTClientRequest {
             });
         }
     }
+
+
+    public static void getTutorById(final int tutorId, final TutorPostingActivity context) throws JSONException{
+        if (Context.getUser() != null) {
+
+            RESTClient.get("users/" + tutorId, null, new JsonHttpResponseHandler() {
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    JSONParser.parseTutorByIdResponse(response, context);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("REST_ERROR", responseString);
+                }
+            });
+        }
+    }
+
+
 
     public static void getSchools() throws JSONException{
         RESTClient.get("schools", null, new JsonHttpResponseHandler(){

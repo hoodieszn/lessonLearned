@@ -3,60 +3,24 @@ package com.example.lessonlearned.Models;
 import java.util.List;
 
 public class Tutor extends User{
-    private int degreeId;
-    private String degree;
-    private List<Course> courses;
-    private double rating;
+    private List<TutorPosting> postings;
     private List<UserReview> reviews;
+    private double averageRating;
 
-    // Calculated field
-    private double distance;
 
-    // Constructor
-
-    public Tutor(int id, String firebaseId, int schoolId, String schoolName, String name, String phone, double latitude, double longitude, UserType userType,
-                 int degreeId, String degree, List<Course> courses, double rating, List<UserReview> reviews) {
+    public Tutor(int id, String firebaseId, int schoolId, String schoolName, String name, String phone, double latitude, double longitude, UserType userType, List<TutorPosting> postings, List<UserReview> reviews, double averageRating) {
         super(id, firebaseId, schoolId, schoolName, name, phone, latitude, longitude, userType);
-        this.degreeId = degreeId;
-        this.degree = degree;
-        this.courses = courses;
-        this.rating = rating;
+        this.postings = postings;
         this.reviews = reviews;
+        this.averageRating = averageRating;
     }
 
-
-    // Getters and Setters
-
-    public int getDegreeId() {
-        return degreeId;
+    public List<TutorPosting> getPostings() {
+        return postings;
     }
 
-    public void setDegreeId(int degreeId) {
-        this.degreeId = degreeId;
-    }
-
-    public String getDegree() {
-        return degree;
-    }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setPostings(List<TutorPosting> postings) {
+        this.postings = postings;
     }
 
     public List<UserReview> getReviews() {
@@ -67,11 +31,11 @@ public class Tutor extends User{
         this.reviews = reviews;
     }
 
-    public double getDistance() {
-        return distance;
+    public double getAverageRating() {
+        return averageRating;
     }
 
-    public void setDistance(double distance) {
-        this.distance = distance;
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 }

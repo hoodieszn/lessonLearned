@@ -10,8 +10,6 @@ import java.util.Map;
 
 public class Context {
     private User user;
-    private Map<Integer, Degree> degrees;
-    private List<TutorPosting> tutorPostings;
 
     private static final Context ourInstance = new Context();
 
@@ -30,19 +28,4 @@ public class Context {
         return ourInstance.user;
     }
 
-    public static Map<Integer, Degree> getDegrees() {
-        return ourInstance.degrees;
-    }
-
-    public static void setDegrees(Map<Integer, Degree> degrees) {
-        ourInstance.degrees = degrees;
-    }
-
-    public static List<TutorPosting> getTutorPostings() {
-        return ourInstance.tutorPostings;
-    }
-
-    public static void setTutorPostings(List<TutorPosting> tutorPostings) {
-        ourInstance.tutorPostings = tutorPostings;
-    }
 }

@@ -36,10 +36,6 @@ import java.util.concurrent.Callable;
 
 public class TutorsListActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener{
 
-    private String schoolName;
-    private String degreeName;
-    private int degreeId;
-
     // Sort Options
     private ArrayList<String> sortOptions;
     private int sortSelected;
@@ -74,35 +70,28 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
         }
 
         // Find out which degree was selected
-
         Intent categoryIntent = getIntent();
-        degreeId = categoryIntent.getIntExtra("degreeId", 0);
-
-        Degree selectedDegree = Context.getDegrees().get(degreeId);
-        degreeName = selectedDegree.getName();
-        schoolName = selectedDegree.getSchoolName();
+        int degreeId = categoryIntent.getIntExtra("degreeId", 0);
+        String degreeName = categoryIntent.getStringExtra("degreeName");
+        String schoolName = Context.getUser().getSchoolName();
 
         // Get view/layout elements on screen
-
         dimmer = findViewById(R.id.dimTutorList);
         recyclerView = findViewById(R.id.tutors);
 
         // Fetch Postings from server
-
         try {
-            RESTClientRequest.getPostingsForDegree(degreeId, populatePostings());
+            RESTClientRequest.getPostingsForDegree(degreeId, this);
         }
         catch (JSONException e){
             Log.d("JSONException", e.toString());
         }
 
         // Set title for page
-
         TextView tutorsTitle = this.findViewById(R.id.tutorsTitle);
         tutorsTitle.setText(schoolName + " " + degreeName + " Tutors in your area");
 
         // Load Sort Options and Link Sort Adapter
-
         sortOptions = new ArrayList<String>() {{
             add("Price");
             add("Distance");
@@ -112,27 +101,28 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
     }
 
-    public Callable<Void> populatePostings(){
-        return new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                tutorPostings = Context.getTutorPostings();
+    // Get and set postings object
+    public List<TutorPosting> getTutorPostings() {
+        return tutorPostings;
+    }
 
-                layoutManager = new LinearLayoutManager(TutorsListActivity.this);
-                recyclerView.setLayoutManager(layoutManager);
+    public void setTutorPostings(List<TutorPosting> tutorPostings) {
+        this.tutorPostings = tutorPostings;
+    }
 
-                tutorPostingAdapter = new TutorsViewAdapter(TutorsListActivity.this, tutorPostings);
-                tutorPostingAdapter.setClickListener(TutorsListActivity.this);
 
-                recyclerView.setAdapter(tutorPostingAdapter);
+    // Populate postings with http response
+    public void populatePostings(){
+        layoutManager = new LinearLayoutManager(TutorsListActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
 
-                // Listeners for different sort options
+        tutorPostingAdapter = new TutorsViewAdapter(TutorsListActivity.this, tutorPostings);
+        tutorPostingAdapter.setClickListener(TutorsListActivity.this);
 
-                initSortListeners();
+        recyclerView.setAdapter(tutorPostingAdapter);
 
-                return null;
-            }
-        };
+        // Listeners for different sort options
+        initSortListeners();
     }
 
     private void initSortListeners(){
@@ -142,7 +132,6 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
         sortDropdown.setAdapter(sortAdapter);
 
         // Default Sort Option Selected
-
         sortSelected = 0;
         sortDropdown.setSelection(sortSelected);
 
@@ -157,7 +146,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
                     @Override
                     public int compare(TutorPosting lhs, TutorPosting rhs) {
                         if (selected == "Distance")
-                            return Double.compare(22, 23);
+                            return Double.compare(lhs.getDistance(), rhs.getDistance());
                         else
                             return Double.compare(lhs.getPrice(), rhs.getPrice());
                     }
@@ -175,12 +164,10 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
     @Override
     public void onItemClick(View view, int position) {
         Intent tutorProfile = new Intent(getApplicationContext(), TutorPostingActivity.class);
-        TutorPosting currentPosting = tutorPostingAdapter.getItem(position);
 
-        tutorProfile.putExtra("name", currentPosting.getTutor().getName());
-        tutorProfile.putExtra("phone", currentPosting.getTutor().getPhone());
-        tutorProfile.putExtra("institution", "University of Waterloo");
-        tutorProfile.putExtra("price", currentPosting.getPrice());
+        TutorPosting currentPosting = tutorPostingAdapter.getItem(position);
+        tutorProfile.putExtra("tutorId", currentPosting.getTutorId());
+        tutorProfile.putExtra("postingId", currentPosting.getId());
 
         dimmer.setVisibility(View.VISIBLE);
         startActivityForResult(tutorProfile, tutorProfileRequest);
@@ -207,10 +194,14 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
             try {
                 LocationManager lm = (LocationManager)getSystemService(android.content.Context.LOCATION_SERVICE);
 
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000, 0, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+
+                        Context.getUser().setLatitude(location.getLatitude());
+                        Context.getUser().setLongitude(location.getLongitude());
+
+                        //Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

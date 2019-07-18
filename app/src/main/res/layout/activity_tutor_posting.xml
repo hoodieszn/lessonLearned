@@ -83,20 +83,20 @@
                         android:text="Robert Brown"
                         android:textSize="25sp"
                         />
+
                     <TextView
-                        android:id="@+id/Role"
+                        android:id="@+id/tutorSchool"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
-                        android:text="Computer Science Student"
-                        android:textSize="16sp"
-                        />
+                        android:text="UW"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tutorPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/Role"
+                        android:layout_alignBottom="@id/tutorSchool"
                         android:fontFamily="sans-serif"
                         android:text="$5/hour"
                         android:textAlignment="center"
