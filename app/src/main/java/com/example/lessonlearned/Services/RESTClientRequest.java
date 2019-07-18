@@ -101,35 +101,4 @@ public class RESTClientRequest {
             });
         }
     }
-
-
-
-    public static void getSchools() throws JSONException{
-        RESTClient.get("schools", null, new JsonHttpResponseHandler(){
-            public void onSuccess(int statusCode, Header[] headers, JSONArray schools){
-                System.out.println(schools);
-            }
-        });
-    }
-
-    public static void getCourses(int id) throws JSONException{
-        String id2 = Integer.toString(id);
-        String fullURL = id2+"/courses";
-        RESTClient.get(fullURL, null, new JsonHttpResponseHandler(){
-            public void onSuccess(int statusCode, Header[] headers, JSONArray courses){
-                System.out.println(courses);
-            }
-        });
-    }
-
-
-    public static void getReviews(int id) throws JSONException{
-        String id2 = Integer.toString(id);
-        String fullURL = id2+"/reviews";
-        RESTClient.get(fullURL, null, new JsonHttpResponseHandler(){
-            public void onSuccess(int statusCode, Header[] headers, JSONArray reviews){
-                System.out.println(reviews);
-            }
-        });
-    }
 }
