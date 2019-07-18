@@ -79,14 +79,14 @@
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="#7EBEBEBE"
         app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/studentPhone" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <ScrollView
         android:id="@+id/scrollView3"
@@ -104,6 +104,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="16dp"
+            android:paddingTop="8dp"
             android:paddingRight="16dp"
             android:scrollbarAlwaysDrawVerticalTrack="true" />
     </ScrollView>
@@ -113,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="MySchool"
         app:layout_constraintEnd_toEndOf="parent"
