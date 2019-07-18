@@ -210,7 +210,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
                 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
