@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.TutorPosting;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.ViewHolder>  {
@@ -36,9 +37,11 @@ public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.Vi
 
         // Populate card with posting and tutor information
         if (holder != null) {
-            holder.tutorName.setText(posting.getTutor().getName());
+            holder.tutorName.setText(posting.getTutorName());
             holder.tutorPrice.setText("$" + Double.toString(posting.getPrice()) + "/hour");
-            holder.tutorDistance.setText("0.5 km");
+
+            DecimalFormat df = new DecimalFormat("#.#");
+            holder.tutorDistance.setText(df.format(posting.getDistance()) + " km");
 
             String courses = "";
             int maxChars = 30;

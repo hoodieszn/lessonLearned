@@ -1,5 +1,7 @@
 package com.example.lessonlearned.Models;
 
+import android.location.Location;
+
 import java.util.List;
 
 public class User {
