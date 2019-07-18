@@ -18,6 +18,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.ItemClickListener {
@@ -26,6 +27,8 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
     private DegreesViewAdapter adapter;
     private RecyclerView recyclerView;
 
+    // Map of degrees with <degreeId, Degree>
+    private Map<Integer, Degree> degreesMap;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_degrees);
@@ -50,7 +53,7 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
             }
         });
 
-        Toast.makeText(DegreesActivity.this, Context.getUser() != null ? Context.getUser().toString() : "user's null boi", Toast.LENGTH_LONG).show();
+        //Toast.makeText(DegreesActivity.this, Context.getUser() != null ? Context.getUser().toString() : "user's null", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -60,7 +63,7 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
 
             // Fetch Degrees from server
             try {
-                RESTClientRequest.getDegrees(populateDegreeList());
+                RESTClientRequest.getDegrees(this);
             }
             catch (JSONException e){
                 Log.d("JSONException", e.toString());
@@ -68,26 +71,20 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
         }
     }
 
-    public Callable<Void> populateDegreeList(){
-        return new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                degreeList = new ArrayList<Degree>(Context.getDegrees().values());
+    public void populateDegreeList(Map<Integer, Degree> degreesMap){
+        this. degreesMap = degreesMap;
+        degreeList = new ArrayList<Degree>(degreesMap.values());
 
-                adapter = new DegreesViewAdapter(DegreesActivity.this, degreeList);
-                adapter.setClickListener(DegreesActivity.this);
-                recyclerView.setAdapter(adapter);
-
-                return null;
-            }
-        };
+        adapter = new DegreesViewAdapter(DegreesActivity.this, degreeList);
+        adapter.setClickListener(DegreesActivity.this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Intent tutorsIntent = new Intent(DegreesActivity.this, TutorsListActivity.class);
         tutorsIntent.putExtra("degreeId", adapter.getItem(position).getId());
-
+        tutorsIntent.putExtra("degreeName", adapter.getItem(position).getName());
         startActivity(tutorsIntent);
     }
 }

@@ -1,5 +1,9 @@
 package com.example.lessonlearned.Models;
 
+import android.location.Location;
+
+import com.example.lessonlearned.Singletons.Context;
+
 import java.util.List;
 
 public class TutorPosting {
@@ -7,14 +11,21 @@ public class TutorPosting {
     private List<Course> postingCourses;
     private String postText;
     private double price;
-    private Tutor tutor;
+    private int tutorId;
+    private String tutorName;
+    private double latitude;
+    private double longitude;
 
-    public TutorPosting(int id, List<Course> postingCourses, String postText, double price, Tutor tutor) {
+    public TutorPosting(int id, List<Course> postingCourses, String postText, double price, int tutorId, String tutorName, double latitude, double longtitude) {
         this.id = id;
         this.postingCourses = postingCourses;
         this.postText = postText;
         this.price = price;
-        this.tutor = tutor;
+        this.tutorId = tutorId;
+        this.tutorName = tutorName;
+        this.latitude = latitude;
+        this.longitude = longtitude;
+
     }
 
     public int getId() {
@@ -41,12 +52,20 @@ public class TutorPosting {
         this.postText = postText;
     }
 
-    public Tutor getTutor() {
-        return tutor;
+    public int getTutorId() {
+        return tutorId;
     }
 
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
+    public void setTutorId(int tutorId) {
+        this.tutorId = tutorId;
+    }
+
+    public String getTutorName() {
+        return tutorName;
+    }
+
+    public void setTutorName(String tutorName) {
+        this.tutorName = tutorName;
     }
 
     public double getPrice() {
@@ -55,5 +74,11 @@ public class TutorPosting {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getDistance() {
+        float[] distance = new float[3];
+        Location.distanceBetween(Context.getUser().getLatitude(), Context.getUser().getLongitude(), latitude, longitude, distance);
+        return distance[0]/1000;
     }
 }

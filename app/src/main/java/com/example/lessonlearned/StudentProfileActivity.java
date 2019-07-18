@@ -41,7 +41,7 @@ public class StudentProfileActivity extends Activity implements ContactedTutorsV
 
         if (user != null){
             studentName.setText(user.getName());
-            studentSchool.setText(Integer.toString(user.getSchoolId()));
+            studentSchool.setText(user.getSchoolName());
             studentPhone.setText(user.getPhone());
 
             // Get the contacted tutors from student object

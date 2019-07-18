@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,21 +15,30 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Tutor;
-import com.example.lessonlearned.Models.UserReview;
+import com.example.lessonlearned.Models.TutorPosting;
+import com.example.lessonlearned.Services.RESTClientRequest;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TutorPostingActivity extends Activity {
 
-    private List<UserReview> userReviews = new ArrayList<>(); //GET
-    private List<Course> postingCourses = new ArrayList<>();
-    private double price;
+    private int postingId;
     private Tutor tutor;
+    private TutorPosting posting;
     private List<String> comments = new ArrayList<>();
     private List<String> commentOwners = new ArrayList<>();
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,36 +59,51 @@ public class TutorPostingActivity extends Activity {
 
         getWindow().setAttributes(params);
 
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
-        Float tutorRating = 4.0f; // 3.0 is from your database
-
-        // To show rating on RatingBar
-        ratingBar.setRating(tutorRating);
-
-        Button contact_button = findViewById(R.id.contactButton);
-
+        // Get tutor id from intent, then fetch tutor information
         Intent tutorInfo = getIntent();
+        postingId = tutorInfo.getIntExtra("postingId", 1);
+        int tutorId = tutorInfo.getIntExtra("tutorId", 1);
 
-        //populate tutor profile
-        String name = tutorInfo.getStringExtra("name");
-        final String phone = tutorInfo.getStringExtra("phone");
-        String institution = tutorInfo.getStringExtra("institution");
-        double price = tutorInfo.getDoubleExtra("price", 0);
+        // Fetch Postings from server
+        try {
+            RESTClientRequest.getTutorById(tutorId, this);
+        }
+        catch (JSONException e){
+            Log.d("JSONException", e.toString());
+        }
 
+    }
+
+    public void populateTutorInfo(){
         TextView tutorName = findViewById(R.id.Name);
-        tutorName.setText(name);
+        tutorName.setText(tutor.getName());
 
-        TextView tutorRole = findViewById(R.id.Role);
-        tutorRole.setText(institution);
+        TextView tutorSchool = findViewById(R.id.tutorSchool);
+        tutorSchool.setText(tutor.getSchoolName());
+
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
+        ratingBar.setRating((float)tutor.getAverageRating());
 
         TextView tutorPrice = findViewById(R.id.tutorPrice);
-        tutorPrice.setText(String.format("$%s / hour", price));
+
+        for (int i=0; i< tutor.getPostings().size(); i++){
+            TutorPosting currentPosting = tutor.getPostings().get(i);
+            if (currentPosting.getId() == postingId){
+                posting = currentPosting;
+            }
+        }
+
+        if (posting != null){
+            tutorPrice.setText(String.format("$%s / hour", Double.toString(posting.getPrice())));
+        }
+
+        Button contact_button = findViewById(R.id.contactButton);
 
         contact_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("smsto:" + phone));
+                intent.setData(Uri.parse("smsto:" + tutor.getPhone()));
                 intent.putExtra("sms_body", "Hello, I would like to arrange a time for tutoring");
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
@@ -86,19 +111,13 @@ public class TutorPostingActivity extends Activity {
             }
         });
 
-        //GET
-        UserReview test1 = new UserReview(1, "Josh Freeman", 1, "This is a the test comment 2", 45);
-        UserReview test2 = new UserReview(2, "Haley Freeman", 1, "This is a the test comment 2", 45);
-        userReviews.add(test1);
-        userReviews.add(test2);
-
         initComments();
     }
 
     private void initComments(){
-        for(int i=0; i<userReviews.size(); i++){
-            comments.add(userReviews.get(i).getComment());
-            commentOwners.add("-" + userReviews.get(i).getStudentName());
+        for(int i=0; i< tutor.getReviews().size(); i++){
+            comments.add(tutor.getReviews().get(i).getComment());
+            commentOwners.add("- " + tutor.getReviews().get(i).getStudentName());
         }
         initRecyclerView();
     }

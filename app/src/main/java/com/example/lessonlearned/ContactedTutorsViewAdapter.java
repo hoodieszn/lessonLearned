@@ -1,6 +1,7 @@
 package com.example.lessonlearned;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,12 @@ public class ContactedTutorsViewAdapter extends RecyclerView.Adapter<ContactedTu
         if (holder != null) {
             holder.tutorName.setText(contactedTutor.getTutorName());
             holder.tutorPhone.setText(contactedTutor.getTutorPhone());
+
+            if (contactedTutor.isReported()) {
+                holder.abuseButton.setVisibility(View.INVISIBLE);
+                holder.reviewButton.setVisibility(View.INVISIBLE);
+                holder.reportedText.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -47,13 +54,14 @@ public class ContactedTutorsViewAdapter extends RecyclerView.Adapter<ContactedTu
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tutorName, tutorPhone;
+        TextView tutorName, tutorPhone, reportedText;
         Button abuseButton, reviewButton;
 
         ViewHolder(View itemView) {
             super(itemView);
             tutorName = itemView.findViewById(R.id.contactedTutorName);
             tutorPhone = itemView.findViewById(R.id.contactedTutorPhone);
+            reportedText = itemView.findViewById(R.id.reportedText);
 
             abuseButton = itemView.findViewById(R.id.abuseBtn);
             reviewButton = itemView.findViewById(R.id.reviewBtn);
