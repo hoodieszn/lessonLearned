@@ -4,13 +4,16 @@ import android.util.ArrayMap;
 import android.util.Log;
 
 import com.example.lessonlearned.DegreesActivity;
+import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
+import com.example.lessonlearned.Models.School;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
 import com.example.lessonlearned.Models.UserReview;
 import com.example.lessonlearned.Models.UserType;
+import com.example.lessonlearned.SignUpActivity;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.StudentProfileActivity;
 import com.example.lessonlearned.TutorPostingActivity;
@@ -27,6 +30,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -78,6 +82,21 @@ public class RESTClientRequest {
             });
 
         }
+    }
+    // Get all schools
+    public static void getSchools(final SignUpActivity context) throws JSONException{
+            RESTClient.get("schools", null, new JsonHttpResponseHandler(){
+                @Override
+               public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                   JSONParser.parseSchoolsResponse(response, context);
+               }
+               @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
+                    Log.d("REST_ERROR", responseString);
+               }
+            });
+
+
     }
 
     // Get postings by degree id
@@ -146,7 +165,44 @@ public class RESTClientRequest {
             catch (UnsupportedEncodingException e){ }
         }
     }
+    public static void postAccount(int id, String firebaseID, int schoolid, String schoolname, String name, String phone, double lat, double longg, UserType userType, List<ContactedTutor> contactedTutors
+    , final SignUpActivity context) throws JSONException{
+        if (Context.getUser() != null){
+            JSONObject params = new JSONObject();
+            params.put("userType", userType);
+            params.put("schoolName", schoolname);
+            params.put("schoolid", schoolid);
+            params.put("firebaseId", firebaseID);
+            params.put("phoneNumber", phone);
+            params.put("lat", lat);
+            params.put("lon", longg);
+            params.put("name", name);
+            params.put("postings", contactedTutors);
+            try{
+                StringEntity entity = new StringEntity(params.toString());
+                entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                RESTClient.post(context, "users?=firebaseId" + firebaseID, entity, "application/json", new JsonHttpResponseHandler(){
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
+                    }
 
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.d("REST_ERROR", responseString);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
+                        Log.d("REST_ERROR", response.toString());
+                    }
+
+                });
+            } catch (UnsupportedEncodingException e){
+
+            }
+        }
+    }
     // Post tutor review
     public static void postTutorReview(final int tutorId, final String reviewText, final double rating, final StudentProfileActivity context)throws JSONException {
         if (Context.getUser() != null) {
