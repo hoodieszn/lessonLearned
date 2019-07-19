@@ -107,9 +107,9 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                 Log.d("JSONException", e.toString());
                             }
 
-                            Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
-                            degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(degreeIntent);
+                            //Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
+                            //degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            //startActivity(degreeIntent);
 
                         }
                         else{
@@ -149,6 +149,11 @@ public class VerifyPhoneActivity extends AppCompatActivity {
             public Void call() throws Exception {
                 if (Context.getUser().getUserType() == UserType.STUDENT) {
                     Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
+                    degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(degreeIntent);
+                }
+                else if (Context.getUser().getUserType() == null){
+                    Intent degreeIntent = new Intent (VerifyPhoneActivity.this, SignUpActivity.class);
                     degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(degreeIntent);
                 }
