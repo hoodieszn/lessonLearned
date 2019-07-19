@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tutor_profile_bg"
+    tools:context=".TutorProfileActivity">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/profile_bg"
+        app:alignItems="center"
+        app:justifyContent="center">
+
+        <TextView
+            android:id="@+id/studentProfileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Tutor Profile"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexDirection="column"
+        app:alignItems="center"
+        android:id="@+id/tutorInfo"
+        android:layout_below="@id/topBar"
+        >
+        <TextView
+            android:id="@+id/studentName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MyName"
+            android:layout_marginBottom="5dp"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/schoolName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="schoolName" />
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9054551234" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tutorInfo"
+        app:flexDirection="column"
+        app:justifyContent="center"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/studentSchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_alignSelf="center"
+            android:textSize="15sp"
+            android:text="My Active Postings" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="#7EBEBEBE" />
+        <ScrollView
+            android:id="@+id/scrollView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/tutorPostings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:scrollbarAlwaysDrawVerticalTrack="true" />
+        </ScrollView>
+    </com.google.android.flexbox.FlexboxLayout>
+
+</RelativeLayout>

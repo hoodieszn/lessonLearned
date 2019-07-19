@@ -14,6 +14,7 @@ import com.example.lessonlearned.Models.UserType;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.StudentProfileActivity;
 import com.example.lessonlearned.TutorPostingActivity;
+import com.example.lessonlearned.TutorProfileActivity;
 import com.example.lessonlearned.TutorsListActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -106,6 +107,23 @@ public class RESTClientRequest {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     JSONParser.parseTutorByIdResponse(response, context);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("REST_ERROR", responseString);
+                }
+            });
+        }
+    }
+
+    // Get tutor postings by user id
+    public static void getTutorPostings(final int userId, final TutorProfileActivity context) {
+        if (Context.getUser() != null) {
+            RESTClient.get("users/" + userId, null, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    JSONParser.parseTutorPostingsResponse(response, context);
                 }
 
                 @Override

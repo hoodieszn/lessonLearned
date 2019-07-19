@@ -8,5 +8,6 @@
     <string name="login">Login</string>
     <string name="title_activity_comments_view_adapter">CommentsViewAdapter</string>
     <string name="title_activity_comments">CommentsActivity</string>
+    <string name="title_activity_tutor_profile">TutorProfileActivity</string>
 
 </resources>
