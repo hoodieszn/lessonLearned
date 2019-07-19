@@ -152,8 +152,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(degreeIntent);
                 }
-                else if (Context.getUser().getUserType() == null){
-                    Intent degreeIntent = new Intent (VerifyPhoneActivity.this, SignUpActivity.class);
+                else if (Context.getUser().getUserType() == UserType.tutor){
+                    Intent degreeIntent = new Intent (VerifyPhoneActivity.this, TutorProfileActivity.class);
                     degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(degreeIntent);
                 }

@@ -55,23 +55,23 @@ public class JSONParser {
             if (userType == UserType.student){
 
                 List<ContactedTutor> contactedTutors = new ArrayList<ContactedTutor>();
+                if (jsonUser.has("contactedTutors")){
+                    JSONArray jsonContactedTutors = jsonUser.getJSONArray("contactedTutors");
+                    for (int i = 0; i < jsonContactedTutors.length(); i++) {
+                        JSONObject jsonContactedTutor = jsonContactedTutors.getJSONObject(i);
 
-                JSONArray jsonContactedTutors = jsonUser.getJSONArray("contactedTutors");
+                        int tutorId = jsonContactedTutor.getJSONObject("tutorInfo").getInt("id");
+                        String tutorName = jsonContactedTutor.getJSONObject("tutorInfo").getString("name");
+                        String tutorPhone = jsonContactedTutor.getJSONObject("tutorInfo").getString("phoneNumber");
+                        boolean tutorReported = jsonContactedTutor.getBoolean("reported");
 
-                for (int i = 0; i < jsonContactedTutors.length(); i++) {
-                    JSONObject jsonContactedTutor = jsonContactedTutors.getJSONObject(i);
-
-                    int tutorId = jsonContactedTutor.getJSONObject("tutorInfo").getInt("id");
-                    String tutorName = jsonContactedTutor.getJSONObject("tutorInfo").getString("name");
-                    String tutorPhone = jsonContactedTutor.getJSONObject("tutorInfo").getString("phoneNumber");
-                    boolean tutorReported = jsonContactedTutor.getBoolean("reported");
-
-                    contactedTutors.add(new ContactedTutor(tutorId, tutorName, tutorPhone, tutorReported));
+                        contactedTutors.add(new ContactedTutor(tutorId, tutorName, tutorPhone, tutorReported));
+                    }
                 }
-
                 currentUser = new Student(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, userType, contactedTutors);
             }
             else if (userType == UserType.tutor){
+                currentUser = new Tutor(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, userType, null, null, 3);
                 //TODO: Tutors have reviews and postings that should be parsed here. This part is exactly the same as getTutorById
             }
 

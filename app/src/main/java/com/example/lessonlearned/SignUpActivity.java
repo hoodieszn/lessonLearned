@@ -34,6 +34,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class SignUpActivity extends AppCompatActivity {
     public List<School> schools;
@@ -199,9 +200,6 @@ public class SignUpActivity extends AppCompatActivity {
                     if (userType == "Student"){
                             try{
                                 RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.student, contactedTutors, SignUpActivity.this);
-                                Intent degreeIntent = new Intent(SignUpActivity.this, DegreesActivity.class);
-                                degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(degreeIntent);
                             } catch (JSONException e){
                             Log.d("JSONException", e.toString());
                         }
@@ -219,5 +217,24 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public Callable<Void> handleRegister(){
+        return new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if (Context.getUser().getUserType() == UserType.student) {
+                    Log.d("BREAKPOINT", "GETS TO HERE");
+                    Intent degreeIntent = new Intent(SignUpActivity.this, DegreesActivity.class);
+                    degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(degreeIntent);
+                }
+                else {
+                    Intent degreeIntent = new Intent(SignUpActivity.this, TutorProfileActivity.class);
+                    degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(degreeIntent);
+                }
+                return null;
+            }
+        };
     }
 }

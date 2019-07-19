@@ -165,7 +165,7 @@ public class RESTClientRequest {
             catch (UnsupportedEncodingException e){ }
         }
     }
-    public static void postAccount(int id, String firebaseID, int schoolid, String schoolname, String name, String phone, double lat, double longg, UserType userType, List<ContactedTutor> contactedTutors
+    public static void postAccount(int id, final String firebaseID, int schoolid, String schoolname, String name, String phone, double lat, double longg, UserType userType, List<ContactedTutor> contactedTutors
     , final SignUpActivity context) throws JSONException{
             JSONObject params = new JSONObject();
             params.put("userType", userType);
@@ -176,13 +176,14 @@ public class RESTClientRequest {
             params.put("lat", lat);
             params.put("lon", longg);
             params.put("name", name);
-            params.put("postings", contactedTutors);
+            params.put("contactedTutors", contactedTutors);
             try{
                 StringEntity entity = new StringEntity(params.toString());
                 entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                 RESTClient.post(context, "users?=firebaseId=" + firebaseID, entity, "application/json", new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        JSONParser.parseUserResponse(firebaseID, context.handleRegister(), response);
                         Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
 
                     }
