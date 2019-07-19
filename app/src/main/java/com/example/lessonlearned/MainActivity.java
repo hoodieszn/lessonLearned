@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity {
 
             // Already signed in, get the User Object
             try {
-                RESTClientRequest.getUser(goToLandingPage());
+                RESTClientRequest.getUser(goToLandingPage(), null);
             }
             catch (JSONException e){
                 Log.d("JSONException", e.toString());
@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity {
         return new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                if (Context.getUser().getUserType() == UserType.STUDENT) {
+                if (Context.getUser().getUserType() == UserType.student) {
                     Intent degreeIntent = new Intent(MainActivity.this, DegreesActivity.class);
                     degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 

@@ -198,13 +198,18 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                     if (userType == "Student"){
                             try{
-                                RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.STUDENT, contactedTutors, SignUpActivity.this);
+                                RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.student, contactedTutors, SignUpActivity.this);
+                                Intent degreeIntent = new Intent(SignUpActivity.this, DegreesActivity.class);
+                                degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(degreeIntent);
                             } catch (JSONException e){
                             Log.d("JSONException", e.toString());
                         }
                     } else {
                         try{
-                            RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.TUTOR, contactedTutors, SignUpActivity.this);
+                            RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.tutor, contactedTutors, SignUpActivity.this);
+                            //Intent degreeIntent = new Intent(SignUpActivity.this, TutorsListActivity.class);
+                            //SignUpActivity.this.startActivity(degreeIntent);
                         } catch (JSONException e){
                             Log.d("JSONException", e.toString());
                         }
