@@ -14,6 +14,7 @@ import com.example.lessonlearned.Models.UserReview;
 import com.example.lessonlearned.Models.UserType;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.TutorPostingActivity;
+import com.example.lessonlearned.TutorProfileActivity;
 import com.example.lessonlearned.TutorsListActivity;
 
 import org.json.JSONArray;
@@ -227,6 +228,52 @@ public class JSONParser {
             Tutor tutor = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.TUTOR, postings, reviews, rating);
             context.setTutor(tutor);
             context.populateTutorInfo();
+        }
+        catch(Exception e) {
+            Log.d("REST_ERROR", e.toString());
+        }
+    }
+
+    public static void parseTutorPostingsResponse(JSONObject response, TutorProfileActivity context) {
+        try {
+            JSONObject jsonUser = response.getJSONObject("data").getJSONObject("user");
+
+            int id = jsonUser.getInt("id");
+            String name = jsonUser.getString("name");
+            double latitude = jsonUser.getDouble("lat");
+            double longitude = jsonUser.getDouble("lon");
+
+            ArrayList<TutorPosting> postings = new ArrayList<TutorPosting>();
+            JSONArray jsonPostings = jsonUser.getJSONArray("postings");
+
+            for (int i = 0; i < jsonPostings.length(); i++) {
+                JSONObject jsonPosting = jsonPostings.getJSONObject(i);
+
+                int postingId = jsonPosting.getInt("id");
+                double price = jsonPosting.getDouble("price");
+                String postText = jsonPosting.getString("postText");
+
+                ArrayList<Course> courses = new ArrayList<Course>();
+
+                //TODO: Commented out until this endpoint also returns courses
+                /*
+                JSONArray jsonCourses = jsonPosting.getJSONArray("courses");
+
+                for (int j = 0; j < jsonCourses.length(); j++) {
+                    JSONObject jsonCourse = jsonCourses.getJSONObject(j);
+
+                    int courseId = jsonCourse.getInt("id");
+                    String courseName = jsonCourse.getString("name");
+
+                    courses.add(new Course(courseId, courseName, schoolId));
+                }
+                */
+
+                TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
+                postings.add(posting);
+            }
+            context.setTutorPostings(postings);
+            context.populateTutorProfile();
         }
         catch(Exception e) {
             Log.d("REST_ERROR", e.toString());
