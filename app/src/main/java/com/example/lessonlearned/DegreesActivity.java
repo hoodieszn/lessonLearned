@@ -45,6 +45,7 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
+                Context.setUser(null);
 
                 Intent login = new Intent(DegreesActivity.this, MainActivity.class);
                 login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
