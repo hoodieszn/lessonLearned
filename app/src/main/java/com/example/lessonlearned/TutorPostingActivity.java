@@ -39,10 +39,6 @@ public class TutorPostingActivity extends Activity {
     private List<String> comments = new ArrayList<>();
     private List<String> commentOwners = new ArrayList<>();
 
-    public Tutor getTutor() {
-        return tutor;
-    }
-
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
     }

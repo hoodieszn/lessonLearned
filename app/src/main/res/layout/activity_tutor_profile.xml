@@ -11,10 +11,18 @@
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:background="@drawable/profile_bg"
         app:alignItems="center"
-        app:justifyContent="center">
+        app:flexDirection="column">
+
+        <ImageButton
+            android:id="@+id/abuseBtn"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/round_add_circle_black_18dp"
+            app:layout_alignSelf="flex_end"/>
 
         <TextView
             android:id="@+id/studentProfileTitle"
@@ -22,7 +30,8 @@
             android:layout_height="wrap_content"
             android:text="My Tutor Profile"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            app:layout_alignSelf="center"/>
 
     </com.google.android.flexbox.FlexboxLayout>
 
@@ -42,7 +51,7 @@
             android:layout_marginBottom="5dp"
             android:textSize="24sp" />
         <TextView
-            android:id="@+id/schoolName"
+            android:id="@+id/school"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="schoolName" />
@@ -67,6 +76,7 @@
             app:layout_alignSelf="center"
             android:textSize="15sp"
             android:text="My Active Postings" />
+
         <View
             android:id="@+id/divider2"
             android:layout_width="0dp"
