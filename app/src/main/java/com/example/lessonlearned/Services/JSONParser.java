@@ -48,11 +48,11 @@ public class JSONParser {
             double longitude = jsonUser.getDouble("lon");
 
             String userTypeString = jsonUser.getString("userType");
-            UserType userType = userTypeString.equalsIgnoreCase(UserType.STUDENT.toString()) ? UserType.STUDENT : UserType.TUTOR;
+            UserType userType = userTypeString.equalsIgnoreCase(UserType.student.toString()) ? UserType.student : UserType.tutor;
 
             User currentUser = null;
 
-            if (userType == UserType.STUDENT){
+            if (userType == UserType.student){
 
                 List<ContactedTutor> contactedTutors = new ArrayList<ContactedTutor>();
 
@@ -71,7 +71,7 @@ public class JSONParser {
 
                 currentUser = new Student(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, userType, contactedTutors);
             }
-            else if (userType == UserType.TUTOR){
+            else if (userType == UserType.tutor){
                 //TODO: Tutors have reviews and postings that should be parsed here. This part is exactly the same as getTutorById
             }
 
@@ -244,7 +244,7 @@ public class JSONParser {
                 postings.add(posting);
             }
 
-            Tutor tutor = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.TUTOR, postings, reviews, rating);
+            Tutor tutor = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, rating);
             context.setTutor(tutor);
             context.populateTutorInfo();
         }
