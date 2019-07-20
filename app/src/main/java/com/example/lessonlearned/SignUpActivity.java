@@ -184,8 +184,8 @@ public class SignUpActivity extends AppCompatActivity {
                 String userType;
                 EditText username = findViewById(R.id.editText3);
                 String name = username.getText().toString();
-                EditText phone = findViewById(R.id.editText4);
-                String phonenumber = phone.getText().toString();
+                String phonenumber = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+                phonenumber = phonenumber.substring(2);
                 if(spinner2 != null && spinner2.getSelectedItem() !=null && spinner != null && spinner.getSelectedItem() != null ) {
                     schoolName = (String)spinner2.getSelectedItem();
                     userType = (String)spinner.getSelectedItem();
