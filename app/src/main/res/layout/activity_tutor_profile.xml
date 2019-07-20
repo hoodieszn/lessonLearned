@@ -11,28 +11,26 @@
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/profile_bg"
         app:alignItems="center"
-        app:flexDirection="column">
-
-        <ImageButton
-            android:id="@+id/abuseBtn"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/round_add_circle_black_18dp"
-            app:layout_alignSelf="flex_end"/>
-
+        android:paddingLeft="20dp"
+        app:justifyContent="space_between"
+        app:flexDirection="row">
         <TextView
             android:id="@+id/studentProfileTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="My Tutor Profile"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            app:layout_alignSelf="center"/>
-
+            android:textSize="24sp" />
+        <ImageButton
+            android:id="@+id/addButton"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/baseline_add_circle_white_18dp"
+            />
     </com.google.android.flexbox.FlexboxLayout>
 
     <com.google.android.flexbox.FlexboxLayout
@@ -40,15 +38,17 @@
         android:layout_height="wrap_content"
         app:flexDirection="column"
         app:alignItems="center"
+        android:layout_marginTop="10dp"
         android:id="@+id/tutorInfo"
         android:layout_below="@id/topBar"
         >
         <TextView
-            android:id="@+id/studentName"
+            android:id="@+id/currentTutorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MyName"
-            android:layout_marginBottom="5dp"
+            android:background="@drawable/comment_bg"
+            android:layout_marginBottom="10dp"
             android:textSize="24sp" />
         <TextView
             android:id="@+id/school"
@@ -68,7 +68,7 @@
         android:layout_below="@id/tutorInfo"
         app:flexDirection="column"
         app:justifyContent="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp">
         <TextView
             android:id="@+id/studentSchool"
             android:layout_width="wrap_content"

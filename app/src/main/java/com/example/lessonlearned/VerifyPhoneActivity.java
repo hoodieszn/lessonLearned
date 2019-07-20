@@ -147,10 +147,14 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         return new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                if (Context.getUser().getUserType() == UserType.STUDENT) {
+                if (Context.getUser().getUserType() == UserType.student) {
                     Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
                     degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(degreeIntent);
+                } else if (Context.getUser().getUserType() == UserType.tutor){
+                    Intent tutorProfile = new Intent (VerifyPhoneActivity.this, TutorProfileActivity.class);
+                    tutorProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(tutorProfile);
                 }
                 else {
                     Toast.makeText(VerifyPhoneActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();

@@ -1,74 +1,65 @@
 package com.example.lessonlearned;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
-import com.example.lessonlearned.Models.User;
-import com.example.lessonlearned.Services.RESTClientRequest;
 import com.example.lessonlearned.Singletons.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TutorProfileActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener {
+public class TutorProfileActivity extends AppCompatActivity {
 
-    private User user;
-    private List<TutorPosting> userPostings = new ArrayList<>();
-
-    TutorsViewAdapter tutorPostingAdapter;
-    LinearLayoutManager layoutManager;
-    RecyclerView recyclerView;
-
-    public void setTutorPostings(List<TutorPosting> userPostings) {
-        this.userPostings = userPostings;
-    }
+    private Tutor tutor;
+    private List<TutorPosting> activePostings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_profile);
 
-        user = Context.getUser();
-        // Fetch Postings from server
-        RESTClientRequest.getTutorPostings(user.getId(), this);
+        tutor = (Tutor)Context.getUser();
+        activePostings = tutor.getPostings();
+        populateTutorProfile();
     }
 
     public void populateTutorProfile() {
-        TextView userName = findViewById(R.id.tutorName);
-        userName.setText(user.getName());
+        TextView currentTutorName = findViewById(R.id.currentTutorName);
+        currentTutorName.setText(tutor.getName());
 
         TextView school = findViewById(R.id.school);
-        school.setText(user.getSchoolName());
+        school.setText(tutor.getSchoolName());
 
         TextView phone = findViewById(R.id.phone);
-        phone.setText(user.getPhone());
+        phone.setText(tutor.getPhone());
 
         initActivePostings();
+        initAddPostingButton();
 
     }
 
+    private void initAddPostingButton() {
+        ImageButton addButton = findViewById(R.id.addButton);
+        final Intent addPosting = new Intent(getApplicationContext(), CreateTutorPosting.class);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(addPosting);
+            }
+        });
+    }
     private void initActivePostings() {
-        layoutManager = new LinearLayoutManager(TutorProfileActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView = findViewById(R.id.tutorPostings);
-
-        tutorPostingAdapter = new TutorsViewAdapter(TutorProfileActivity.this, userPostings);
-        tutorPostingAdapter.setClickListener(TutorProfileActivity.this);
-
-        recyclerView.setAdapter(tutorPostingAdapter);
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        Intent tutorProfile = new Intent(getApplicationContext(), TutorPostingActivity.class);
-
-        TutorPosting currentPosting = tutorPostingAdapter.getItem(position);
-        tutorProfile.putExtra("tutorId", currentPosting.getTutorId());
-        tutorProfile.putExtra("postingId", currentPosting.getId());
-        startActivity(tutorProfile);
+        RecyclerView recyclerView = findViewById(R.id.tutorPostings);
+        ActivePostsViewAdapter adapter = new ActivePostsViewAdapter(activePostings, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
