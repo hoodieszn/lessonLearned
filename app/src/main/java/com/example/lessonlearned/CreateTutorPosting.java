@@ -64,40 +64,15 @@ public class CreateTutorPosting extends AppCompatActivity {
 
         getWindow().setAttributes(params);
         initCloseButton();
-        initDegreeSpinner();
     }
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (Context.getUser() != null){
-//
-//            // Fetch Degrees from server
-//            try {
-//                RESTClientRequest.getDegreesList(this);
-//            }
-//            catch (JSONException e){
-//                Log.d("JSONException", e.toString());
-//            }
-//        }
-//    }
-    private void initDegreeSpinner() {
-        Spinner degreesSpinner = findViewById(R.id.degrees);
-//        Degree test = new Degree(1, "Engineering", 1, "University of Waterloo");
-//        Degree test2 = new Degree(2, "Math", 1, "University of Waterloo");
-//        Degree test3 = new Degree(2, "Arts", 1, "University of Waterloo");
-//
-//        degrees.add(test);
-//        degrees.add(test2);
-//        degrees.add(test3);
 
+    public void initDegreeSpinner() {
+        Spinner degreesSpinner = findViewById(R.id.degrees);
         List<String> degreeNames = new ArrayList<>();
 
         for(Degree degree : degrees) {
             degreeNames.add(degree.getName());
         }
-//        degreeNames.add(degrees.get(0).getName());
-//        degreeNames.add(degrees.get(1).getName());
-//        degreeNames.add(degrees.get(2).getName());
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateTutorPosting.this, android.R.layout.simple_spinner_item, degreeNames);
