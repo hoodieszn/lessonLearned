@@ -101,18 +101,6 @@ public class TutorPostingActivity extends Activity {
 
         //populate courses
         courses = posting.getPostingCourses();
-
-        Course test1 = new Course(1, "CS450", 3);
-        Course test2 = new Course(1, "CS452", 3);
-        courses.add(test1);
-        courses.add(test2);
-        courses.add(test1);
-        courses.add(test2);
-        courses.add(test1);
-        courses.add(test2);
-        courses.add(test1);
-        courses.add(test2);
-
         initCourses();
 
         TextView postText = findViewById(R.id.postText);

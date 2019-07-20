@@ -40,18 +40,18 @@ public class JSONParser {
 
             int id = jsonUser.getInt("id");
             int schoolId = jsonUser.getInt("schoolId");
-            String schoolName = "University of Waterloo"; // jsonUser.getInt("schoolName"); TODO: once rav adds school name uncomment
+            String schoolName = jsonUser.getString("schoolName");
             String name = jsonUser.getString("name");
             String phone = jsonUser.getString("phoneNumber");
             double latitude = jsonUser.getDouble("lat");
             double longitude = jsonUser.getDouble("lon");
 
             String userTypeString = jsonUser.getString("userType");
-            UserType userType = userTypeString.equalsIgnoreCase(UserType.STUDENT.toString()) ? UserType.STUDENT : UserType.TUTOR;
+            UserType userType = userTypeString.equalsIgnoreCase(UserType.student.toString()) ? UserType.student : UserType.tutor;
 
             User currentUser = null;
 
-            if (userType == UserType.STUDENT){
+            if (userType == UserType.student){
 
                 List<ContactedTutor> contactedTutors = new ArrayList<ContactedTutor>();
 
@@ -70,8 +70,52 @@ public class JSONParser {
 
                 currentUser = new Student(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, userType, contactedTutors);
             }
-            else if (userType == UserType.TUTOR){
-                //TODO: Tutors have reviews and postings that should be parsed here. This part is exactly the same as getTutorById
+            else if (userType == UserType.tutor){
+                double rating = jsonUser.getDouble("avgRating");
+
+                JSONArray jsonReviews = jsonUser.getJSONArray("reviews");
+                ArrayList<UserReview> reviews = new ArrayList<UserReview>();
+
+                for (int j = 0; j < jsonReviews.length(); j++) {
+                    JSONObject jsonReview = jsonReviews.getJSONObject(j);
+
+                    int reviewUserId = jsonReview.getInt("userId");
+                    int reviewTutorId = jsonReview.getInt("tutorId");
+                    String reviewerName = jsonReview.getString("studentName");
+                    String reviewText = jsonReview.getString("reviewText");
+                    double reviewRating = jsonReview.getInt("rating");
+
+                    reviews.add(new UserReview(reviewUserId, reviewerName, reviewTutorId, reviewText, reviewRating));
+                }
+
+                ArrayList<TutorPosting> postings = new ArrayList<TutorPosting>();
+                JSONArray jsonPostings = jsonUser.getJSONArray("postings");
+
+                for (int i = 0; i < jsonPostings.length(); i++) {
+                    JSONObject jsonPosting = jsonPostings.getJSONObject(i);
+
+                    int postingId = jsonPosting.getInt("id");
+                    double price = jsonPosting.getDouble("price");
+                    String postText = jsonPosting.getString("postText");
+
+                    ArrayList<Course> courses = new ArrayList<Course>();
+
+                    JSONArray jsonCourses = jsonPosting.getJSONArray("courses");
+
+                    for (int j = 0; j < jsonCourses.length(); j++) {
+                        JSONObject jsonCourse = jsonCourses.getJSONObject(j);
+
+                        int courseId = jsonCourse.getInt("id");
+                        String courseName = jsonCourse.getString("name");
+
+                        courses.add(new Course(courseId, courseName, schoolId));
+                    }
+
+                    TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
+                    postings.add(posting);
+                }
+
+                currentUser = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, rating);
             }
 
             Context.setUser(currentUser);
@@ -173,12 +217,12 @@ public class JSONParser {
 
             int id = jsonUser.getInt("id");
             int schoolId = jsonUser.getInt("schoolId");
-            String schoolName = "University of Waterloo"; //TODO: Make this schoolName not hardcoded
+            String schoolName = jsonUser.getString("schoolName");
             String name = jsonUser.getString("name");
             String phone = jsonUser.getString("phoneNumber");
             double latitude = jsonUser.getDouble("lat");
             double longitude = jsonUser.getDouble("lon");
-            double rating = 3.0; // jsonUser.getDouble("avgRating"); TODO: Uncomment this once rav adds avgRating
+            double rating = jsonUser.getDouble("avgRating");
 
             JSONArray jsonReviews = jsonUser.getJSONArray("reviews");
             ArrayList<UserReview> reviews = new ArrayList<UserReview>();
@@ -207,8 +251,6 @@ public class JSONParser {
 
                 ArrayList<Course> courses = new ArrayList<Course>();
 
-                //TODO: Commented out until this endpoint also returns courses
-                /*
                 JSONArray jsonCourses = jsonPosting.getJSONArray("courses");
 
                 for (int j = 0; j < jsonCourses.length(); j++) {
@@ -219,13 +261,12 @@ public class JSONParser {
 
                     courses.add(new Course(courseId, courseName, schoolId));
                 }
-                */
 
                 TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
                 postings.add(posting);
             }
 
-            Tutor tutor = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.TUTOR, postings, reviews, rating);
+            Tutor tutor = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, rating);
             context.setTutor(tutor);
             context.populateTutorInfo();
         }
@@ -233,50 +274,11 @@ public class JSONParser {
             Log.d("REST_ERROR", e.toString());
         }
     }
-
-    public static void parseTutorPostingsResponse(JSONObject response, TutorProfileActivity context) {
-        try {
-            JSONObject jsonUser = response.getJSONObject("data").getJSONObject("user");
-
-            int id = jsonUser.getInt("id");
-            String name = jsonUser.getString("name");
-            double latitude = jsonUser.getDouble("lat");
-            double longitude = jsonUser.getDouble("lon");
-
-            ArrayList<TutorPosting> postings = new ArrayList<TutorPosting>();
-            JSONArray jsonPostings = jsonUser.getJSONArray("postings");
-
-            for (int i = 0; i < jsonPostings.length(); i++) {
-                JSONObject jsonPosting = jsonPostings.getJSONObject(i);
-
-                int postingId = jsonPosting.getInt("id");
-                double price = jsonPosting.getDouble("price");
-                String postText = jsonPosting.getString("postText");
-
-                ArrayList<Course> courses = new ArrayList<Course>();
-
-                //TODO: Commented out until this endpoint also returns courses
-                /*
-                JSONArray jsonCourses = jsonPosting.getJSONArray("courses");
-
-                for (int j = 0; j < jsonCourses.length(); j++) {
-                    JSONObject jsonCourse = jsonCourses.getJSONObject(j);
-
-                    int courseId = jsonCourse.getInt("id");
-                    String courseName = jsonCourse.getString("name");
-
-                    courses.add(new Course(courseId, courseName, schoolId));
-                }
-                */
-
-                TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
-                postings.add(posting);
-            }
-            context.setTutorPostings(postings);
-            context.populateTutorProfile();
-        }
-        catch(Exception e) {
-            Log.d("REST_ERROR", e.toString());
+    public static void parsePostResponse(final Callable<Void> callback){
+        try{
+            callback.call();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

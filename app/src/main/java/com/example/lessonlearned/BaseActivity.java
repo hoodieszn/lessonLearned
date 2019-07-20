@@ -48,12 +48,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             User user = Context.getUser();
 
             if (user != null){
-                if (user.getUserType() == UserType.STUDENT){
+                if (user.getUserType() == UserType.student){
                     // Navigate to student Profile page
                     Intent studentProfileIntent = new Intent(BaseActivity.this, StudentProfileActivity.class);
                     startActivity(studentProfileIntent);
                 }
-                else if (user.getUserType() == UserType.TUTOR){
+                else if (user.getUserType() == UserType.tutor){
                     // Navigate to Tutor Profile page
                     Intent tutorProfileIntent = new Intent(BaseActivity.this, TutorProfileActivity.class);
                     startActivity(tutorProfileIntent);
