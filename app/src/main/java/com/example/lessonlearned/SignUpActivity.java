@@ -197,7 +197,7 @@ public class SignUpActivity extends AppCompatActivity {
                             schoolID = schools.get(i).getId();
                         }
                     }
-                    if (userType == "Student"){
+                    if (userType == "student"){
                             try{
                                 RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.student, contactedTutors, SignUpActivity.this);
                             } catch (JSONException e){
