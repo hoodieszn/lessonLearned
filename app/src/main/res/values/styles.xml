@@ -22,9 +22,11 @@
         <item name="android:textSize">28sp</item>
     </style>
 
-    <style name="AppTheme.TutorProfile">
+    <style name="AppTheme.PopUp">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="HintText" parent="TextAppearance.Design.Hint">
