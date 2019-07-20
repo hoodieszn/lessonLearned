@@ -2,6 +2,7 @@ package com.example.lessonlearned.Services;
 
 import android.util.Log;
 
+import com.example.lessonlearned.CreateTutorPosting;
 import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
@@ -16,6 +17,7 @@ import com.example.lessonlearned.Models.UserType;
 import com.example.lessonlearned.SignUpActivity;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.TutorPostingActivity;
+import com.example.lessonlearned.TutorProfileActivity;
 import com.example.lessonlearned.TutorsListActivity;
 
 import org.json.JSONArray;
@@ -78,8 +80,51 @@ public class JSONParser {
                 currentUser = new Student(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, userType, contactedTutors);
             }
             else if (userType == UserType.tutor){
-                currentUser = new Tutor(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, userType, null, null, 3);
-                //TODO: Tutors have reviews and postings that should be parsed here. This part is exactly the same as getTutorById
+                double rating = jsonUser.getDouble("avgRating");
+
+                JSONArray jsonReviews = jsonUser.getJSONArray("reviews");
+                ArrayList<UserReview> reviews = new ArrayList<UserReview>();
+
+                for (int j = 0; j < jsonReviews.length(); j++) {
+                    JSONObject jsonReview = jsonReviews.getJSONObject(j);
+
+                    int reviewUserId = jsonReview.getInt("userId");
+                    int reviewTutorId = jsonReview.getInt("tutorId");
+                    String reviewerName = jsonReview.getString("studentName");
+                    String reviewText = jsonReview.getString("reviewText");
+                    double reviewRating = jsonReview.getInt("rating");
+
+                    reviews.add(new UserReview(reviewUserId, reviewerName, reviewTutorId, reviewText, reviewRating));
+                }
+
+                ArrayList<TutorPosting> postings = new ArrayList<TutorPosting>();
+                JSONArray jsonPostings = jsonUser.getJSONArray("postings");
+
+                for (int i = 0; i < jsonPostings.length(); i++) {
+                    JSONObject jsonPosting = jsonPostings.getJSONObject(i);
+
+                    int postingId = jsonPosting.getInt("id");
+                    double price = jsonPosting.getDouble("price");
+                    String postText = jsonPosting.getString("postText");
+
+                    ArrayList<Course> courses = new ArrayList<Course>();
+
+                    JSONArray jsonCourses = jsonPosting.getJSONArray("courses");
+
+                    for (int j = 0; j < jsonCourses.length(); j++) {
+                        JSONObject jsonCourse = jsonCourses.getJSONObject(j);
+
+                        int courseId = jsonCourse.getInt("id");
+                        String courseName = jsonCourse.getString("name");
+
+                        courses.add(new Course(courseId, courseName, schoolId));
+                    }
+
+                    TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
+                    postings.add(posting);
+                }
+
+                currentUser = new Tutor(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, rating);
             }
 
             Context.setUser(currentUser);
@@ -143,6 +188,32 @@ public class JSONParser {
         }
     }
 
+    //parse Degrees to Tutor Post
+    public static void parseDegreesPostResponse(JSONObject response, CreateTutorPosting context){
+        try {
+            Log.d("DEGREESJSON", response.toString());
+
+            JSONArray jsonDegrees = response.getJSONObject("data").getJSONArray("degrees");
+            List<Degree> degreeList = new ArrayList<>();
+
+            for (int i = 0; i < jsonDegrees.length(); i++) {
+                JSONObject jsonDegree = jsonDegrees.getJSONObject(i);
+
+                int id = jsonDegree.getInt("id");
+                int schoolId = jsonDegree.getInt("schoolId");
+                String name = jsonDegree.getString("name");
+                String schoolName = jsonDegree.getString("schoolName");
+
+                degreeList.add(new Degree(id, name, schoolId, schoolName));
+            }
+
+            context.populateDegreeList(degreeList);
+        }
+        catch (Exception e) {
+            Log.d("REST_ERROR", e.toString());
+        }
+    }
+
 
     // Parse Postings to tutorPostings
 
@@ -199,12 +270,12 @@ public class JSONParser {
 
             int id = jsonUser.getInt("id");
             int schoolId = jsonUser.getInt("schoolId");
-            String schoolName = "University of Waterloo"; //TODO: Make this schoolName not hardcoded
+            String schoolName = jsonUser.getString("schoolName");
             String name = jsonUser.getString("name");
             String phone = jsonUser.getString("phoneNumber");
             double latitude = jsonUser.getDouble("lat");
             double longitude = jsonUser.getDouble("lon");
-            double rating = 3.0; // jsonUser.getDouble("avgRating"); TODO: Uncomment this once rav adds avgRating
+            double rating = jsonUser.getDouble("avgRating");
 
             JSONArray jsonReviews = jsonUser.getJSONArray("reviews");
             ArrayList<UserReview> reviews = new ArrayList<UserReview>();
@@ -233,8 +304,6 @@ public class JSONParser {
 
                 ArrayList<Course> courses = new ArrayList<Course>();
 
-                //TODO: Commented out until this endpoint also returns courses
-                /*
                 JSONArray jsonCourses = jsonPosting.getJSONArray("courses");
 
                 for (int j = 0; j < jsonCourses.length(); j++) {
@@ -245,7 +314,6 @@ public class JSONParser {
 
                     courses.add(new Course(courseId, courseName, schoolId));
                 }
-                */
 
                 TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
                 postings.add(posting);
