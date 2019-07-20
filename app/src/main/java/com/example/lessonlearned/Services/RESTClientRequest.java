@@ -1,24 +1,28 @@
 package com.example.lessonlearned.Services;
 
-import android.util.ArrayMap;
+import android.content.Intent;
 import android.util.Log;
 
+import com.example.lessonlearned.CreateTutorPosting;
 import com.example.lessonlearned.DegreesActivity;
+import com.example.lessonlearned.MainActivity;
+import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
-import com.example.lessonlearned.Models.Degree;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
-import com.example.lessonlearned.Models.UserReview;
 import com.example.lessonlearned.Models.UserType;
+import com.example.lessonlearned.SignUpActivity;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.StudentProfileActivity;
 import com.example.lessonlearned.TutorPostingActivity;
 import com.example.lessonlearned.TutorsListActivity;
+import com.example.lessonlearned.VerifyPhoneActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,8 +30,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import cz.msebera.android.httpclient.Header;
@@ -38,7 +41,7 @@ import cz.msebera.android.httpclient.protocol.HTTP;
 public class RESTClientRequest {
 
     // Get user object by firebase logged in
-    public static void getUser(final Callable<Void> callback) throws JSONException {
+    public static void getUser(final Callable<Void> callback, final VerifyPhoneActivity context) throws JSONException {
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentFirebaseUser != null) {
@@ -49,10 +52,42 @@ public class RESTClientRequest {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     JSONParser.parseUserResponse(UUID, callback, response);
                 }
-
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("REST_ERROR", responseString);
+                    Intent degreeIntent = new Intent(context, SignUpActivity.class);
+                    context.startActivity(degreeIntent);
+
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse){
+                    Intent degreeIntent = new Intent(context, SignUpActivity.class);
+                    context.startActivity(degreeIntent);
+                }
+            });
+        }
+    }
+
+    // Get user object by firebase logged in
+    public static void getUser(final Callable<Void> callback, final MainActivity context) throws JSONException {
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentFirebaseUser != null) {
+            final String UUID = currentFirebaseUser.getUid();
+
+            RESTClient.get("users?firebaseId=" + UUID, null, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    JSONParser.parseUserResponse(UUID, callback, response);
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Intent degreeIntent = new Intent(context, SignUpActivity.class);
+                    context.startActivity(degreeIntent);
+
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse){
+                    context.stopLoadingState();
                 }
             });
         }
@@ -78,6 +113,21 @@ public class RESTClientRequest {
             });
 
         }
+    }
+    // Get all schools
+    public static void getSchools(final SignUpActivity context) throws JSONException{
+            RESTClient.get("schools", null, new JsonHttpResponseHandler(){
+                @Override
+               public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                   JSONParser.parseSchoolsResponse(response, context);
+               }
+               @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
+                    Log.d("REST_ERROR", responseString);
+               }
+            });
+
+
     }
 
     // Get postings by degree id
@@ -146,7 +196,98 @@ public class RESTClientRequest {
             catch (UnsupportedEncodingException e){ }
         }
     }
+    public static void postPosting(final int id, final String tutorName, final double lat, final double lon, final int tutorId, final String price, final String postText, final List<Course> courses, final CreateTutorPosting context)
+    throws JSONException{
+        JSONObject params = new JSONObject();
+        List<Integer>arr2 = new ArrayList<Integer>();
+        for (int i = 0; i < courses.size(); i++){
+            arr2.add(courses.get(i).getId());
+        }
+        params.put("tutorName", tutorName);
+        params.put("lat", lat);
+        params.put("lon", lon);
+        params.put("userId", tutorId);
+        params.put("price", price);
+        params.put("postText", postText);
+        params.put("courses", new JSONArray(arr2));
 
+
+
+        try{
+            StringEntity entity = new StringEntity(params.toString());
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            String majorId = Integer.toString(id);
+            RESTClient.post(context,   majorId + "/postings", entity, "application/json", new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
+                    Tutor tutor = (Tutor)Context.getUser();
+                    Double price2 = Double.parseDouble(price);
+                    TutorPosting tutorPost = new TutorPosting(id, courses, postText, price2, tutorId, tutorName, lat, lon);
+                    tutor.getPostings().add(tutorPost);
+                    Context.setUser(tutor);
+                    JSONParser.parsePostResponse(context.goTutorPage());
+
+
+
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("REST_ERROR", responseString);
+                    System.out.println(statusCode);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
+                    Log.d("REST_ERROR", response.toString());
+                    System.out.println(statusCode);
+                }
+
+            });
+
+        } catch (UnsupportedEncodingException e){
+
+        }
+    }
+    public static void postAccount(int id, final String firebaseID, int schoolid, String schoolname, String name, String phone, double lat, double longg, UserType userType, List<ContactedTutor> contactedTutors
+    , final SignUpActivity context) throws JSONException{
+            JSONObject params = new JSONObject();
+            params.put("userType", userType);
+            params.put("schoolName", schoolname);
+            params.put("schoolId", schoolid);
+            params.put("firebaseId", firebaseID);
+            params.put("phoneNumber", phone);
+            params.put("lat", lat);
+            params.put("lon", longg);
+            params.put("name", name);
+            params.put("contactedTutors", contactedTutors);
+            try{
+                StringEntity entity = new StringEntity(params.toString());
+                entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                RESTClient.post(context, "users?=firebaseId=" + firebaseID, entity, "application/json", new JsonHttpResponseHandler(){
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        JSONParser.parseUserResponse(firebaseID, context.handleRegister(), response);
+                        Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.d("REST_ERROR", responseString);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
+                        Log.d("REST_ERROR", response.toString());
+                    }
+
+                });
+            } catch (UnsupportedEncodingException e){
+
+            }
+
+    }
     // Post tutor review
     public static void postTutorReview(final int tutorId, final String reviewText, final double rating, final StudentProfileActivity context)throws JSONException {
         if (Context.getUser() != null) {

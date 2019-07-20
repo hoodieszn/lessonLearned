@@ -35,12 +35,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/degrees"
-        android:layout_width="414dp"
-        android:layout_height="364dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.232"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,21 +46,18 @@
 
     <Button
         android:id="@+id/logout"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="8dp"
+        android:background="#C4FFEA61"
+        android:fontFamily="casual"
         android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/degrees"
-        app:layout_constraintVertical_bias="0.0"
-        style="@style/Widget.AppCompat.Button"
-        android:background="#C4FFEA61"
-        android:fontFamily="casual"
         tools:text="Logout" />
 
 </android.support.constraint.ConstraintLayout>
