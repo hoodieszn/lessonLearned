@@ -103,16 +103,42 @@
                         android:textSize="16sp" />
                 </LinearLayout>
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/about"
+                android:layout_below="@id/NameContainer"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginBottom="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="About:"
+                    android:fontFamily="sans-serif"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="2dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/postText"
+                    android:text="Hello this is me, I'm a tutor."
+                    android:textSize="14sp"
+                    android:background="@drawable/comment_bg"/>
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/NameContainer"
+                android:layout_below="@id/about"
                 android:id="@+id/Teaches"
                 android:layout_marginBottom="10dp"
                 >
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:orientation="vertical">
@@ -123,48 +149,17 @@
                         android:fontFamily="sans-serif"
                         android:textSize="16sp"
                         />
-                    <LinearLayout
-                        android:id="@+id/courses"
-                        android:layout_width="wrap_content"
+                    <com.google.android.flexbox.FlexboxLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="CS146"
-                            android:layout_margin="5dp"
-                            android:textColor="#ffff"
-                            android:background="@drawable/course_code_bg"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="CS335"
-                            android:layout_margin="5dp"
-                            android:textColor="#ffff"
-                            android:background="@drawable/course_code_bg"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="CS288"
-                            android:layout_margin="5dp"
-                            android:textColor="#ffff"
-                            android:background="@drawable/course_code_bg"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="CS146"
-                            android:layout_margin="5dp"
-                            android:textColor="#ffff"
-                            android:background="@drawable/course_code_bg"
-                            />
-                    </LinearLayout>
+                        android:id="@+id/courseContainer"
+                        app:flexWrap="wrap"
+                        app:flexDirection="row"
+                        app:alignItems="flex_start"
+                        app:alignContent="flex_start" >
+                    </com.google.android.flexbox.FlexboxLayout>
                 </LinearLayout>
             </RelativeLayout>
             <RelativeLayout
@@ -173,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:layout_below="@id/Teaches">
                 <TextView
                     android:layout_width="wrap_content"
@@ -193,34 +188,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginBottom="10dp"
                     style="?android:attr/ratingBarStyleSmall"
-                    />
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/commentInput"
-                    android:layout_below="@id/ratingBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="300"
-                    app:counterOverflowTextAppearance="@style/CounterOverFlow"
-                    app:counterTextAppearance="@style/CounterText"
-                    app:hintTextAppearance="@style/HintText">
-                    <EditText
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:hint="Leave a comment"/>
-                </android.support.design.widget.TextInputLayout>
-                <Button
-                    android:id="@+id/commentButton"
-                    android:layout_below="@id/commentInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Comment"
-                    android:layout_marginLeft="10dp"
-                    android:fontFamily="sans-serif"
-                    android:textColor="#ffff"
-                    android:padding="5dp"
-                    android:background="@drawable/course_code_bg"
                     />
             </RelativeLayout>
             <RelativeLayout

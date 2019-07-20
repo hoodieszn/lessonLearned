@@ -1,16 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@drawable/tutor_profile_bg"
     tools:context=".TutorProfileActivity">
 
-    <Button
-        android:id="@+id/button2"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:background="@drawable/profile_bg"
+        app:alignItems="center"
+        android:paddingLeft="20dp"
+        app:justifyContent="space_between"
+        app:flexDirection="row">
+        <TextView
+            android:id="@+id/studentProfileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Tutor Profile"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+        <ImageButton
+            android:id="@+id/addButton"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/baseline_add_circle_white_18dp"
+            />
+    </com.google.android.flexbox.FlexboxLayout>
 
-</LinearLayout>
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexDirection="column"
+        app:alignItems="center"
+        android:layout_marginTop="10dp"
+        android:id="@+id/tutorInfo"
+        android:layout_below="@id/topBar"
+        >
+        <TextView
+            android:id="@+id/currentTutorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MyName"
+            android:background="@drawable/comment_bg"
+            android:layout_marginBottom="10dp"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="schoolName" />
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9054551234" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tutorInfo"
+        app:flexDirection="column"
+        app:justifyContent="center"
+        android:layout_marginTop="15dp">
+        <TextView
+            android:id="@+id/studentSchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_alignSelf="center"
+            android:textSize="15sp"
+            android:text="My Active Postings" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="#7EBEBEBE" />
+        <ScrollView
+            android:id="@+id/scrollView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/tutorPostings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:scrollbarAlwaysDrawVerticalTrack="true" />
+        </ScrollView>
+    </com.google.android.flexbox.FlexboxLayout>
+
+</RelativeLayout>

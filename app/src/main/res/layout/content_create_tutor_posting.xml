@@ -7,18 +7,4 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".CreateTutorPosting"
     tools:showIn="@layout/activity_create_tutor_posting">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="178dp"
-        android:layout_marginEnd="165dp"
-        android:layout_marginBottom="449dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

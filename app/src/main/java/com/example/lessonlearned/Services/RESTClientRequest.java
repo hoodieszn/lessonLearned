@@ -16,6 +16,7 @@ import com.example.lessonlearned.SignUpActivity;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.StudentProfileActivity;
 import com.example.lessonlearned.TutorPostingActivity;
+import com.example.lessonlearned.TutorProfileActivity;
 import com.example.lessonlearned.TutorsListActivity;
 import com.example.lessonlearned.VerifyPhoneActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,7 +31,9 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import cz.msebera.android.httpclient.Header;
@@ -128,6 +131,21 @@ public class RESTClientRequest {
             });
 
 
+    }
+
+    // Get degrees by school id
+    public static void getDegreesList(final CreateTutorPosting context, int schoolId) throws JSONException{
+        RESTClient.get(schoolId + "/degrees", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONParser.parseDegreesPostResponse(response, context);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("REST_ERROR", responseString);
+            }
+        });
     }
 
     // Get postings by degree id
