@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.lessonlearned.Models.Degree;
@@ -26,6 +27,9 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
     private List<Degree> degreeList;
     private DegreesViewAdapter adapter;
     private RecyclerView recyclerView;
+
+    // Spinner
+    private ProgressBar spinner;
 
     // Map of degrees with <degreeId, Degree>
     private Map<Integer, Degree> degreesMap;
@@ -54,13 +58,15 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
             }
         });
 
-        //Toast.makeText(DegreesActivity.this, Context.getUser() != null ? Context.getUser().toString() : "user's null", Toast.LENGTH_LONG).show();
+        spinner = findViewById(R.id.degreesProgress);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         if (Context.getUser() != null){
+
+            startLoadingState();
 
             // Fetch Degrees from server
             try {
@@ -70,9 +76,17 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
                 Log.d("JSONException", e.toString());
             }
         }
+        // If no user, send back to login screen
+        else {
+            Intent homeIntent = new Intent(DegreesActivity.this, MainActivity.class);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(homeIntent);
+        }
     }
 
     public void populateDegreeList(Map<Integer, Degree> degreesMap){
+        stopLoadingState();
+
         this. degreesMap = degreesMap;
         degreeList = new ArrayList<Degree>(degreesMap.values());
 
@@ -87,5 +101,13 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
         tutorsIntent.putExtra("degreeId", adapter.getItem(position).getId());
         tutorsIntent.putExtra("degreeName", adapter.getItem(position).getName());
         startActivity(tutorsIntent);
+    }
+
+    private void startLoadingState(){
+        spinner.setVisibility(View.VISIBLE);
+    }
+
+    private void stopLoadingState(){
+        spinner.setVisibility(View.INVISIBLE);
     }
 }
