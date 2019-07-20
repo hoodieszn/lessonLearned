@@ -29,7 +29,22 @@ public class RESTClient {
         client.addHeader("Authorization", AUTH_TOKEN);
         client.post(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
     }
-
+    public static void put(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.addHeader("Authorization", AUTH_TOKEN);
+        client.put(getAbsoluteUrl(url), params, responseHandler);
+    }
+    public static void put(Context context, String url, StringEntity entity, String contentType, AsyncHttpResponseHandler responseHandler){
+        client.addHeader("Authorization", AUTH_TOKEN);
+        client.put(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
+    }
+    public static void delete(String url, RequestParams params, AsyncHttpResponseHandler responseHandler){
+        client.addHeader("Authorization", AUTH_TOKEN);
+        client.delete(getAbsoluteUrl(url), params, responseHandler);
+    }
+    public static void delete(Context context, String url, StringEntity entity, String contentType, AsyncHttpResponseHandler responseHandler){
+        client.addHeader("Authorization", AUTH_TOKEN);
+        client.delete(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
+    }
     private static String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
     }

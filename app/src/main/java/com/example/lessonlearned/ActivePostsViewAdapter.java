@@ -3,20 +3,31 @@ package com.example.lessonlearned;
 import android.content.Intent;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.TutorPosting;
+import com.example.lessonlearned.Models.UserType;
+import com.example.lessonlearned.Services.RESTClient;
+import com.example.lessonlearned.Services.RESTClientRequest;
 import com.google.android.flexbox.FlexboxLayout;
+
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsViewAdapter.ViewHolder> {
     private List<TutorPosting> activePostings = new ArrayList<>();
     private Context mContext;
+    TutorPosting posting;
 
     public ActivePostsViewAdapter(List<TutorPosting> activePostings, Context mContext) {
         this.activePostings = activePostings;
@@ -32,7 +43,7 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        final TutorPosting posting = activePostings.get(position);
+        posting = activePostings.get(position);
 
         viewHolder.name.setText(posting.getTutorName());
         viewHolder.price.setText("$" + Double.toString(posting.getPrice()) + "/hour");
@@ -79,6 +90,32 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
             courses = itemView.findViewById(R.id.courses);
             deleteButton = itemView.findViewById(R.id.deleteButton);
             price = itemView.findViewById(R.id.price);
+            deleteButton.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final int postId = posting.getId();
+                    try {
+                        RESTClientRequest.deletePosting(postId, ActivePostsViewAdapter.this);
+                    } catch (JSONException e){
+                        Log.d("JSONException", e.toString());
+                    }
+
+                }
+            });
         }
     }
+    public Callable<Void> goToProfile(){
+        return new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if(true) {
+                    final Intent newIntent = new Intent(mContext, TutorProfileActivity.class);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    mContext.startActivity(newIntent);
+                }
+                return null;
+            }
+        };
+    }
+
 }
