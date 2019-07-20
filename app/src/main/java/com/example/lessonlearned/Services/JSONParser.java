@@ -2,6 +2,7 @@ package com.example.lessonlearned.Services;
 
 import android.util.Log;
 
+import com.example.lessonlearned.CreateTutorPosting;
 import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
@@ -155,6 +156,32 @@ public class JSONParser {
             }
 
             context.populateDegreeList(degreeMap);
+        }
+        catch (Exception e) {
+            Log.d("REST_ERROR", e.toString());
+        }
+    }
+
+    //parse Degrees to Tutor Post
+    public static void parseDegreesPostResponse(JSONObject response, CreateTutorPosting context){
+        try {
+            Log.d("DEGREESJSON", response.toString());
+
+            JSONArray jsonDegrees = response.getJSONObject("data").getJSONArray("degrees");
+            List<Degree> degreeList = new ArrayList<>();
+
+            for (int i = 0; i < jsonDegrees.length(); i++) {
+                JSONObject jsonDegree = jsonDegrees.getJSONObject(i);
+
+                int id = jsonDegree.getInt("id");
+                int schoolId = jsonDegree.getInt("schoolId");
+                String name = jsonDegree.getString("name");
+                String schoolName = jsonDegree.getString("schoolName");
+
+                degreeList.add(new Degree(id, name, schoolId, schoolName));
+            }
+
+            context.populateDegreeList(degreeList);
         }
         catch (Exception e) {
             Log.d("REST_ERROR", e.toString());

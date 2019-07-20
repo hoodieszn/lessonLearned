@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateTutorPosting">
+    tools:context=".CreateTutorPosting"
+    app:flexDirection="column"
+    app:alignItems="flex_start"
+    app:justifyContent="flex_start"
+    android:padding="10dp">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/course_code_bg"
+        app:alignItems="center"
+        android:paddingLeft="20dp"
+        app:justifyContent="space_between"
+        app:flexDirection="row">
+        <TextView
+            android:id="@+id/studentProfileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Posting"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+        <ImageButton
+            android:id="@+id/closeButton"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/baseline_clear_white_18dp"
+            />
+    </com.google.android.flexbox.FlexboxLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/about"
@@ -25,4 +54,42 @@
         android:maxLength="300"
         android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
-</RelativeLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/priceContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        android:layout_marginBottom="10dp"
+        app:counterMaxLength="5"
+        app:counterOverflowTextAppearance="@style/CounterOverFlow"
+        app:counterTextAppearance="@style/CounterText"
+        app:hintTextAppearance="@style/HintText">
+
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:hint="Price($)"
+            android:inputType="numberDecimal"
+            android:maxLength="300"
+            android:textSize="14sp" />
+    </android.support.design.widget.TextInputLayout>
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexDirection="column"
+        app:alignItems="flex_start">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Degree For Tutoring Courses:"/>
+        <android.support.v7.widget.AppCompatSpinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/degrees"
+            android:background="@drawable/comment_bg"
+            >
+        </android.support.v7.widget.AppCompatSpinner>
+    </com.google.android.flexbox.FlexboxLayout>
+
+</com.google.android.flexbox.FlexboxLayout>
