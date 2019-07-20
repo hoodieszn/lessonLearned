@@ -32,6 +32,13 @@ public class JSONParser {
 
 
     // Parse JSON to User Object
+    public static void parsePostResponse(final Callable<Void> callback){
+        try{
+            callback.call();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void parseUserResponse(String UUID, final Callable<Void> callback, JSONObject response){
         try {
@@ -41,7 +48,7 @@ public class JSONParser {
 
             int id = jsonUser.getInt("id");
             int schoolId = jsonUser.getInt("schoolId");
-            String schoolName = "University of Waterloo"; // jsonUser.getInt("schoolName"); TODO: once rav adds school name uncomment
+            String schoolName = jsonUser.getString("schoolName");
             String name = jsonUser.getString("name");
             String phone = jsonUser.getString("phoneNumber");
             double latitude = jsonUser.getDouble("lat");

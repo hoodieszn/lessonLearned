@@ -13,5 +13,7 @@
     <string name="title_activity_comments_view_adapter">CommentsViewAdapter</string>
     <string name="title_activity_comments">CommentsActivity</string>
     <string name="title_activity_tutor_profile">TutorProfileActivity</string>
+    <string name="title_activity_add_tutor_posting">AddTutorPosting</string>
+    <string name="title_activity_create_tutor_posting">createTutorPosting</string>
 
 </resources>

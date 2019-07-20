@@ -3,9 +3,13 @@ package com.example.lessonlearned.Services;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.lessonlearned.CreateTutorPosting;
 import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.MainActivity;
 import com.example.lessonlearned.Models.ContactedTutor;
+import com.example.lessonlearned.Models.Course;
+import com.example.lessonlearned.Models.Tutor;
+import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
 import com.example.lessonlearned.Models.UserType;
 import com.example.lessonlearned.SignUpActivity;
@@ -20,10 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -163,6 +169,59 @@ public class RESTClientRequest {
                 });
             }
             catch (UnsupportedEncodingException e){ }
+        }
+    }
+    public static void postPosting(final int id, final String tutorName, final double lat, final double lon, final int tutorId, final String price, final String postText, final List<Course> courses, final CreateTutorPosting context)
+    throws JSONException{
+        JSONObject params = new JSONObject();
+        List<Integer>arr2 = new ArrayList<Integer>();
+        for (int i = 0; i < courses.size(); i++){
+            arr2.add(courses.get(i).getId());
+        }
+        params.put("tutorName", tutorName);
+        params.put("lat", lat);
+        params.put("lon", lon);
+        params.put("userId", tutorId);
+        params.put("price", price);
+        params.put("postText", postText);
+        params.put("courses", new JSONArray(arr2));
+
+
+
+        try{
+            StringEntity entity = new StringEntity(params.toString());
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            String majorId = Integer.toString(id);
+            RESTClient.post(context,   majorId + "/postings", entity, "application/json", new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
+                    Tutor tutor = (Tutor)Context.getUser();
+                    Double price2 = Double.parseDouble(price);
+                    TutorPosting tutorPost = new TutorPosting(id, courses, postText, price2, tutorId, tutorName, lat, lon);
+                    tutor.getPostings().add(tutorPost);
+                    Context.setUser(tutor);
+                    JSONParser.parsePostResponse(context.goTutorPage());
+
+
+
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("REST_ERROR", responseString);
+                    System.out.println(statusCode);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
+                    Log.d("REST_ERROR", response.toString());
+                    System.out.println(statusCode);
+                }
+
+            });
+
+        } catch (UnsupportedEncodingException e){
+
         }
     }
     public static void postAccount(int id, final String firebaseID, int schoolid, String schoolname, String name, String phone, double lat, double longg, UserType userType, List<ContactedTutor> contactedTutors
