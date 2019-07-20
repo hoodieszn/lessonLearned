@@ -83,6 +83,21 @@ public class RESTClientRequest {
         }
     }
 
+    // Get degrees by school id
+    public static void getDegreesList(final CreateTutorPosting context, int schoolId) throws JSONException{
+        RESTClient.get(schoolId + "/degrees", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONParser.parseDegreesPostResponse(response, context);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("REST_ERROR", responseString);
+            }
+        });
+    }
+
     // Get postings by degree id
     public static void getPostingsForDegree(final int degreeId, final TutorsListActivity context) throws JSONException{
         if (Context.getUser() != null) {
