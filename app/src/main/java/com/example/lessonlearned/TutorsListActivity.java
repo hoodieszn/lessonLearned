@@ -53,39 +53,25 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
     final static int tutorProfileRequest = 0;
     RelativeLayout dimmer;
 
+    // Intent information
+    private int degreeId;
+    private String degreeName;
+
     private static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_tutorlist);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_MULTIPLE_REQUEST);
-        }
-        else {
-            handleLocation();
-        }
-
         // Find out which degree was selected
         Intent categoryIntent = getIntent();
-        int degreeId = categoryIntent.getIntExtra("degreeId", 0);
-        String degreeName = categoryIntent.getStringExtra("degreeName");
+        degreeId = categoryIntent.getIntExtra("degreeId", 0);
+        degreeName = categoryIntent.getStringExtra("degreeName");
         String schoolName = Context.getUser().getSchoolName();
 
         // Get view/layout elements on screen
         dimmer = findViewById(R.id.dimTutorList);
         recyclerView = findViewById(R.id.tutors);
-
-        // Fetch Postings from server
-        try {
-            RESTClientRequest.getPostingsForDegree(degreeId, this);
-        }
-        catch (JSONException e){
-            Log.d("JSONException", e.toString());
-        }
 
         // Set title for page
         TextView tutorsTitle = this.findViewById(R.id.tutorsTitle);
@@ -98,6 +84,26 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
         }};
 
         sortDropdown = this.findViewById(R.id.sortBtn);
+
+        // Check for location Permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Request it if we dont have it
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_MULTIPLE_REQUEST);
+        }
+        else {
+            handleLocation();
+        }
+
+        // Fetch Postings from server
+        try {
+            RESTClientRequest.getPostingsForDegree(degreeId, this);
+        }
+        catch (JSONException e){
+            Log.d("JSONException", e.toString());
+        }
 
     }
 
@@ -113,16 +119,20 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
     // Populate postings with http response
     public void populatePostings(){
-        layoutManager = new LinearLayoutManager(TutorsListActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-        tutorPostingAdapter = new TutorsViewAdapter(TutorsListActivity.this, tutorPostings);
-        tutorPostingAdapter.setClickListener(TutorsListActivity.this);
+            layoutManager = new LinearLayoutManager(TutorsListActivity.this);
+            recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(tutorPostingAdapter);
+            tutorPostingAdapter = new TutorsViewAdapter(TutorsListActivity.this, tutorPostings);
+            tutorPostingAdapter.setClickListener(TutorsListActivity.this);
 
-        // Listeners for different sort options
-        initSortListeners();
+            recyclerView.setAdapter(tutorPostingAdapter);
+
+            // Listeners for different sort options
+            initSortListeners();
+        }
     }
 
     private void initSortListeners(){
@@ -200,9 +210,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
                         Context.getUser().setLatitude(location.getLatitude());
                         Context.getUser().setLongitude(location.getLongitude());
-
-
-                        //Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -224,6 +232,8 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
             catch (SecurityException e){
                 Toast.makeText(TutorsListActivity.this, "Error: " + e, Toast.LENGTH_SHORT).show();
             }
+
+            if (tutorPostings != null && tutorPostings.size() != 0) populatePostings();
         }
     }
 }
