@@ -208,6 +208,7 @@ public class JSONParser {
             }
 
             context.populateDegreeList(degreeList);
+            context.initDegreeSpinner();
         }
         catch (Exception e) {
             Log.d("REST_ERROR", e.toString());
