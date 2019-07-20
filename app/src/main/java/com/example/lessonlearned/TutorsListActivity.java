@@ -210,8 +210,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
                         Context.getUser().setLatitude(location.getLatitude());
                         Context.getUser().setLongitude(location.getLongitude());
-
-                        Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

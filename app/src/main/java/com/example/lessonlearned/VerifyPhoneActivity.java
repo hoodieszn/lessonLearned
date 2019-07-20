@@ -101,15 +101,15 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
                             // Sign in is complete, get the User Object
                             try {
-                                RESTClientRequest.getUser(goToLandingPage());
+                                RESTClientRequest.getUser(goToLandingPage(), VerifyPhoneActivity.this);
                             }
                             catch (JSONException e){
                                 Log.d("JSONException", e.toString());
                             }
 
-                            Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
-                            degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(degreeIntent);
+                            //Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
+                            //degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            //startActivity(degreeIntent);
 
                         }
                         else{
@@ -147,10 +147,15 @@ public class VerifyPhoneActivity extends AppCompatActivity {
         return new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                if (Context.getUser().getUserType() == UserType.STUDENT) {
+                if (Context.getUser().getUserType() == UserType.student) {
                     Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
                     degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(degreeIntent);
+                }
+                else if (Context.getUser().getUserType() == UserType.tutor){
+                    Intent tutorProfileIntent = new Intent (VerifyPhoneActivity.this, TutorProfileActivity.class);
+                    tutorProfileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(tutorProfileIntent);
                 }
                 else {
                     Toast.makeText(VerifyPhoneActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();
