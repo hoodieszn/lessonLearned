@@ -28,7 +28,6 @@ public class MainActivity extends BaseActivity {
     private ProgressBar spinner;
     private RelativeLayout dimmer;
     private TextView login;
-    private TextView signUp;
     private EditText numberText;
 
     @Override
@@ -37,16 +36,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         login = findViewById(R.id.login);
-        signUp = findViewById(R.id.signUpText);
         spinner = findViewById(R.id.progressSpinner);
         dimmer = findViewById(R.id.dimMainPage);
-
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
-            }
-        });
 
         numberText = findViewById(R.id.phoneText);
 
@@ -131,7 +122,7 @@ public class MainActivity extends BaseActivity {
 
             // Already signed in, get the User Object
             try {
-                RESTClientRequest.getUser(goToLandingPage());
+                RESTClientRequest.getUser(goToLandingPage(), this);
             }
             catch (JSONException e){
                 Log.d("JSONException", e.toString());
@@ -158,11 +149,17 @@ public class MainActivity extends BaseActivity {
     }
 
     public void startLoadingState(){
-        signUp.setClickable(false);
-        login.setClickable(false);
+        login.setVisibility(View.INVISIBLE);
         numberText.setEnabled(false);
         dimmer.setVisibility(View.VISIBLE);
         spinner.setVisibility(View.VISIBLE);
+    }
+
+    public void stopLoadingState(){
+        login.setVisibility(View.VISIBLE);
+        numberText.setEnabled(true);
+        dimmer.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.INVISIBLE);
     }
 }
 

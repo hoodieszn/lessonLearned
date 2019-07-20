@@ -7,12 +7,14 @@ import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
+import com.example.lessonlearned.Models.School;
 import com.example.lessonlearned.Models.Student;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
 import com.example.lessonlearned.Models.UserReview;
 import com.example.lessonlearned.Models.UserType;
+import com.example.lessonlearned.SignUpActivity;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.TutorPostingActivity;
 import com.example.lessonlearned.TutorProfileActivity;
@@ -32,6 +34,13 @@ public class JSONParser {
 
 
     // Parse JSON to User Object
+    public static void parsePostResponse(final Callable<Void> callback){
+        try{
+            callback.call();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void parseUserResponse(String UUID, final Callable<Void> callback, JSONObject response){
         try {
@@ -55,20 +64,19 @@ public class JSONParser {
             if (userType == UserType.student){
 
                 List<ContactedTutor> contactedTutors = new ArrayList<ContactedTutor>();
+                if (jsonUser.has("contactedTutors")){
+                    JSONArray jsonContactedTutors = jsonUser.getJSONArray("contactedTutors");
+                    for (int i = 0; i < jsonContactedTutors.length(); i++) {
+                        JSONObject jsonContactedTutor = jsonContactedTutors.getJSONObject(i);
 
-                JSONArray jsonContactedTutors = jsonUser.getJSONArray("contactedTutors");
+                        int tutorId = jsonContactedTutor.getJSONObject("tutorInfo").getInt("id");
+                        String tutorName = jsonContactedTutor.getJSONObject("tutorInfo").getString("name");
+                        String tutorPhone = jsonContactedTutor.getJSONObject("tutorInfo").getString("phoneNumber");
+                        boolean tutorReported = jsonContactedTutor.getBoolean("reported");
 
-                for (int i = 0; i < jsonContactedTutors.length(); i++) {
-                    JSONObject jsonContactedTutor = jsonContactedTutors.getJSONObject(i);
-
-                    int tutorId = jsonContactedTutor.getJSONObject("tutorInfo").getInt("id");
-                    String tutorName = jsonContactedTutor.getJSONObject("tutorInfo").getString("name");
-                    String tutorPhone = jsonContactedTutor.getJSONObject("tutorInfo").getString("phoneNumber");
-                    boolean tutorReported = jsonContactedTutor.getBoolean("reported");
-
-                    contactedTutors.add(new ContactedTutor(tutorId, tutorName, tutorPhone, tutorReported));
+                        contactedTutors.add(new ContactedTutor(tutorId, tutorName, tutorPhone, tutorReported));
+                    }
                 }
-
                 currentUser = new Student(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, userType, contactedTutors);
             }
             else if (userType == UserType.tutor){
@@ -158,6 +166,24 @@ public class JSONParser {
             context.populateDegreeList(degreeMap);
         }
         catch (Exception e) {
+            Log.d("REST_ERROR", e.toString());
+        }
+    }
+    public static void parseSchoolsResponse(JSONObject response, SignUpActivity context){
+        final ArrayList<School> schoolList = new ArrayList<School>();
+        try{
+            Log.d("SCHOOLSJSON", response.toString());
+            JSONArray jsonSchools = response.getJSONObject("data").getJSONArray("schools");
+            for (int i = 0; i < jsonSchools.length(); i++){
+                JSONObject jsonSchool = jsonSchools.getJSONObject(i);
+                int id = jsonSchool.getInt("id");
+                String name = jsonSchool.getString("name");
+                School newSchool = new School(id, name);
+                schoolList.add(newSchool);
+            }
+            context.setSchoolList(schoolList);
+            context.populateSignUp();
+        } catch (Exception e){
             Log.d("REST_ERROR", e.toString());
         }
     }
@@ -299,13 +325,6 @@ public class JSONParser {
         }
         catch(Exception e) {
             Log.d("REST_ERROR", e.toString());
-        }
-    }
-    public static void parsePostResponse(final Callable<Void> callback){
-        try{
-            callback.call();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
