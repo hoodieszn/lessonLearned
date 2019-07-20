@@ -151,10 +151,6 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
                     degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(degreeIntent);
-                } else if (Context.getUser().getUserType() == UserType.tutor){
-                    Intent tutorProfile = new Intent (VerifyPhoneActivity.this, TutorProfileActivity.class);
-                    tutorProfile.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(tutorProfile);
                 }
                 else if (Context.getUser().getUserType() == UserType.tutor){
                     Intent tutorProfileIntent = new Intent (VerifyPhoneActivity.this, TutorProfileActivity.class);
