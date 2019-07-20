@@ -124,7 +124,7 @@ public class JSONParser {
                     postings.add(posting);
                 }
 
-                currentUser = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, rating);
+                currentUser = new Tutor(id, UUID, schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, rating);
             }
 
             Context.setUser(currentUser);
