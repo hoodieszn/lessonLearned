@@ -54,7 +54,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                     startActivity(studentProfileIntent);
                 }
                 else if (user.getUserType() == UserType.tutor){
-
+                    // Navigate to Tutor Profile page
+                    Intent tutorProfileIntent = new Intent(BaseActivity.this, TutorProfileActivity.class);
+                    startActivity(tutorProfileIntent);
                 }
             }
 
