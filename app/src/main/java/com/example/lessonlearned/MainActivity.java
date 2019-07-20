@@ -140,6 +140,11 @@ public class MainActivity extends BaseActivity {
 
                     startActivity(degreeIntent);
                 }
+                else if (Context.getUser().getUserType() == UserType.tutor){
+                    Intent tutorProfileIntent = new Intent (MainActivity.this, TutorProfileActivity.class);
+                    tutorProfileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(tutorProfileIntent);
+                }
                 else {
                     Toast.makeText(MainActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();
                 }
