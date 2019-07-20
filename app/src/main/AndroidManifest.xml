@@ -17,7 +17,7 @@
         <activity
             android:name=".CreateTutorPosting"
             android:label="@string/title_activity_create_tutor_posting"
-            android:theme="@style/AppTheme.PopUp"></activity>
+            android:theme="@style/AppTheme.PopUp"/>
         <activity
             android:name=".TutorProfileActivity"
             android:label="@string/title_activity_tutor_profile"
