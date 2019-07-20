@@ -54,7 +54,6 @@ public class RESTClientRequest {
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
                     Intent degreeIntent = new Intent(context, SignUpActivity.class);
                     context.startActivity(degreeIntent);
 
@@ -63,6 +62,32 @@ public class RESTClientRequest {
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse){
                     Intent degreeIntent = new Intent(context, SignUpActivity.class);
                     context.startActivity(degreeIntent);
+                }
+            });
+        }
+    }
+
+    // Get user object by firebase logged in
+    public static void getUser(final Callable<Void> callback, final MainActivity context) throws JSONException {
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentFirebaseUser != null) {
+            final String UUID = currentFirebaseUser.getUid();
+
+            RESTClient.get("users?firebaseId=" + UUID, null, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    JSONParser.parseUserResponse(UUID, callback, response);
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Intent degreeIntent = new Intent(context, SignUpActivity.class);
+                    context.startActivity(degreeIntent);
+
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse){
+                    context.stopLoadingState();
                 }
             });
         }

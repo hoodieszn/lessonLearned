@@ -153,9 +153,9 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     startActivity(degreeIntent);
                 }
                 else if (Context.getUser().getUserType() == UserType.tutor){
-                    Intent degreeIntent = new Intent (VerifyPhoneActivity.this, TutorProfileActivity.class);
-                    degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(degreeIntent);
+                    Intent tutorProfileIntent = new Intent (VerifyPhoneActivity.this, TutorProfileActivity.class);
+                    tutorProfileIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(tutorProfileIntent);
                 }
                 else {
                     Toast.makeText(VerifyPhoneActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();
