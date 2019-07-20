@@ -353,12 +353,12 @@ public class RESTClientRequest {
         RESTClient.put("users/" + id, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
+                Log.d("TASK", "COMPLETED");
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
-
+                Log.d("REST_ERROR", responseString);
             }
         });
 
@@ -388,7 +388,7 @@ public class RESTClientRequest {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
-
+                Log.d("REST_ERROR", responseString);
             }
         });
 
