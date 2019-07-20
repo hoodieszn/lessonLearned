@@ -3,6 +3,7 @@ package com.example.lessonlearned.Services;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.lessonlearned.ActivePostsViewAdapter;
 import com.example.lessonlearned.CreateTutorPosting;
 import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.MainActivity;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -342,6 +344,54 @@ public class RESTClientRequest {
             }
             catch (UnsupportedEncodingException e){ }
         }
+    }
+    public static void putLocation(final double lat, final double lon, final int userId)throws JSONException{
+        RequestParams params = new RequestParams();
+        params.put("lat", lat);
+        params.put("lon", lon);
+        String id = Integer.toString(userId);
+        RESTClient.put("users/" + id, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
+
+            }
+        });
+
+    }
+    public static void deletePosting(final int postId, final ActivePostsViewAdapter context) throws JSONException{
+        RequestParams params = new RequestParams();
+        String postingId = Integer.toString(postId);
+        RESTClient.delete("postings/" + postingId, params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    String firebaseID = Context.getUser().getFirebaseId();
+                    Tutor tut = (Tutor)Context.getUser();
+                    List<TutorPosting> tutPostings = new ArrayList<TutorPosting>();;
+                    for (int i = 0; i < tutPostings.size(); i++){
+                        if (postId == tut.getPostings().get(i).getId()){
+                            continue;
+                        }
+                        tutPostings.add(tut.getPostings().get(i));
+                    }
+                    tut.setPostings(tutPostings);
+                    Context.setUser(tut);
+                    try {
+                        context.goToProfile().call();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
+
+            }
+        });
+
     }
 
 }
