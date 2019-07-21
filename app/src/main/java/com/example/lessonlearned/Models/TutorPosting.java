@@ -15,8 +15,9 @@ public class TutorPosting {
     private String tutorName;
     private double latitude;
     private double longitude;
+    private double rating;
 
-    public TutorPosting(int id, List<Course> postingCourses, String postText, double price, int tutorId, String tutorName, double latitude, double longtitude) {
+    public TutorPosting(int id, List<Course> postingCourses, String postText, double price, int tutorId, String tutorName, double latitude, double longitude, double rating) {
         this.id = id;
         this.postingCourses = postingCourses;
         this.postText = postText;
@@ -24,8 +25,8 @@ public class TutorPosting {
         this.tutorId = tutorId;
         this.tutorName = tutorName;
         this.latitude = latitude;
-        this.longitude = longtitude;
-
+        this.longitude = longitude;
+        this.rating = rating;
     }
 
     public int getId() {
@@ -80,5 +81,13 @@ public class TutorPosting {
         float[] distance = new float[3];
         Location.distanceBetween(Context.getUser().getLatitude(), Context.getUser().getLongitude(), latitude, longitude, distance);
         return distance[0]/1000;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }
