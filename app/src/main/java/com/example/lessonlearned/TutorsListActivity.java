@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
+import com.example.lessonlearned.Models.Student;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Services.RESTClient;
 import com.example.lessonlearned.Singletons.Context;
@@ -66,6 +67,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
     TutorsViewAdapter tutorPostingAdapter;
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
+    TextView filterText;
 
     // Indicator for if a Posting has been clicked
     final static int tutorProfileRequest = 0;
@@ -90,6 +92,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
         // Get view/layout elements on screen
         dimmer = findViewById(R.id.dimTutorList);
         recyclerView = findViewById(R.id.tutors);
+        filterText = findViewById(R.id.filterText);
 
         // Set title for page
         TextView tutorsTitle = this.findViewById(R.id.tutorsTitle);
@@ -105,22 +108,33 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
         //init FAB
         fab = this.findViewById(R.id.fab);
+        fab.hide();
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new SimpleSearchDialogCompat(TutorsListActivity.this, "Search...",
-                        "What course are you looking for...?", null, getCourseData(),
+                        "What course do you need help with...?", null, getCourseData(),
                         new SearchResultListener<Course>() {
                             @Override
                             public void onSelected(BaseSearchDialogCompat dialog,
                                                    Course item, int position) {
                                 selectedCourse = item.getTitle();
-                                tutorPostingAdapter.getFilter().filter(selectedCourse);
+
+                                if(tutorPostingAdapter != null){
+                                    tutorPostingAdapter.getFilter().filter(selectedCourse);
+                                }
+
+                                if(selectedCourse.length() != 0){
+                                    filterText.setVisibility(View.VISIBLE);
+                                    filterText.setText("Searching for " +  selectedCourse);
+                                }else {
+                                    filterText.setVisibility(View.GONE);
+                                }
+
                                 dialog.dismiss();
                             }
                         }).show();
             }
         });
-
 
         // Check for location Permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
@@ -150,11 +164,27 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
     }
 
     public void setTutorPostings(List<TutorPosting> tutorPostings) {
+        // Filter out any postings from a user we have reported
+
+        List<Integer> reportedTutors = ((Student)Context.getUser()).getReportedTutors();
+        List<Integer> removeIndicies = new ArrayList<>();
+
+        for (int i = 0; i < tutorPostings.size(); i++){
+            TutorPosting posting = tutorPostings.get(i);
+            if(reportedTutors.contains(posting.getTutorId())){
+                removeIndicies.add(i);
+            }
+        }
+
+        for(int i : removeIndicies){
+            tutorPostings.remove(i);
+        }
         this.tutorPostings = tutorPostings;
     }
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+        fab.show();
     }
 
 
