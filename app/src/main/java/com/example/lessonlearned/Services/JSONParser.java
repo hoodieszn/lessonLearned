@@ -263,6 +263,37 @@ public class JSONParser {
         }
     }
 
+
+    // Parse courses response
+    public static void parseCoursesResponse(JSONObject response, TutorsListActivity context){
+        final ArrayList<Course> courses = new ArrayList<Course>();
+
+        try {
+            Log.d("COURSESJSON", response.toString());
+
+            JSONArray jsonCourses = response.getJSONObject("data").getJSONArray("courses");
+
+            for (int i = 0; i < jsonCourses.length(); i++) {
+                JSONObject jsonPosting = jsonCourses.getJSONObject(i);
+
+                int id = jsonPosting.getInt("id");
+                String courseName = jsonPosting.getString("name");
+                int schoolId = 1; //jsonPosting.getInt("schoolId"); //To update once backend
+
+
+                Course course = new Course(id, courseName, schoolId);
+                courses.add(course);
+            }
+
+            context.setCourses(courses);
+        }
+        catch (Exception e) {
+            Log.d("REST_ERROR", e.toString());
+        }
+
+    }
+
+
     // Parse tutor response
 
     public static void parseTutorByIdResponse(JSONObject response, TutorPostingActivity context) {
