@@ -113,8 +113,6 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
                             @Override
                             public void onSelected(BaseSearchDialogCompat dialog,
                                                    Course item, int position) {
-                                Toast.makeText(TutorsListActivity.this, item.getTitle(),
-                                        Toast.LENGTH_SHORT).show();
                                 selectedCourse = item.getTitle();
                                 tutorPostingAdapter.getFilter().filter(selectedCourse);
                                 dialog.dismiss();
