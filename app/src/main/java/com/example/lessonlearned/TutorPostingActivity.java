@@ -124,6 +124,11 @@ public class TutorPostingActivity extends Activity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
+                try{
+                    RESTClientRequest.postContactedTutor(tutor.getPhone(), tutor.getId(), tutor.getName(), false, TutorPostingActivity.this);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }

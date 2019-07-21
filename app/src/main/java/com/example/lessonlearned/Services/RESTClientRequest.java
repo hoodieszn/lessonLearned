@@ -9,6 +9,7 @@ import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.MainActivity;
 import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
+import com.example.lessonlearned.Models.Student;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
@@ -215,6 +216,39 @@ public class RESTClientRequest {
             }
             catch (UnsupportedEncodingException e){ }
         }
+    }
+    public static void postContactedTutor(final String phone, final int tutorId, final String tutorName, final boolean reported, final TutorPostingActivity context)throws JSONException{
+        JSONObject params = new JSONObject();
+        params.put("userId", Context.getUser().getId());
+        params.put("tutorId", tutorId);
+        try{
+            StringEntity entity = new StringEntity(params.toString());
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            RESTClient.post(context, "contacts?userId=" + Context.getUser().getId() , entity, "application/json", new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    ContactedTutor cTutor = new ContactedTutor(tutorId, tutorName, phone, reported);
+                    Student student = (Student)Context.getUser();
+                    student.getContactedTutors().add(cTutor);
+                    Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("REST_ERROR", responseString);
+                    System.out.println(statusCode);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
+                    Log.d("REST_ERROR", response.toString());
+                    System.out.println(statusCode);
+                }
+            });
+
+        } catch (UnsupportedEncodingException e){
+
+        }
+
     }
     public static void postPosting(final int id, final String tutorName, final double lat, final double lon, final int tutorId, final String price, final String postText, final List<Course> courses, final CreateTutorPosting context)
     throws JSONException{
