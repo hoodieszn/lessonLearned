@@ -1,5 +1,6 @@
 package com.example.lessonlearned.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User{
@@ -16,6 +17,17 @@ public class Student extends User{
 
     public void setContactedTutors(List<ContactedTutor> contactedTutors) {
         this.contactedTutors = contactedTutors;
+    }
+
+    // List of all the tutors we have reported - so they they can be blocked
+    public List<Integer> getReportedTutors(){
+        List<Integer> reportedTutors = new ArrayList<>();
+        for(ContactedTutor cTutor: getContactedTutors()){
+            if(cTutor.isReported()){
+                reportedTutors.add(cTutor.getTutorId());
+            }
+        }
+        return reportedTutors;
     }
 }
 

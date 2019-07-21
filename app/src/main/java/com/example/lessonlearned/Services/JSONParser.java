@@ -279,8 +279,7 @@ public class JSONParser {
 
                 int id = jsonPosting.getInt("id");
                 String courseName = jsonPosting.getString("name");
-                int schoolId = 1; //jsonPosting.getInt("schoolId"); //To update once backend
-
+                int schoolId = jsonPosting.getInt("schoolId");
 
                 Course course = new Course(id, courseName, schoolId);
                 courses.add(course);
