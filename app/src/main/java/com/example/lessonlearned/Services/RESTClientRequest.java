@@ -231,8 +231,6 @@ public class RESTClientRequest {
         params.put("postText", postText);
         params.put("courses", new JSONArray(arr2));
 
-
-
         try{
             StringEntity entity = new StringEntity(params.toString());
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
@@ -243,12 +241,10 @@ public class RESTClientRequest {
                     Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
                     Tutor tutor = (Tutor)Context.getUser();
                     Double price2 = Double.parseDouble(price);
-                    TutorPosting tutorPost = new TutorPosting(id, courses, postText, price2, tutorId, tutorName, lat, lon);
+                    TutorPosting tutorPost = new TutorPosting(id, courses, postText, price2, tutorId, tutorName, lat, lon, 0);
                     tutor.getPostings().add(tutorPost);
                     Context.setUser(tutor);
                     JSONParser.parsePostResponse(context.goTutorPage());
-
-
 
                 }
                 @Override

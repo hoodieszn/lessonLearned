@@ -38,6 +38,12 @@ public class ReviewDialog extends DialogFragment {
 
         final RatingBar ratingBar = view.findViewById(R.id.ratingReview);
         ratingBar.setStepSize(0.5f);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(rating<0.5f)
+                    ratingBar.setRating(0.5f);
+            }
+        });
 
         final EditText reviewText = view.findViewById(R.id.reviewReason);
 
