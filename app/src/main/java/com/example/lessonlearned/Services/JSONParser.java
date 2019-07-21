@@ -120,7 +120,7 @@ public class JSONParser {
                         courses.add(new Course(courseId, courseName, schoolId));
                     }
 
-                    TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
+                    TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude, rating);
                     postings.add(posting);
                 }
 
@@ -238,6 +238,7 @@ public class JSONParser {
                 double lon = jsonPosting.getDouble("lon");
                 double price = jsonPosting.getDouble("price");
                 String postText = jsonPosting.getString("postText");
+                double avgRating = jsonPosting.getDouble("avgRating");
 
                 JSONArray jsonCourses = jsonPosting.getJSONArray("courses");
                 ArrayList<Course> courses = new ArrayList<Course>();
@@ -251,7 +252,7 @@ public class JSONParser {
                     courses.add(new Course(courseId, courseName, schoolId));
                 }
 
-                TutorPosting posting = new TutorPosting(id, courses, postText, price, tutorId, tutorName, lat, lon);
+                TutorPosting posting = new TutorPosting(id, courses, postText, price, tutorId, tutorName, lat, lon, avgRating);
                 tutorPostings.add(posting);
             }
 
@@ -307,7 +308,7 @@ public class JSONParser {
             String phone = jsonUser.getString("phoneNumber");
             double latitude = jsonUser.getDouble("lat");
             double longitude = jsonUser.getDouble("lon");
-            double rating = jsonUser.getDouble("avgRating");
+            double avgRating = jsonUser.getDouble("avgRating");
 
             JSONArray jsonReviews = jsonUser.getJSONArray("reviews");
             ArrayList<UserReview> reviews = new ArrayList<UserReview>();
@@ -347,11 +348,11 @@ public class JSONParser {
                     courses.add(new Course(courseId, courseName, schoolId));
                 }
 
-                TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude);
+                TutorPosting posting = new TutorPosting(postingId, courses, postText, price, id, name, latitude, longitude, avgRating);
                 postings.add(posting);
             }
 
-            Tutor tutor = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, rating);
+            Tutor tutor = new Tutor(id, "", schoolId, schoolName, name, phone, latitude, longitude, UserType.tutor, postings, reviews, avgRating);
             context.setTutor(tutor);
             context.populateTutorInfo();
         }

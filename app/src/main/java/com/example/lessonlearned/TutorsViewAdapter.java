@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lessonlearned.Models.Course;
@@ -45,9 +46,20 @@ public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.Vi
         // Populate card with posting and tutor information
         if (holder != null) {
             holder.tutorName.setText(posting.getTutorName());
+
             holder.tutorPrice.setText("$" + Double.toString(posting.getPrice()) + "/hour");
 
             DecimalFormat df = new DecimalFormat("#.#");
+
+            double avgRating = posting.getRating();
+            if (avgRating == 0){
+                holder.tutorRating.setText("No Rating Yet");
+                holder.imageStar.setVisibility(View.GONE);
+            }
+            else {
+                holder.tutorRating.setText(df.format((avgRating)));
+            }
+
             holder.tutorDistance.setText(df.format(posting.getDistance()) + " km");
 
             String courses = "";
@@ -133,7 +145,8 @@ public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.Vi
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tutorName, tutorPrice, tutorDistance, tutorCourses;
+        TextView tutorName, tutorPrice, tutorDistance, tutorCourses, tutorRating;
+        ImageView imageStar;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -141,6 +154,8 @@ public class TutorsViewAdapter extends RecyclerView.Adapter<TutorsViewAdapter.Vi
             tutorPrice = itemView.findViewById(R.id.tutorPrice);
             tutorDistance = itemView.findViewById(R.id.tutorDistance);
             tutorCourses = itemView.findViewById(R.id.tutorCourses);
+            tutorRating  = itemView.findViewById(R.id.ratingText);
+            imageStar = itemView.findViewById(R.id.imageStar);
 
             itemView.setOnClickListener(this);
         }
