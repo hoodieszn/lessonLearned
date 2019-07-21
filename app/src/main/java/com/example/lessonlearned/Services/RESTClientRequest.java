@@ -168,6 +168,39 @@ public class RESTClientRequest {
         }
     }
 
+
+    // Get postings filtered by a course
+    public static void getPostingsForCourse(final int degreeId, final int courseId, final TutorsListActivity context) throws JSONException{
+        if (Context.getUser() != null) {
+
+            RESTClient.get(degreeId + "/postings?code="+courseId, null, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    JSONParser.parsePostingsResponse(response, context);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("REST_ERROR", responseString);
+                }
+            });
+        }
+    }
+
+
+    public static void getCoursesForDegree(final int degreeId, final TutorsListActivity context) throws JSONException {
+        RESTClient.get(degreeId + "/courses", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONParser.parseCoursesResponse(response, context);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("REST_ERROR", responseString);
+            }
+        });
+    }
+
     // Get tutor object by id
     public static void getTutorById(final int tutorId, final TutorPostingActivity context) throws JSONException{
         if (Context.getUser() != null) {

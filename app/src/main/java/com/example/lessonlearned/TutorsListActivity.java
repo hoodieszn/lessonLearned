@@ -1,6 +1,7 @@
 package com.example.lessonlearned;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,41 +9,58 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
 import com.example.lessonlearned.Models.TutorPosting;
+import com.example.lessonlearned.Services.RESTClient;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.Services.RESTClientRequest;
 
 import org.json.JSONException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class TutorsListActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener{
+import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.SearchResultListener;
+
+
+
+public class TutorsListActivity extends BaseActivity implements TutorsViewAdapter.ItemClickListener {
 
     // Sort Options
     private ArrayList<String> sortOptions;
     private int sortSelected;
     private Spinner sortDropdown;
+    private FloatingActionButton fab;
 
     // List of Tutor Postings
     List<TutorPosting> tutorPostings;
+
+    //List of Courses
+    List<Course> courses;
+    String selectedCourse;
 
     // View Elements and Layouts
     TutorsViewAdapter tutorPostingAdapter;
@@ -85,6 +103,27 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
         sortDropdown = this.findViewById(R.id.sortBtn);
 
+        //init FAB
+        fab = this.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new SimpleSearchDialogCompat(TutorsListActivity.this, "Search...",
+                        "What course are you looking for...?", null, getCourseData(),
+                        new SearchResultListener<Course>() {
+                            @Override
+                            public void onSelected(BaseSearchDialogCompat dialog,
+                                                   Course item, int position) {
+                                Toast.makeText(TutorsListActivity.this, item.getTitle(),
+                                        Toast.LENGTH_SHORT).show();
+                                selectedCourse = item.getTitle();
+                                tutorPostingAdapter.getFilter().filter(selectedCourse);
+                                dialog.dismiss();
+                            }
+                        }).show();
+            }
+        });
+
+
         // Check for location Permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -97,14 +136,14 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
             handleLocation();
         }
 
-        // Fetch Postings from server
+        // Fetch Postings, Courses from server
         try {
             RESTClientRequest.getPostingsForDegree(degreeId, this);
+            RESTClientRequest.getCoursesForDegree(degreeId, this);
         }
         catch (JSONException e){
             Log.d("JSONException", e.toString());
         }
-
     }
 
     // Get and set postings object
@@ -114,6 +153,10 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
     public void setTutorPostings(List<TutorPosting> tutorPostings) {
         this.tutorPostings = tutorPostings;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
 
@@ -235,5 +278,10 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
             if (tutorPostings != null && tutorPostings.size() != 0) populatePostings();
         }
+    }
+
+
+    private ArrayList<Course> getCourseData(){
+        return new ArrayList<Course>(courses);
     }
 }
