@@ -9,6 +9,7 @@ import com.example.lessonlearned.DegreesActivity;
 import com.example.lessonlearned.MainActivity;
 import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
+import com.example.lessonlearned.Models.Degree;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
@@ -134,9 +135,22 @@ public class RESTClientRequest {
 
 
     }
+    //Get courses by degree id
+    public static void getCoursesByDegree(final CreateTutorPosting context, final int degreeId) throws JSONException{
+        RESTClient.get(degreeId + "/courses", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONParser.parseCoursesByDegree(response, context);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("REST_ERROR", responseString);
+            }
+        });
+    }
     // Get degrees by school id
-    public static void getDegreesList(final CreateTutorPosting context, int schoolId) throws JSONException{
+    public static void getDegreesList(final TutorProfileActivity context, int schoolId) throws JSONException{
         RESTClient.get(schoolId + "/degrees", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

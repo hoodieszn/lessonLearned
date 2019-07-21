@@ -189,7 +189,7 @@ public class JSONParser {
     }
 
     //parse Degrees to Tutor Post
-    public static void parseDegreesPostResponse(JSONObject response, CreateTutorPosting context){
+    public static void parseDegreesPostResponse(JSONObject response, TutorProfileActivity context){
         try {
             Log.d("DEGREESJSON", response.toString());
 
@@ -215,7 +215,26 @@ public class JSONParser {
         }
     }
 
+    //Parse courses to CreateTutorPosting
+    public static void parseCoursesByDegree(JSONObject response, CreateTutorPosting context) {
+        try {
+            JSONArray jsonCourses = response.getJSONObject("data").getJSONArray("courses");
+            ArrayList<Course> courses = new ArrayList<Course>();
 
+            for (int j = 0; j < jsonCourses.length(); j++) {
+                JSONObject jsonCourse = jsonCourses.getJSONObject(j);
+
+                int courseId = jsonCourse.getInt("id");
+                String courseName = jsonCourse.getString("name");
+
+                courses.add(new Course(courseId, courseName, 1));
+            }
+            context.setCourseList(courses);
+            context.initCourseAutofill();
+        } catch (Exception e) {
+            Log.d("REST_ERROR", e.toString());
+        }
+    }
     // Parse Postings to tutorPostings
 
     public static void parsePostingsResponse(JSONObject response, TutorsListActivity context){
