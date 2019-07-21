@@ -53,17 +53,27 @@
         app:layout_constraintStart_toEndOf="@+id/tutorsTitle"
         app:layout_constraintTop_toBottomOf="@+id/app_bar" />
 
-    <Spinner
+    <!--<Spinner-->
+        <!--android:id="@+id/sortBtn"-->
+        <!--style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="36dp"-->
+        <!--android:layout_marginEnd="10dp"-->
+        <!--android:dropDownWidth="wrap_content"-->
+        <!--android:spinnerMode="dialog"-->
+        <!--android:textAlignment="viewEnd"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textView5" />-->
+
+    <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/sortBtn"
-        style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginEnd="10dp"
-        android:dropDownWidth="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/dropdrown"
         android:spinnerMode="dialog"
-        android:textAlignment="viewEnd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"></android.support.v7.widget.AppCompatSpinner>
 
     <View
         android:id="@+id/divider"
