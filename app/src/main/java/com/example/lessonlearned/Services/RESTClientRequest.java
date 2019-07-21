@@ -345,22 +345,28 @@ public class RESTClientRequest {
             catch (UnsupportedEncodingException e){ }
         }
     }
-    public static void putLocation(final double lat, final double lon, final int userId)throws JSONException{
+    public static void putLocation(final double lat, final double lon, final int userId, final TutorProfileActivity context)throws JSONException{
         RequestParams params = new RequestParams();
         params.put("lat", lat);
         params.put("lon", lon);
         String id = Integer.toString(userId);
-        RESTClient.put("users/" + id, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("TASK", "COMPLETED");
-            }
+        try {
+            StringEntity entity = new StringEntity(params.toString());
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            RESTClient.put(context, "users/" + id, entity, "application/json", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("TASK", "COMPLETED");
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
-                Log.d("REST_ERROR", responseString);
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
+                    Log.d("REST_ERROR", responseString);
+                }
+            });
+        }catch (UnsupportedEncodingException e){
+
+        }
 
     }
     public static void deletePosting(final int postId, final ActivePostsViewAdapter context) throws JSONException{
