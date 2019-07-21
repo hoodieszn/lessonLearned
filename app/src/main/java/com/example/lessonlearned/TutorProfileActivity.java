@@ -15,10 +15,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lessonlearned.Models.Course;
+import com.example.lessonlearned.Models.Degree;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Services.RESTClientRequest;
@@ -33,6 +38,8 @@ public class TutorProfileActivity extends AppCompatActivity {
 
     private Tutor tutor;
     private List<TutorPosting> activePostings = new ArrayList<>();
+    private List<Degree> degrees = new ArrayList<>();
+    private boolean firstTimeSelected = true;
     private static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
 
     @Override
@@ -41,6 +48,13 @@ public class TutorProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tutor_profile);
         tutor = (Tutor)Context.getUser();
         activePostings = tutor.getPostings();
+        // Fetch Degrees from server
+        try {
+            RESTClientRequest.getDegreesList(this, tutor.getSchoolId());
+        }
+        catch (JSONException e){
+            Log.d("JSONException", e.toString());
+        }
         populateTutorProfile();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -54,6 +68,10 @@ public class TutorProfileActivity extends AppCompatActivity {
         }
     }
 
+    public void populateDegreeList(List<Degree> degreesList) {
+        this.degrees = degreesList;
+    }
+
     public void populateTutorProfile() {
         TextView currentTutorName = findViewById(R.id.currentTutorName);
         currentTutorName.setText(tutor.getName());
@@ -65,17 +83,46 @@ public class TutorProfileActivity extends AppCompatActivity {
         phone.setText(tutor.getPhone());
 
         initActivePostings();
-        initAddPostingButton();
 
     }
 
-    private void initAddPostingButton() {
+    public void initDegreeSpinner() {
         ImageButton addButton = findViewById(R.id.addButton);
-        final Intent addPosting = new Intent(getApplicationContext(), CreateTutorPosting.class);
+        final Spinner degreesSpinner = findViewById(R.id.degrees);
+        List<String> degreeNames = new ArrayList<>();
+        final List<Integer> degreeIds = new ArrayList<>();
+
+        for(Degree d: degrees) {
+            degreeIds.add(d.getId());
+            degreeNames.add(d.getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(TutorProfileActivity.this, android.R.layout.simple_spinner_item, degreeNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        degreesSpinner.setAdapter(adapter);
+
+        degreesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(!firstTimeSelected) {
+                    final Intent addPosting = new Intent(getApplicationContext(), CreateTutorPosting.class);
+                    String degree = parent.getItemAtPosition(position).toString();
+                    addPosting.putExtra("id", degreeIds.get(position));
+                    addPosting.putExtra("name", degree);
+                    startActivity(addPosting);
+                }
+                firstTimeSelected = false;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+
+        });
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(addPosting);
+                degreesSpinner.performClick();
             }
         });
     }
@@ -130,17 +177,3 @@ public class TutorProfileActivity extends AppCompatActivity {
         }
     }
 }
-
-//=======
-//        Button but = findViewById(R.id.button2);
-//        but.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Intent degreeIntent = new Intent(TutorProfileActivity.this, CreateTutorPosting.class);
-//                degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(degreeIntent);
-//            }
-//        });
-//    }
-//
-//>>>>>>> 0b2e6edd19769b4d2fa9a90b0011f527e77958b5
