@@ -40,6 +40,7 @@ public class CreatePostingDialog extends DialogFragment {
     public interface CreatePostingDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
         public void onDialogNegativeClick(DialogFragment dialog);
+        public void onErrorPosting();
     }
 
     // Use this instance of the interface to deliver action events
@@ -142,6 +143,10 @@ public class CreatePostingDialog extends DialogFragment {
         listener.onDialogPositiveClick(this);
     }
 
+    public void onErrorPosting(){
+        listener.onErrorPosting();
+    }
+
     public void loadDegreeList(List<Degree> degrees){
         this.degrees = degrees;
         this.degreeMap = new HashMap<String, Integer>();
@@ -201,7 +206,18 @@ public class CreatePostingDialog extends DialogFragment {
                 autocomplete.getText().clear();
 
                 Course selectedCourse = new Course(courseId, courseName, com.example.lessonlearned.Singletons.Context.getUser().getSchoolId());
-                addSelectedCourse(selectedCourse);
+                boolean duplicate = false;
+
+                for (int i=0; i<selectedCourses.size(); i++){
+                    if (selectedCourses.get(i).getId() == courseId){
+                        duplicate = true;
+                        break;
+                    }
+                }
+
+                if (!duplicate){
+                    addSelectedCourse(selectedCourse);
+                }
             }
         });
     }

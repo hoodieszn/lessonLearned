@@ -276,6 +276,7 @@ public class RESTClientRequest {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
                     Log.d("REST_ERROR", response.toString());
+                    context.onErrorPosting();
                     System.out.println(statusCode);
                 }
 
