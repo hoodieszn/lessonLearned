@@ -83,6 +83,14 @@ public class TutorPosting {
         return distance[0]/1000;
     }
 
+    public boolean containsCourse(String course) {
+        List<Course> courses = getPostingCourses();
+        for (Course c : courses) {
+            if (c.getName().toLowerCase().equals(course.toLowerCase())) return true;
+        }
+        return false;
+    }
+
     public double getRating() {
         return rating;
     }

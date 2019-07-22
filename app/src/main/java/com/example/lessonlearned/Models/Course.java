@@ -1,6 +1,8 @@
 package com.example.lessonlearned.Models;
 
-public class Course {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class Course implements Searchable {
     private int id;
     private String name;
     private int schoolId;
@@ -11,6 +13,11 @@ public class Course {
         this.id = id;
         this.name = name;
         this.schoolId = schoolId;
+    }
+
+    @Override
+    public String getTitle() {
+        return name;
     }
 
     // Getters and Setters
