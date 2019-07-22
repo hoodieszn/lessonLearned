@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.lessonlearned.ActivePostsViewAdapter;
-import com.example.lessonlearned.CreateTutorPosting;
 import com.example.lessonlearned.DegreesActivity;
+import com.example.lessonlearned.Dialogs.CreatePostingDialog;
 import com.example.lessonlearned.MainActivity;
 import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
+import com.example.lessonlearned.Models.Student;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Models.User;
@@ -20,8 +21,6 @@ import com.example.lessonlearned.TutorPostingActivity;
 import com.example.lessonlearned.TutorProfileActivity;
 import com.example.lessonlearned.TutorsListActivity;
 import com.example.lessonlearned.VerifyPhoneActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -33,9 +32,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import cz.msebera.android.httpclient.Header;
@@ -134,9 +131,22 @@ public class RESTClientRequest {
 
 
     }
+    //Get courses by degree id
+    public static void getCoursesByDegree(final CreatePostingDialog context, final int degreeId) throws JSONException{
+        RESTClient.get(degreeId + "/courses", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONParser.parseCoursesByDegree(response, context);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("REST_ERROR", responseString);
+            }
+        });
+    }
     // Get degrees by school id
-    public static void getDegreesList(final CreateTutorPosting context, int schoolId) throws JSONException{
+    public static void getDegreesList(final CreatePostingDialog context, int schoolId) throws JSONException{
         RESTClient.get(schoolId + "/degrees", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -236,7 +246,10 @@ public class RESTClientRequest {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("ABUSERESPONSE", statusCode + ": " + response.toString());
+
+                        ((Student)Context.getUser()).setReportedFlag(tutorId);
                         context.donePost(statusCode);
+                        context.updateReported();
                     }
 
                     @Override
@@ -249,17 +262,19 @@ public class RESTClientRequest {
             catch (UnsupportedEncodingException e){ }
         }
     }
-    public static void postPosting(final int id, final String tutorName, final double lat, final double lon, final int tutorId, final String price, final String postText, final List<Course> courses, final CreateTutorPosting context)
+    public static void postPosting(final int degreeId, final Tutor tutor, final double price, final String postText, final List<Course> courses, final CreatePostingDialog context)
     throws JSONException{
         JSONObject params = new JSONObject();
+
         List<Integer>arr2 = new ArrayList<Integer>();
         for (int i = 0; i < courses.size(); i++){
             arr2.add(courses.get(i).getId());
         }
-        params.put("tutorName", tutorName);
-        params.put("lat", lat);
-        params.put("lon", lon);
-        params.put("userId", tutorId);
+
+        params.put("tutorName", tutor.getName());
+        params.put("lat", tutor.getLatitude());
+        params.put("lon", tutor.getLongitude());
+        params.put("userId", tutor.getId());
         params.put("price", price);
         params.put("postText", postText);
         params.put("courses", new JSONArray(arr2));
@@ -267,17 +282,22 @@ public class RESTClientRequest {
         try{
             StringEntity entity = new StringEntity(params.toString());
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-            String majorId = Integer.toString(id);
-            RESTClient.post(context,   majorId + "/postings", entity, "application/json", new JsonHttpResponseHandler(){
+
+            RESTClient.post(context.getActivity(),   Integer.toString(degreeId) + "/postings", entity, "application/json", new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
-                    Tutor tutor = (Tutor)Context.getUser();
-                    Double price2 = Double.parseDouble(price);
-                    TutorPosting tutorPost = new TutorPosting(id, courses, postText, price2, tutorId, tutorName, lat, lon, 0);
-                    tutor.getPostings().add(tutorPost);
-                    Context.setUser(tutor);
-                    JSONParser.parsePostResponse(context.goTutorPage());
+                    Log.d("ADDPOSTINGRESPONSE", statusCode + ": " + response.toString());
+
+                    try {
+                        JSONObject jsonPosting = response.getJSONObject("data").getJSONObject("posting");
+                        int postingId = jsonPosting.getInt("id");
+
+                        TutorPosting tutorPost = new TutorPosting(postingId, courses, postText, price, tutor.getId(), tutor.getName(), tutor.getLatitude(), tutor.getLongitude(), tutor.getAverageRating());
+                        ((Tutor) Context.getUser()).getPostings().add(tutorPost);
+
+                        context.refreshPostings();
+                    }
+                    catch (JSONException e) { }
 
                 }
                 @Override
@@ -294,9 +314,8 @@ public class RESTClientRequest {
 
             });
 
-        } catch (UnsupportedEncodingException e){
-
         }
+        catch (UnsupportedEncodingException e){ }
     }
     public static void postAccount(int id, final String firebaseID, int schoolid, String schoolname, String name, String phone, double lat, double longg, UserType userType, List<ContactedTutor> contactedTutors
     , final SignUpActivity context) throws JSONException{
@@ -374,6 +393,7 @@ public class RESTClientRequest {
             catch (UnsupportedEncodingException e){ }
         }
     }
+
     public static void putLocation(final double lat, final double lon, final int userId, final TutorProfileActivity context)throws JSONException{
         RequestParams params = new RequestParams();
         params.put("lat", lat);
@@ -396,8 +416,49 @@ public class RESTClientRequest {
         }catch (UnsupportedEncodingException e){
 
         }
+    }
+
+    public static void postContactedTutor(final String phone, final int tutorId, final String tutorName, final boolean reported, final TutorPostingActivity context)throws JSONException{
+        JSONObject params = new JSONObject();
+
+        params.put("userId", Context.getUser().getId());
+        params.put("tutorId", tutorId);
+
+        try{
+            StringEntity entity = new StringEntity(params.toString());
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+
+            RESTClient.post(context, "contacts?userId=" + Context.getUser().getId() , entity, "application/json", new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                    ContactedTutor contactedTutor = new ContactedTutor(tutorId, tutorName, phone, reported);
+                    ((Student)Context.getUser()).getContactedTutors().add(contactedTutor);
+
+                    Log.d("POSTCONTACTEDRESPONSE", statusCode + ": " + response.toString());
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("REST_ERROR", responseString);
+                    System.out.println(statusCode);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
+                    Log.d("REST_ERROR", response.toString());
+                    System.out.println(statusCode);
+                }
+            });
+
+        }
+        catch (UnsupportedEncodingException e){
+
+        }
 
     }
+
+
     public static void deletePosting(final int postId, final ActivePostsViewAdapter context) throws JSONException{
         RequestParams params = new RequestParams();
         String postingId = Integer.toString(postId);

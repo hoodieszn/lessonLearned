@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Filterable;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -71,7 +72,8 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
     // Indicator for if a Posting has been clicked
     final static int tutorProfileRequest = 0;
-    RelativeLayout dimmer;
+    private RelativeLayout dimmer;
+    private ProgressBar spinner;
 
     // Intent information
     private int degreeId;
@@ -105,6 +107,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
         }};
 
         sortDropdown = this.findViewById(R.id.sortBtn);
+        spinner = findViewById(R.id.tutorListProgress);
 
         //init FAB
         fab = this.findViewById(R.id.fab);
@@ -150,6 +153,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
 
         // Fetch Postings, Courses from server
         try {
+            startLoadingState();
             RESTClientRequest.getPostingsForDegree(degreeId, this);
             RESTClientRequest.getCoursesForDegree(degreeId, this);
         }
@@ -240,6 +244,8 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
             public void onNothingSelected(AdapterView<?> parentView) { }
 
         });
+
+        stopLoadingState();
     }
 
     @Override
@@ -308,8 +314,15 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
         }
     }
 
-
     private ArrayList<Course> getCourseData(){
         return new ArrayList<Course>(courses);
+    }
+  
+    private void startLoadingState(){
+        spinner.setVisibility(View.VISIBLE);
+    }
+
+    private void stopLoadingState(){
+        spinner.setVisibility(View.INVISIBLE);
     }
 }

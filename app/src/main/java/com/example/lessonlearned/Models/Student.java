@@ -29,5 +29,14 @@ public class Student extends User{
         }
         return reportedTutors;
     }
+  
+  
+    public void setReportedFlag(int tutorId){
+        for (int i=0; i < contactedTutors.size(); i++){
+            if (contactedTutors.get(i).getTutorId() == tutorId){
+                contactedTutors.get(i).setReported(true);
+            }
+        }
+    }
 }
 
