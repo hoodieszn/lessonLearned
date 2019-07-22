@@ -48,11 +48,10 @@
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="82dp"
                 android:layout_height="35dp"
-                android:layout_marginTop="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView10"
-                app:srcCompat="@drawable/baseline_delete_white_18dp" />
+                app:srcCompat="@drawable/trashcan" />
 
             <TextView
                 android:id="@+id/price"
@@ -68,6 +67,7 @@
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Delete"
                 android:textColor="#E9E9E9"
                 android:textStyle="bold"

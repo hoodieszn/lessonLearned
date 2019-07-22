@@ -84,36 +84,26 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             activePostingLayout = itemView.findViewById(R.id.activePostingLayout);
             courses = itemView.findViewById(R.id.courses);
             deleteButton = itemView.findViewById(R.id.deleteButton);
             price = itemView.findViewById(R.id.price);
+
             deleteButton.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final int postId = posting.getId();
                     try {
                         RESTClientRequest.deletePosting(postId, ActivePostsViewAdapter.this);
-                    } catch (JSONException e){
+                    }
+                    catch (JSONException e){
                         Log.d("JSONException", e.toString());
                     }
 
                 }
             });
         }
-    }
-    public Callable<Void> goToProfile(){
-        return new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                if(true) {
-                    final Intent newIntent = new Intent(mContext, TutorProfileActivity.class);
-                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    mContext.startActivity(newIntent);
-                }
-                return null;
-            }
-        };
     }
 
 }
