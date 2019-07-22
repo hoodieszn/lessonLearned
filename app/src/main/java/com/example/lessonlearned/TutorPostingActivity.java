@@ -72,7 +72,7 @@ public class TutorPostingActivity extends Activity {
             RESTClientRequest.getTutorById(tutorId, this);
         }
         catch (JSONException e){
-            Log.d("JSONException", e.toString());
+            //Log.d("JSONException", e.toString());
         }
 
     }

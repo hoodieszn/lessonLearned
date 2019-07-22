@@ -59,9 +59,7 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
             try {
                 RESTClientRequest.getDegrees(this);
             }
-            catch (JSONException e){
-                Log.d("JSONException", e.toString());
-            }
+            catch (JSONException e){ }
         }
         // If no user, send back to login screen
         else {
