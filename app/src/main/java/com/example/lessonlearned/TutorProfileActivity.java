@@ -1,6 +1,7 @@
 package com.example.lessonlearned;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -128,6 +130,21 @@ public class TutorProfileActivity extends AppCompatActivity implements CreatePos
 
         // New posting added
         populatePostings();
+    }
+
+    @Override
+    public void onErrorPosting(){
+        AlertDialog alertDialog = new AlertDialog.Builder(TutorProfileActivity.this).create();
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.setMessage("Sorry, you can only have one posting per Degree");
+        alertDialog.show();
     }
 
     @Override
