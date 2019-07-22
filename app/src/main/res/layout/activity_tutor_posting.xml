@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/tutor_profile_bg"
     tools:context=".TutorPostingActivity"
+    android:background="@drawable/tutor_profile_bg"
     >
     <ScrollView
         android:layout_width="fill_parent"
@@ -13,50 +13,60 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
+
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@drawable/profile_bg"
                 android:id="@+id/topPanel"
-                android:gravity="right"
-                >
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/profile_bg"
+                android:gravity="right">
 
                 <Button
                     android:id="@+id/contactButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Contact"
-                    android:fontFamily="sans-serif"
-                    android:textColor="#ffff"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/course_code_bg"
-                    android:layout_margin="20dp"
-                    />
+                    android:fontFamily="sans-serif"
+                    android:text="Contact"
+                    android:textColor="#ffff" />
             </RelativeLayout>
+
             <RelativeLayout
+                android:id="@+id/topImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/topImage"
                 android:layout_alignParentTop="true"
-                >
+                android:layout_marginTop="2dp">
+
                 <RelativeLayout
-                    android:layout_marginTop="75dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/profile_picture_border"
-                    >
+                    android:layout_marginTop="75dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/profile_picture_border">
+
                     <ImageView
                         android:id="@+id/imageView"
-                        android:background="@drawable/profile_picture"
-                        android:scaleType="centerInside"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:padding="2dp"
-                        android:layout_margin="4dp"
+                        android:layout_width="99dp"
+                        android:layout_height="99dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginBottom="4dp"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/avatar2"
-                        />
+                        android:background="@drawable/profile_picture"
+                        android:padding="2dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/avatar2" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -70,26 +80,22 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_centerHorizontal="true"
-                    >
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
-                        android:text="Robert Brown"
-                        android:textSize="25sp"
-                        />
+                        android:textSize="25sp" />
 
                     <TextView
                         android:id="@+id/tutorSchool"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
-                        android:text="UW"
                         android:textSize="16sp" />
 
                     <TextView
@@ -98,36 +104,38 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/tutorSchool"
                         android:fontFamily="sans-serif"
-                        android:text="$5/hour"
                         android:textAlignment="center"
                         android:textSize="16sp" />
                 </LinearLayout>
             </RelativeLayout>
+
             <LinearLayout
+                android:id="@+id/about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/about"
                 android:layout_below="@id/NameContainer"
+                android:layout_marginBottom="15dp"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_marginBottom="10dp"
-                >
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="About:"
-                    android:fontFamily="sans-serif"
-                    android:textSize="16sp"
                     android:layout_marginBottom="2dp"
-                    />
+                    android:fontFamily="sans-serif"
+                    android:text="About:"
+                    android:textSize="16sp" />
+
                 <TextView
+                    android:id="@+id/postText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/postText"
+                    android:background="@drawable/comment_bg"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
                     android:text="Hello this is me, I'm a tutor."
-                    android:textSize="14sp"
-                    android:background="@drawable/comment_bg"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <RelativeLayout
@@ -137,88 +145,93 @@
                 android:id="@+id/Teaches"
                 android:layout_marginBottom="10dp"
                 >
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Teaches:"
                         android:fontFamily="sans-serif"
-                        android:textSize="16sp"
-                        />
-                    <com.google.android.flexbox.FlexboxLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:text="Teaches:"
+                        android:textSize="16sp" />
+
+                    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/courseContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/courseContainer"
-                        app:flexWrap="wrap"
-                        app:flexDirection="row"
+                        app:alignContent="flex_start"
                         app:alignItems="flex_start"
-                        app:alignContent="flex_start" >
-                    </com.google.android.flexbox.FlexboxLayout>
+                        app:flexDirection="row"
+                        app:flexWrap="wrap"></com.google.android.flexbox.FlexboxLayout>
                 </LinearLayout>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/ratingContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:layout_below="@id/Teaches"
                 android:layout_marginBottom="10dp"
-                android:layout_below="@id/Teaches">
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
                 <TextView
+                    android:id="@+id/rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="Rating:"
                     android:layout_marginBottom="10dp"
-                    android:id="@+id/rating"/>
+                    android:text="Average Rating:"
+                    android:textSize="16sp" />
+
                 <RatingBar
                     android:id="@+id/ratingBar"
-                    android:layout_below="@id/rating"
+                    style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="1.0"
-                    android:rating="4"
+                    android:layout_below="@id/rating"
                     android:layout_marginLeft="10dp"
                     android:layout_marginBottom="10dp"
-                    style="?android:attr/ratingBarStyleSmall"
-                    />
+                    android:numStars="5"
+                    android:rating="4"
+                    android:stepSize="1.0" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ratingContainer"
                 >
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
                     android:orientation="vertical"
-                    >
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Student Comments:"
                         android:fontFamily="sans-serif"
-                        android:textSize="16sp"
-                        />
+                        android:text="Student Comments:"
+                        android:textSize="16sp" />
+
                     <RelativeLayout
                         android:id="@+id/comments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingRight="10dp"
                         android:orientation="vertical">
+
                         <android.support.v7.widget.RecyclerView
+                            android:id="@+id/commentSection"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:id="@+id/commentSection"
-                            />
+                            android:paddingBottom="20dp" />
                     </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>
