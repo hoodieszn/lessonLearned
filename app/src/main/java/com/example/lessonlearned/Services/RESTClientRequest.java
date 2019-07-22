@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -380,10 +381,13 @@ public class RESTClientRequest {
         }
     }
     public static void putLocation(final double lat, final double lon, final int userId, final TutorProfileActivity context)throws JSONException{
-        RequestParams params = new RequestParams();
+        String id = Integer.toString(userId);
+
+
+
+        JSONObject params = new JSONObject();
         params.put("lat", lat);
         params.put("lon", lon);
-        String id = Integer.toString(userId);
         try {
             StringEntity entity = new StringEntity(params.toString());
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));

@@ -104,7 +104,12 @@ public class TutorProfileActivity extends AppCompatActivity {
 
                         Context.getUser().setLatitude(location.getLatitude());
                         Context.getUser().setLongitude(location.getLongitude());
-                        // Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        try {
+                            RESTClientRequest.putLocation(location.getLatitude(), location.getLongitude(), Context.getUser().getId(), TutorProfileActivity.this);
+                            // Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e){
+                            Log.d("JSONException", e.toString());
+                        }
                     }
 
                     @Override
