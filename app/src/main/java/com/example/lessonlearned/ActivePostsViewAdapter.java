@@ -27,10 +27,12 @@ import java.util.concurrent.Callable;
 
 public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsViewAdapter.ViewHolder> {
     private List<TutorPosting> activePostings = new ArrayList<>();
-    private Context mContext;
+    private TutorProfileActivity mContext;
     TutorPosting posting;
 
-    public ActivePostsViewAdapter(List<TutorPosting> activePostings, Context mContext) {
+    final static int tutorProfileRequest = 0;
+
+    public ActivePostsViewAdapter(List<TutorPosting> activePostings, TutorProfileActivity mContext) {
         this.activePostings = activePostings;
         this.mContext = mContext;
     }
@@ -66,7 +68,8 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
         viewHolder.activePostingLayout.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(tutorPosting);
+                mContext.dimmer.setVisibility(View.VISIBLE);
+                mContext.startActivityForResult(tutorPosting, tutorProfileRequest);
             }
         });
     }
@@ -105,5 +108,4 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
             });
         }
     }
-
 }

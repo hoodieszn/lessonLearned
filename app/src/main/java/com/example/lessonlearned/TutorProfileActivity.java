@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +47,11 @@ public class TutorProfileActivity extends AppCompatActivity implements CreatePos
     private List<TutorPosting> activePostings = new ArrayList<>();
 
     private static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+    final static int tutorProfileRequest = 0;
 
     private CreatePostingDialog dialog;
     private Button logout;
+    public RelativeLayout dimmer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,8 @@ public class TutorProfileActivity extends AppCompatActivity implements CreatePos
                 startActivity(login);
             }
         });
+
+        dimmer = findViewById(R.id.dimTutorProfile);
 
         populatePostings();
 
@@ -195,4 +200,13 @@ public class TutorProfileActivity extends AppCompatActivity implements CreatePos
 
         }
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == tutorProfileRequest) {
+            if (resultCode == 0) {
+                dimmer.setVisibility(View.GONE);
+            }
+        }
+    }
+
 }
