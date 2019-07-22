@@ -53,7 +53,7 @@ public class TutorPostingActivity extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        getWindow().setLayout((int)(width*.7), (int)(height*.6));
+        getWindow().setLayout((int)(width*.8), (int)(height*.8));
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
