@@ -15,10 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name=".CreateTutorPosting"
-            android:label="@string/title_activity_create_tutor_posting"
-            android:theme="@style/AppTheme.PopUp"/>
-        <activity
             android:name=".TutorProfileActivity"
             android:label="@string/title_activity_tutor_profile"
             android:theme="@style/NoActionBar" />

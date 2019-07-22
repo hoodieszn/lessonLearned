@@ -53,7 +53,7 @@ public class TutorPostingActivity extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        getWindow().setLayout((int)(width*.7), (int)(height*.6));
+        getWindow().setLayout((int)(width*.8), (int)(height*.8));
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
@@ -118,9 +118,18 @@ public class TutorPostingActivity extends Activity {
         contact_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                try{
+                    RESTClientRequest.postContactedTutor(tutor.getPhone(), tutor.getId(), tutor.getName(), false, TutorPostingActivity.this);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("smsto:" + tutor.getPhone()));
                 intent.putExtra("sms_body", "Hello, I would like to arrange a time for tutoring.");
+
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }

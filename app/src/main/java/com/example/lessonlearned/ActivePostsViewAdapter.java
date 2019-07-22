@@ -2,6 +2,7 @@ package com.example.lessonlearned;
 
 import android.content.Intent;
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +46,6 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         posting = activePostings.get(position);
 
-        viewHolder.name.setText(posting.getTutorName());
         viewHolder.price.setText("$" + Double.toString(posting.getPrice()) + "/hour");
 
         String courses = "";
@@ -77,8 +77,7 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        FlexboxLayout activePostingLayout;
-        TextView name;
+        ConstraintLayout activePostingLayout;
         TextView courses;
         ImageButton deleteButton;
         TextView price;
@@ -86,7 +85,6 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
         public ViewHolder(View itemView) {
             super(itemView);
             activePostingLayout = itemView.findViewById(R.id.activePostingLayout);
-            name = itemView.findViewById(R.id.name);
             courses = itemView.findViewById(R.id.courses);
             deleteButton = itemView.findViewById(R.id.deleteButton);
             price = itemView.findViewById(R.id.price);

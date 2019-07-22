@@ -45,29 +45,16 @@ public class DegreesActivity extends BaseActivity implements DegreesViewAdapter.
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Context.setUser(null);
-
-                Intent login = new Intent(DegreesActivity.this, MainActivity.class);
-                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                startActivity(login);
-            }
-        });
-
         spinner = findViewById(R.id.degreesProgress);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        startLoadingState();
+
         if (Context.getUser() != null){
-
-            startLoadingState();
-
             // Fetch Degrees from server
             try {
                 RESTClientRequest.getDegrees(this);
