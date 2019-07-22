@@ -38,4 +38,17 @@ public class Tutor extends User{
     public void setAverageRating(double averageRating) {
         this.averageRating = averageRating;
     }
+
+    public void deletePosting(int postingId){
+        int toDelete = -1;
+
+        for (int i=0; i< postings.size(); i++){
+            if (postings.get(i).getId()== postingId){
+                toDelete = i;
+                break;
+            }
+        }
+
+        if (toDelete != -1) postings.remove(toDelete);
+    }
 }
