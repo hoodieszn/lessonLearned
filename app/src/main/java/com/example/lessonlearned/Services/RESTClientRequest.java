@@ -395,10 +395,12 @@ public class RESTClientRequest {
     }
 
     public static void putLocation(final double lat, final double lon, final int userId, final TutorProfileActivity context)throws JSONException{
-        RequestParams params = new RequestParams();
+        String id = Integer.toString(userId);
+
+        JSONObject params = new JSONObject();
         params.put("lat", lat);
         params.put("lon", lon);
-        String id = Integer.toString(userId);
+
         try {
             StringEntity entity = new StringEntity(params.toString());
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
