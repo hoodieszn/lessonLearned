@@ -151,8 +151,6 @@ public class TutorProfileActivity extends AppCompatActivity implements CreatePos
                     @Override
                     public void onLocationChanged(Location location) {
 
-                        Log.d("TUTOR", "loc changed");
-
                         Context.getUser().setLatitude(location.getLatitude());
                         Context.getUser().setLongitude(location.getLongitude());
 
