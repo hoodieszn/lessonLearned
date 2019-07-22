@@ -284,13 +284,13 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
             try {
                 LocationManager lm = (LocationManager)getSystemService(android.content.Context.LOCATION_SERVICE);
 
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000, 0, new LocationListener() {
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1200000, 0, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-
-                        Context.getUser().setLatitude(location.getLatitude());
-                        Context.getUser().setLongitude(location.getLongitude());
-                        // Toast.makeText(TutorsListActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        if (Context.getInstance() != null && Context.getUser() != null) {
+                            Context.getUser().setLatitude(location.getLatitude());
+                            Context.getUser().setLongitude(location.getLongitude());
+                        }
                     }
 
                     @Override
