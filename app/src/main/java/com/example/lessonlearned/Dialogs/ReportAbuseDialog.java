@@ -65,12 +65,12 @@ public class ReportAbuseDialog extends DialogFragment {
 
         // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the ReportAbuseDialogListener so we can send events to the host
+            // Instantiate the CreatePostingDialogListener so we can send events to the host
             listener = (ReportAbuseDialogListener) context;
         }
         catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
-            Log.d("DIALOGERROR", e.toString() + " must implement ReportAbuseDialogListener");
+            Log.d("DIALOGERROR", e.toString() + " must implement CreatePostingDialogListener");
         }
     }
 }

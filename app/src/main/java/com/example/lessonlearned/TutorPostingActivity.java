@@ -118,9 +118,18 @@ public class TutorPostingActivity extends Activity {
         contact_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                try{
+                    RESTClientRequest.postContactedTutor(tutor.getPhone(), tutor.getId(), tutor.getName(), false, TutorPostingActivity.this);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("smsto:" + tutor.getPhone()));
                 intent.putExtra("sms_body", "Hello, I would like to arrange a time for tutoring.");
+
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }

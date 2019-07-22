@@ -9,53 +9,57 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lessonlearned.Models.Course;
+import com.example.lessonlearned.Dialogs.CreatePostingDialog;
 import com.example.lessonlearned.Models.Degree;
 import com.example.lessonlearned.Models.Tutor;
 import com.example.lessonlearned.Models.TutorPosting;
 import com.example.lessonlearned.Services.RESTClientRequest;
 import com.example.lessonlearned.Singletons.Context;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TutorProfileActivity extends AppCompatActivity {
+public class TutorProfileActivity extends AppCompatActivity implements CreatePostingDialog.CreatePostingDialogListener{
 
     private Tutor tutor;
     private List<TutorPosting> activePostings = new ArrayList<>();
-    private List<Degree> degrees = new ArrayList<>();
-    private boolean firstTimeSelected = true;
+
     private static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+
+    private CreatePostingDialog dialog;
+    private Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_tutor_profile);
+
         tutor = (Tutor)Context.getUser();
         activePostings = tutor.getPostings();
-        // Fetch Degrees from server
-        try {
-            RESTClientRequest.getDegreesList(this, tutor.getSchoolId());
-        }
-        catch (JSONException e){
-            Log.d("JSONException", e.toString());
-        }
+        dialog = new CreatePostingDialog();
+
         populateTutorProfile();
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -68,10 +72,7 @@ public class TutorProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void populateDegreeList(List<Degree> degreesList) {
-        this.degrees = degreesList;
-    }
-
+    // Get Tutor Information
     public void populateTutorProfile() {
         TextView currentTutorName = findViewById(R.id.currentTutorName);
         currentTutorName.setText(tutor.getName());
@@ -82,56 +83,57 @@ public class TutorProfileActivity extends AppCompatActivity {
         TextView phone = findViewById(R.id.phone);
         phone.setText(tutor.getPhone());
 
-        initActivePostings();
-
-    }
-
-    public void initDegreeSpinner() {
-        ImageButton addButton = findViewById(R.id.addButton);
-        final Spinner degreesSpinner = findViewById(R.id.degrees);
-        List<String> degreeNames = new ArrayList<>();
-        final List<Integer> degreeIds = new ArrayList<>();
-
-        for(Degree d: degrees) {
-            degreeIds.add(d.getId());
-            degreeNames.add(d.getName());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(TutorProfileActivity.this, android.R.layout.simple_spinner_item, degreeNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        degreesSpinner.setAdapter(adapter);
-
-        degreesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        logout = findViewById(R.id.tutorLogout);
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!firstTimeSelected) {
-                    final Intent addPosting = new Intent(getApplicationContext(), CreateTutorPosting.class);
-                    String degree = parent.getItemAtPosition(position).toString();
-                    addPosting.putExtra("id", degreeIds.get(position));
-                    addPosting.putExtra("name", degree);
-                    startActivity(addPosting);
-                }
-                firstTimeSelected = false;
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Context.setUser(null);
+
+                Intent login = new Intent(TutorProfileActivity.this, MainActivity.class);
+                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(login);
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
-
         });
 
+        populatePostings();
+
+        final ImageButton addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                degreesSpinner.performClick();
+                showCreatePostingDialog();
             }
         });
     }
-    private void initActivePostings() {
+
+    public void populatePostings(){
         RecyclerView recyclerView = findViewById(R.id.tutorPostings);
         ActivePostsViewAdapter adapter = new ActivePostsViewAdapter(activePostings, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    public void showCreatePostingDialog() {
+        dialog = new CreatePostingDialog();
+        dialog.show(getSupportFragmentManager(), "CreatePostingDialog");
+    }
+
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        tutor = (Tutor)Context.getUser();
+        activePostings = tutor.getPostings();
+
+        // New posting added
+        populatePostings();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

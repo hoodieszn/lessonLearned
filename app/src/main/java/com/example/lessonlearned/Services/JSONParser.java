@@ -2,8 +2,8 @@ package com.example.lessonlearned.Services;
 
 import android.util.Log;
 
-import com.example.lessonlearned.CreateTutorPosting;
 import com.example.lessonlearned.DegreesActivity;
+import com.example.lessonlearned.Dialogs.CreatePostingDialog;
 import com.example.lessonlearned.Models.ContactedTutor;
 import com.example.lessonlearned.Models.Course;
 import com.example.lessonlearned.Models.Degree;
@@ -17,30 +17,18 @@ import com.example.lessonlearned.Models.UserType;
 import com.example.lessonlearned.SignUpActivity;
 import com.example.lessonlearned.Singletons.Context;
 import com.example.lessonlearned.TutorPostingActivity;
-import com.example.lessonlearned.TutorProfileActivity;
 import com.example.lessonlearned.TutorsListActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class JSONParser {
-
-
-    // Parse JSON to User Object
-    public static void parsePostResponse(final Callable<Void> callback){
-        try{
-            callback.call();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void parseUserResponse(String UUID, final Callable<Void> callback, JSONObject response){
         try {
@@ -189,7 +177,7 @@ public class JSONParser {
     }
 
     //parse Degrees to Tutor Post
-    public static void parseDegreesPostResponse(JSONObject response, TutorProfileActivity context){
+    public static void parseDegreesPostResponse(JSONObject response, CreatePostingDialog context){
         try {
             Log.d("DEGREESJSON", response.toString());
 
@@ -207,16 +195,16 @@ public class JSONParser {
                 degreeList.add(new Degree(id, name, schoolId, schoolName));
             }
 
-            context.populateDegreeList(degreeList);
-            context.initDegreeSpinner();
+            context.loadDegreeList(degreeList);
+            context.stopLoadingState();
         }
         catch (Exception e) {
             Log.d("REST_ERROR", e.toString());
         }
     }
 
-    //Parse courses to CreateTutorPosting
-    public static void parseCoursesByDegree(JSONObject response, CreateTutorPosting context) {
+    //Parse courses to CreatePostingDialog
+    public static void parseCoursesByDegree(JSONObject response, CreatePostingDialog context) {
         try {
             JSONArray jsonCourses = response.getJSONObject("data").getJSONArray("courses");
             ArrayList<Course> courses = new ArrayList<Course>();
@@ -227,11 +215,15 @@ public class JSONParser {
                 int courseId = jsonCourse.getInt("id");
                 String courseName = jsonCourse.getString("name");
 
-                courses.add(new Course(courseId, courseName, 1));
+                courses.add(new Course(courseId, courseName, Context.getUser().getSchoolId()));
             }
+
+            context.clearSelectedCourses();
             context.setCourseList(courses);
             context.initCourseAutofill();
-        } catch (Exception e) {
+            context.stopLoadingState();
+        }
+        catch (Exception e) {
             Log.d("REST_ERROR", e.toString());
         }
     }
