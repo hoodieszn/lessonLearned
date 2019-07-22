@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
     private EditText codeText;
+    private Button login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,11 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressbar);
         codeText = findViewById(R.id.codeText);
+        login = findViewById(R.id.login);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -139,6 +142,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
+            progressBar.setVisibility(View.GONE);
             Toast.makeText(VerifyPhoneActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     };

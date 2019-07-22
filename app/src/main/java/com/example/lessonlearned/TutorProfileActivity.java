@@ -169,17 +169,19 @@ public class TutorProfileActivity extends AppCompatActivity implements CreatePos
             try {
                 LocationManager lm = (LocationManager)getSystemService(android.content.Context.LOCATION_SERVICE);
 
-                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 120000, 0, new LocationListener() {
+                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1200000, 0, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
 
-                        Context.getUser().setLatitude(location.getLatitude());
-                        Context.getUser().setLongitude(location.getLongitude());
+                        if (Context.getInstance() != null && Context.getUser() != null) {
+                            Context.getUser().setLatitude(location.getLatitude());
+                            Context.getUser().setLongitude(location.getLongitude());
 
-                        try {
-                            RESTClientRequest.putLocation(location.getLatitude(), location.getLongitude(), Context.getUser().getId(), TutorProfileActivity.this);
-                        } catch (JSONException e){
-                            Log.d("JSONException", e.toString());
+                            try {
+                                RESTClientRequest.putLocation(location.getLatitude(), location.getLongitude(), Context.getUser().getId(), TutorProfileActivity.this);
+                            } catch (JSONException e) {
+                                Log.d("JSONException", e.toString());
+                            }
                         }
                     }
 
