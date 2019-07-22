@@ -257,12 +257,15 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
         tutorProfile.putExtra("postingId", currentPosting.getId());
 
         dimmer.setVisibility(View.VISIBLE);
+        fab.hide();
+
         startActivityForResult(tutorProfile, tutorProfileRequest);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == tutorProfileRequest) {
             if (resultCode == RESULT_CANCELED) {
+                fab.show();
                 dimmer.setVisibility(View.GONE);
             }
         }
