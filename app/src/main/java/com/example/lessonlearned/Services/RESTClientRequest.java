@@ -463,25 +463,13 @@ public class RESTClientRequest {
         RequestParams params = new RequestParams();
         String postingId = Integer.toString(postId);
         RESTClient.delete("postings/" + postingId, params, new JsonHttpResponseHandler(){
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    String firebaseID = Context.getUser().getFirebaseId();
-                    Tutor tut = (Tutor)Context.getUser();
-                    List<TutorPosting> tutPostings = new ArrayList<TutorPosting>();;
-                    for (int i = 0; i < tutPostings.size(); i++){
-                        if (postId == tut.getPostings().get(i).getId()){
-                            continue;
-                        }
-                        tutPostings.add(tut.getPostings().get(i));
-                    }
-                    tut.setPostings(tutPostings);
-                    Context.setUser(tut);
-                    try {
-                        context.goToProfile().call();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
+                ((Tutor)Context.getUser()).deletePosting(postId);
+                context.notifyDataSetChanged();
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
                 Log.d("REST_ERROR", responseString);
