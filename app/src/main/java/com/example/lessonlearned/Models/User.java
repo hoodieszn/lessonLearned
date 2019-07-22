@@ -2,6 +2,8 @@ package com.example.lessonlearned.Models;
 
 import android.location.Location;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
