@@ -48,7 +48,7 @@ public class CreatePostingDialog extends DialogFragment {
 
     private EditText aboutText, priceText;
     private Spinner degreesSpinner;
-    private TextView courseText, loadingText;
+    private TextView courseText, loadingText, missingFieldtext;
     private AutoCompleteTextView autocomplete;
     private FlexboxLayout courseContainer;
     private ProgressBar spinner;
@@ -80,6 +80,7 @@ public class CreatePostingDialog extends DialogFragment {
         courseContainer = view.findViewById(R.id.courseContainer);
         spinner = view.findViewById(R.id.addpostingSpinner);
         loadingText = view.findViewById(R.id.loadingText);
+        missingFieldtext = view.findViewById(R.id.missingFieldText);
 
         // Fetch Degrees from server
         try {
@@ -92,16 +93,21 @@ public class CreatePostingDialog extends DialogFragment {
 
         builder.setView(view).setTitle("Create a New Posting");
 
-        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-
+        /*builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
 
                 try {
                     String postText = aboutText.getText().toString();
                     String price = priceText.getText().toString();
 
-                    RESTClientRequest.postPosting(degreeSelected, (Tutor) com.example.lessonlearned.Singletons.Context.getUser(),
-                            Double.parseDouble(price), postText, selectedCourses, CreatePostingDialog.this);
+                    if (price.length() == 0 || selectedCourses.size() == 0){
+                        missingFieldtext.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        RESTClientRequest.postPosting(degreeSelected, (Tutor) com.example.lessonlearned.Singletons.Context.getUser(),
+                                Double.parseDouble(price), postText, selectedCourses, CreatePostingDialog.this);
+                    }
                 }
                 catch (JSONException e){
                     Log.d("JSONException", e.toString());
@@ -119,9 +125,47 @@ public class CreatePostingDialog extends DialogFragment {
                 catch (NullPointerException e){ }
 
             }
+        });*/
+
+        builder.setPositiveButton("Create", null);
+        builder.setNegativeButton("Cancel", null);
+
+        final AlertDialog d = builder.create();
+
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String postText = aboutText.getText().toString();
+                            String price = priceText.getText().toString();
+
+                            if (price.length() == 0 || selectedCourses.size() == 0){
+                                missingFieldtext.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                RESTClientRequest.postPosting(degreeSelected, (Tutor) com.example.lessonlearned.Singletons.Context.getUser(),
+                                        Double.parseDouble(price), postText, selectedCourses, CreatePostingDialog.this);
+
+                                dialog.dismiss();
+                            }
+                        }
+                        catch (JSONException e){
+                            Log.d("JSONException", e.toString());
+                        }
+                        catch (NullPointerException e){ }
+                    }
+                });
+            }
         });
 
-        return builder.create();
+        return d;
     }
 
     @Override
@@ -255,8 +299,6 @@ public class CreatePostingDialog extends DialogFragment {
     }
 
     public void startLoadingState(){
-        aboutText.setEnabled(false);
-        priceText.setEnabled(false);
         degreesSpinner.setEnabled(false);
         autocomplete.setEnabled(false);
 
@@ -265,8 +307,6 @@ public class CreatePostingDialog extends DialogFragment {
     }
 
     public void stopLoadingState(){
-        aboutText.setEnabled(true);
-        priceText.setEnabled(true);
         degreesSpinner.setEnabled(true);
         autocomplete.setEnabled(true);
 

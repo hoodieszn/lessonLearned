@@ -126,6 +126,8 @@ public class MainActivity extends BaseActivity {
             }
             catch (JSONException e){
                 Log.d("JSONException", e.toString());
+                FirebaseAuth.getInstance().updateCurrentUser(null);
+                stopLoadingState();
             }
         }
     }

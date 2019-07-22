@@ -293,7 +293,7 @@ public class RESTClientRequest {
                         int postingId = jsonPosting.getInt("id");
 
                         TutorPosting tutorPost = new TutorPosting(postingId, courses, postText, price, tutor.getId(), tutor.getName(), tutor.getLatitude(), tutor.getLongitude(), tutor.getAverageRating());
-                        ((Tutor) Context.getUser()).getPostings().add(tutorPost);
+                        ((Tutor) Context.getUser()).getPostings().add(0, tutorPost);
 
                         context.refreshPostings();
                     }

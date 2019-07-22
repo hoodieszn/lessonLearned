@@ -45,7 +45,7 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int position) {
         posting = activePostings.get(position);
 
         viewHolder.price.setText("$" + Double.toString(posting.getPrice()) + "/hour");
@@ -72,6 +72,21 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
                 mContext.startActivityForResult(tutorPosting, tutorProfileRequest);
             }
         });
+
+        viewHolder.deleteButton.setOnClickListener( new View.OnClickListener() {
+            final int postId = posting.getId();
+
+            @Override
+            public void onClick(View view) {
+                try {
+                    RESTClientRequest.deletePosting(postId, ActivePostsViewAdapter.this);
+                }
+                catch (JSONException e){
+                    Log.d("JSONException", e.toString());
+                }
+
+            }
+        });
     }
 
     @Override
@@ -92,20 +107,6 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
             courses = itemView.findViewById(R.id.courses);
             deleteButton = itemView.findViewById(R.id.deleteButton);
             price = itemView.findViewById(R.id.price);
-
-            deleteButton.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final int postId = posting.getId();
-                    try {
-                        RESTClientRequest.deletePosting(postId, ActivePostsViewAdapter.this);
-                    }
-                    catch (JSONException e){
-                        Log.d("JSONException", e.toString());
-                    }
-
-                }
-            });
         }
     }
 }
