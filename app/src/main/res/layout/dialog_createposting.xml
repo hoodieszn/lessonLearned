@@ -84,6 +84,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
+            android:id="@+id/courseLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="23dp"
@@ -120,6 +121,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:hint="School Course Code"
+            android:dropDownAnchor="@id/courseLayout"
             android:inputType="textPostalAddress"
             android:textSize="14sp" />
 

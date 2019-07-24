@@ -132,11 +132,12 @@ public class RESTClientRequest {
 
     }
     //Get courses by degree id
-    public static void getCoursesByDegree(final CreatePostingDialog context, final int degreeId) throws JSONException{
-        RESTClient.get(degreeId + "/courses", null, new JsonHttpResponseHandler() {
+    public static void getCoursesByDegreeAndCourse(final CreatePostingDialog context, final int degreeId, final String courseCode) throws JSONException{
+        RESTClient.get(degreeId + "/courses" + "?subject=" + courseCode, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONParser.parseCoursesByDegree(response, context);
+                Log.d("COURSEGET", courseCode);
+                JSONParser.parseCoursesByDegreeAndCourse(response, context);
             }
 
             @Override
