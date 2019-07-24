@@ -57,6 +57,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void populateSignUp(){
+
+        EditText phone = findViewById(R.id.phone);
+        phone.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+
         final Spinner schoolDropdown = findViewById(R.id.schoolDropdown);
         final Spinner usertypeDropdown = findViewById(R.id.usertypeDropdown);
 

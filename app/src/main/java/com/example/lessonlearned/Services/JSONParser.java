@@ -204,8 +204,9 @@ public class JSONParser {
     }
 
     //Parse courses to CreatePostingDialog
-    public static void parseCoursesByDegree(JSONObject response, CreatePostingDialog context) {
+    public static void parseCoursesByDegreeAndCourse(JSONObject response, CreatePostingDialog context) {
         try {
+            Log.d("COURSESJSON", response.toString());
             JSONArray jsonCourses = response.getJSONObject("data").getJSONArray("courses");
             ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -218,9 +219,8 @@ public class JSONParser {
                 courses.add(new Course(courseId, courseName, Context.getUser().getSchoolId()));
             }
 
-            context.clearSelectedCourses();
             context.setCourseList(courses);
-            context.initCourseAutofill();
+            context.notifyCourseAutofill();
             context.stopLoadingState();
         }
         catch (Exception e) {
