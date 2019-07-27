@@ -32,7 +32,7 @@ public class JSONParser {
 
     public static void parseUserResponse(String UUID, final Callable<Void> callback, JSONObject response){
         try {
-            Log.d("USER", response.toString());
+            // Log.d("USER", response.toString());
 
             JSONObject jsonUser = response.getJSONObject("data").getJSONObject("user");
 
@@ -126,7 +126,7 @@ public class JSONParser {
             }
         }
         catch (Exception e) {
-            Log.d("REST_ERROR", e.toString());
+            // Log.d("REST_ERROR", e.toString());
         }
     }
 
@@ -134,7 +134,7 @@ public class JSONParser {
 
     public static void parseDegreesResponse(JSONObject response, DegreesActivity context){
         try {
-            Log.d("DEGREESJSON", response.toString());
+            //Log.d("DEGREESJSON", response.toString());
 
             JSONArray jsonDegrees = response.getJSONObject("data").getJSONArray("degrees");
 
@@ -154,14 +154,16 @@ public class JSONParser {
             context.populateDegreeList(degreeMap);
         }
         catch (Exception e) {
-            Log.d("REST_ERROR", e.toString());
+            // Log.d("REST_ERROR", e.toString());
         }
     }
     public static void parseSchoolsResponse(JSONObject response, SignUpActivity context){
         final ArrayList<School> schoolList = new ArrayList<School>();
         try{
-            Log.d("SCHOOLSJSON", response.toString());
+            //Log.d("SCHOOLSJSON", response.toString());
+
             JSONArray jsonSchools = response.getJSONObject("data").getJSONArray("schools");
+
             for (int i = 0; i < jsonSchools.length(); i++){
                 JSONObject jsonSchool = jsonSchools.getJSONObject(i);
                 int id = jsonSchool.getInt("id");
@@ -172,14 +174,14 @@ public class JSONParser {
             context.setSchoolList(schoolList);
             context.populateSignUp();
         } catch (Exception e){
-            Log.d("REST_ERROR", e.toString());
+            // Log.d("REST_ERROR", e.toString());
         }
     }
 
     //parse Degrees to Tutor Post
     public static void parseDegreesPostResponse(JSONObject response, CreatePostingDialog context){
         try {
-            Log.d("DEGREESJSON", response.toString());
+            // Log.d("DEGREESJSON", response.toString());
 
             JSONArray jsonDegrees = response.getJSONObject("data").getJSONArray("degrees");
             List<Degree> degreeList = new ArrayList<>();
@@ -199,15 +201,17 @@ public class JSONParser {
             context.stopLoadingState();
         }
         catch (Exception e) {
-            Log.d("REST_ERROR", e.toString());
+            // Log.d("REST_ERROR", e.toString());
         }
     }
 
     //Parse courses to CreatePostingDialog
     public static void parseCoursesByDegreeAndCourse(JSONObject response, CreatePostingDialog context) {
         try {
-            Log.d("COURSESJSON", response.toString());
+            // Log.d("COURSESJSON", response.toString());
+
             JSONArray jsonCourses = response.getJSONObject("data").getJSONArray("courses");
+
             ArrayList<Course> courses = new ArrayList<Course>();
 
             for (int j = 0; j < jsonCourses.length(); j++) {
@@ -224,7 +228,7 @@ public class JSONParser {
             context.stopLoadingState();
         }
         catch (Exception e) {
-            Log.d("REST_ERROR", e.toString());
+            //Log.d("REST_ERROR", e.toString());
         }
     }
     // Parse Postings to tutorPostings
@@ -235,7 +239,7 @@ public class JSONParser {
         final ArrayList<TutorPosting> tutorPostings = new ArrayList<TutorPosting>();
 
         try {
-            Log.d("POSTINGSJSON", response.toString());
+            // Log.d("POSTINGSJSON", response.toString());
 
             JSONArray jsonPostings = response.getJSONObject("data").getJSONArray("tutorPostings");
 
@@ -271,7 +275,7 @@ public class JSONParser {
             context.populatePostings();
         }
         catch (Exception e) {
-            Log.d("REST_ERROR", e.toString());
+            // Log.d("REST_ERROR", e.toString());
         }
     }
 
@@ -281,7 +285,7 @@ public class JSONParser {
         final ArrayList<Course> courses = new ArrayList<Course>();
 
         try {
-            Log.d("COURSESJSON", response.toString());
+            // Log.d("COURSESJSON", response.toString());
 
             JSONArray jsonCourses = response.getJSONObject("data").getJSONArray("courses");
 
@@ -299,7 +303,7 @@ public class JSONParser {
             context.setCourses(courses);
         }
         catch (Exception e) {
-            Log.d("REST_ERROR", e.toString());
+            // Log.d("REST_ERROR", e.toString());
         }
 
     }
@@ -367,7 +371,7 @@ public class JSONParser {
             context.populateTutorInfo();
         }
         catch(Exception e) {
-            Log.d("REST_ERROR", e.toString());
+            // Log.d("REST_ERROR", e.toString());
         }
     }
 }

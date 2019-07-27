@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
             RESTClientRequest.getSchools(this);
         }
         catch (JSONException e) {
-            Log.d("JSONException", e.toString());
+            // Log.d("JSONException", e.toString());
         }
     }
 
@@ -163,15 +163,16 @@ public class SignUpActivity extends AppCompatActivity {
 
                             try{
                                 RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.student, contactedTutors, SignUpActivity.this);
-                            } catch (JSONException e){
-                            Log.d("JSONException", e.toString());
-                        }
+                            }
+                            catch (JSONException e){
+                                // Log.d("JSONException", e.toString());
+                            }
                     }
                     else if (userType.compareToIgnoreCase(UserType.tutor.toString()) == 0) {
                         try{
                             RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.tutor, contactedTutors, SignUpActivity.this);
                         } catch (JSONException e){
-                            Log.d("JSONException", e.toString());
+                            // Log.d("JSONException", e.toString());
                         }
 
                     }

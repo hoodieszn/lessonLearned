@@ -84,7 +84,7 @@ public class ReviewDialog extends DialogFragment {
             listener = (ReviewDialogListener) context;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
-            Log.d("DIALOGERROR", e.toString() + " must implement ReviewDialogListener");
+            // Log.d("DIALOGERROR", e.toString() + " must implement ReviewDialogListener");
         }
     }
 }

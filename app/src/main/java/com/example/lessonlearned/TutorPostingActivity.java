@@ -128,7 +128,7 @@ public class TutorPostingActivity extends Activity {
 
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("smsto:" + tutor.getPhone()));
-                intent.putExtra("sms_body", "Hello, I would like to arrange a time for tutoring.");
+                intent.putExtra("sms_body", "Hi, I'd like to arrange a time for tutoring.");
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);

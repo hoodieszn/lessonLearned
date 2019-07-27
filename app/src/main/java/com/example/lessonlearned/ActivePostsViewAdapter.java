@@ -82,7 +82,7 @@ public class ActivePostsViewAdapter extends RecyclerView.Adapter<ActivePostsView
                     RESTClientRequest.deletePosting(postId, ActivePostsViewAdapter.this);
                 }
                 catch (JSONException e){
-                    Log.d("JSONException", e.toString());
+                    // Log.d("JSONException", e.toString());
                 }
 
             }
