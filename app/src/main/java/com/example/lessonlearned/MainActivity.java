@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity {
                 RESTClientRequest.getUser(goToLandingPage(), this);
             }
             catch (JSONException e){
-                Log.d("JSONException", e.toString());
+                // Log.d("JSONException", e.toString());
                 FirebaseAuth.getInstance().updateCurrentUser(null);
                 stopLoadingState();
             }
@@ -148,7 +148,7 @@ public class MainActivity extends BaseActivity {
                     startActivity(tutorProfileIntent);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Error Authenticating", Toast.LENGTH_SHORT).show();
                 }
                 return null;
             }

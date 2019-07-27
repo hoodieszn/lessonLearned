@@ -92,7 +92,8 @@ public class CreatePostingDialog extends DialogFragment {
             RESTClientRequest.getDegreesList(this, com.example.lessonlearned.Singletons.Context.getUser().getSchoolId());
         }
         catch (JSONException e){
-            Log.d("JSONException", e.toString());
+            stopLoadingState();
+            //Log.d("JSONException", e.toString());
         }
 
         builder.setView(view).setTitle("Create a New Posting");
@@ -127,7 +128,8 @@ public class CreatePostingDialog extends DialogFragment {
                             }
                         }
                         catch (JSONException e){
-                            Log.d("JSONException", e.toString());
+                            dialog.dismiss();
+                            //Log.d("JSONException", e.toString());
                         }
                         catch (NullPointerException e){ }
                     }
@@ -149,7 +151,7 @@ public class CreatePostingDialog extends DialogFragment {
         }
         catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
-            Log.d("DIALOGERROR", e.toString() + " must implement CreatePostingDialogListener");
+            // Log.d("DIALOGERROR", e.toString() + " must implement CreatePostingDialogListener");
         }
     }
 
@@ -269,7 +271,8 @@ public class CreatePostingDialog extends DialogFragment {
             RESTClientRequest.getCoursesByDegreeAndCourse(this, degreeSelected, courseCode);
         }
         catch (JSONException e){
-            Log.d("JSONException", e.toString());
+            stopLoadingState();
+            //Log.d("JSONException", e.toString());
         }
     }
 

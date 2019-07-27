@@ -180,7 +180,7 @@ public class TutorProfileActivity extends AppCompatActivity implements CreatePos
                             try {
                                 RESTClientRequest.putLocation(location.getLatitude(), location.getLongitude(), Context.getUser().getId(), TutorProfileActivity.this);
                             } catch (JSONException e) {
-                                Log.d("JSONException", e.toString());
+                                //Log.d("JSONException", e.toString());
                             }
                         }
                     }

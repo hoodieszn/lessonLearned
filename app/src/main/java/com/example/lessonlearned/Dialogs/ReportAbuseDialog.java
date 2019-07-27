@@ -70,7 +70,7 @@ public class ReportAbuseDialog extends DialogFragment {
         }
         catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
-            Log.d("DIALOGERROR", e.toString() + " must implement CreatePostingDialogListener");
+            // Log.d("DIALOGERROR", e.toString() + " must implement CreatePostingDialogListener");
         }
     }
 }

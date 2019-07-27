@@ -107,13 +107,8 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                                 RESTClientRequest.getUser(goToLandingPage(), VerifyPhoneActivity.this);
                             }
                             catch (JSONException e){
-                                Log.d("JSONException", e.toString());
+                                // Log.d("JSONException", e.toString());
                             }
-
-                            //Intent degreeIntent = new Intent(VerifyPhoneActivity.this, DegreesActivity.class);
-                            //degreeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            //startActivity(degreeIntent);
-
                         }
                         else{
                             Toast.makeText(VerifyPhoneActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -162,7 +157,7 @@ public class VerifyPhoneActivity extends AppCompatActivity {
                     startActivity(tutorProfileIntent);
                 }
                 else {
-                    Toast.makeText(VerifyPhoneActivity.this, "Should navigate to tutor profile page", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyPhoneActivity.this, "Error Authenticating", Toast.LENGTH_SHORT).show();
                 }
                 return null;
             }
