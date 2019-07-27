@@ -110,7 +110,7 @@ public class RESTClientRequest {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("REST_ERROR", responseString);
+                    // Log.d("REST_ERROR", responseString);
                 }
             });
 
@@ -125,23 +125,24 @@ public class RESTClientRequest {
                }
                @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
-                    Log.d("REST_ERROR", responseString);
+                    // Log.d("REST_ERROR", responseString);
                }
             });
 
 
     }
     //Get courses by degree id
-    public static void getCoursesByDegree(final CreatePostingDialog context, final int degreeId) throws JSONException{
-        RESTClient.get(degreeId + "/courses", null, new JsonHttpResponseHandler() {
+    public static void getCoursesByDegreeAndCourse(final CreatePostingDialog context, final int degreeId, final String courseCode) throws JSONException{
+        RESTClient.get(degreeId + "/courses" + "?subject=" + courseCode, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONParser.parseCoursesByDegree(response, context);
+                // Log.d("COURSEGET", courseCode);
+                JSONParser.parseCoursesByDegreeAndCourse(response, context);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("REST_ERROR", responseString);
+                // Log.d("REST_ERROR", responseString);
             }
         });
     }
@@ -155,7 +156,7 @@ public class RESTClientRequest {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("REST_ERROR", responseString);
+                // Log.d("REST_ERROR", responseString);
             }
         });
     }
@@ -172,7 +173,7 @@ public class RESTClientRequest {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("REST_ERROR", responseString);
+                    // Log.d("REST_ERROR", responseString);
                 }
             });
         }
@@ -191,7 +192,7 @@ public class RESTClientRequest {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("REST_ERROR", responseString);
+                    // Log.d("REST_ERROR", responseString);
                 }
             });
         }
@@ -206,7 +207,7 @@ public class RESTClientRequest {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("REST_ERROR", responseString);
+                // Log.d("REST_ERROR", responseString);
             }
         });
     }
@@ -223,7 +224,7 @@ public class RESTClientRequest {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("REST_ERROR", responseString);
+                    // Log.d("REST_ERROR", responseString);
                 }
             });
         }
@@ -245,7 +246,7 @@ public class RESTClientRequest {
                 RESTClient.post(context, "reportabuse", entity, "application/json", new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d("ABUSERESPONSE", statusCode + ": " + response.toString());
+                        // Log.d("ABUSERESPONSE", statusCode + ": " + response.toString());
 
                         ((Student)Context.getUser()).setReportedFlag(tutorId);
                         context.donePost(statusCode);
@@ -254,7 +255,7 @@ public class RESTClientRequest {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.d("REST_ERROR", responseString);
+                        // Log.d("REST_ERROR", responseString);
                         context.donePost(statusCode);
                     }
                 });
@@ -286,7 +287,7 @@ public class RESTClientRequest {
             RESTClient.post(context.getActivity(),   Integer.toString(degreeId) + "/postings", entity, "application/json", new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Log.d("ADDPOSTINGRESPONSE", statusCode + ": " + response.toString());
+                    // Log.d("ADDPOSTINGRESPONSE", statusCode + ": " + response.toString());
 
                     try {
                         JSONObject jsonPosting = response.getJSONObject("data").getJSONObject("posting");
@@ -308,7 +309,7 @@ public class RESTClientRequest {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
-                    Log.d("REST_ERROR", response.toString());
+                    // Log.d("REST_ERROR", response.toString());
                     context.onErrorPosting();
                     System.out.println(statusCode);
                 }
@@ -337,18 +338,18 @@ public class RESTClientRequest {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         JSONParser.parseUserResponse(firebaseID, context.handleRegister(), response);
-                        Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
+                        // Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
 
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.d("REST_ERROR", responseString);
+                        // Log.d("REST_ERROR", responseString);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
-                        Log.d("REST_ERROR", response.toString());
+                        // Log.d("REST_ERROR", response.toString());
                     }
 
                 });
@@ -373,19 +374,19 @@ public class RESTClientRequest {
                 RESTClient.post(context, tutorId + "/reviews", entity, "application/json", new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
+                        // Log.d("REVIEWRESPONSE", statusCode + ": " + response.toString());
                         context.donePost(statusCode);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.d("REST_ERROR", responseString);
+                        // Log.d("REST_ERROR", responseString);
                         context.donePost(statusCode);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
-                        Log.d("REST_ERROR", response.toString());
+                        // Log.d("REST_ERROR", response.toString());
                         context.donePost(statusCode);
                     }
 
@@ -408,12 +409,12 @@ public class RESTClientRequest {
             RESTClient.put(context, "users/" + id, entity, "application/json", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Log.d("TASK", "COMPLETED");
+                    // Log.d("TASK", "COMPLETED");
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
-                    Log.d("REST_ERROR", responseString);
+                    // Log.d("REST_ERROR", responseString);
                 }
             });
         }catch (UnsupportedEncodingException e){
@@ -438,18 +439,18 @@ public class RESTClientRequest {
                     ContactedTutor contactedTutor = new ContactedTutor(tutorId, tutorName, phone, reported);
                     ((Student)Context.getUser()).getContactedTutors().add(contactedTutor);
 
-                    Log.d("POSTCONTACTEDRESPONSE", statusCode + ": " + response.toString());
+                    // Log.d("POSTCONTACTEDRESPONSE", statusCode + ": " + response.toString());
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("REST_ERROR", responseString);
+                    // Log.d("REST_ERROR", responseString);
                     System.out.println(statusCode);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response){
-                    Log.d("REST_ERROR", response.toString());
+                    // Log.d("REST_ERROR", response.toString());
                     System.out.println(statusCode);
                 }
             });
@@ -475,7 +476,7 @@ public class RESTClientRequest {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable error) {
-                Log.d("REST_ERROR", responseString);
+                // Log.d("REST_ERROR", responseString);
             }
         });
 

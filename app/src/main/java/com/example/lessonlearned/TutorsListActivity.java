@@ -158,7 +158,7 @@ public class TutorsListActivity extends BaseActivity implements TutorsViewAdapte
             RESTClientRequest.getCoursesForDegree(degreeId, this);
         }
         catch (JSONException e){
-            Log.d("JSONException", e.toString());
+            stopLoadingState();
         }
     }
 

@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +59,12 @@ public class CreatePostingDialog extends DialogFragment {
     private Map<String, Integer> degreeMap = new HashMap<String, Integer>();
     private int degreeSelected;
 
+    private ArrayAdapter<String> courseAutofillAdapter;
     private List<Course> courses = new ArrayList<>();
     private Map<String, Integer> courseMap = new HashMap<String, Integer>();
 
     private List<Course> selectedCourses = new ArrayList<>();
+    private String laseCourseCodeSearched = "";
 
 
     @Override
@@ -88,44 +92,11 @@ public class CreatePostingDialog extends DialogFragment {
             RESTClientRequest.getDegreesList(this, com.example.lessonlearned.Singletons.Context.getUser().getSchoolId());
         }
         catch (JSONException e){
-            Log.d("JSONException", e.toString());
+            stopLoadingState();
+            //Log.d("JSONException", e.toString());
         }
 
         builder.setView(view).setTitle("Create a New Posting");
-
-        /*builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-
-                try {
-                    String postText = aboutText.getText().toString();
-                    String price = priceText.getText().toString();
-
-                    if (price.length() == 0 || selectedCourses.size() == 0){
-                        missingFieldtext.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        RESTClientRequest.postPosting(degreeSelected, (Tutor) com.example.lessonlearned.Singletons.Context.getUser(),
-                                Double.parseDouble(price), postText, selectedCourses, CreatePostingDialog.this);
-                    }
-                }
-                catch (JSONException e){
-                    Log.d("JSONException", e.toString());
-                }
-                catch (NullPointerException e){ }
-
-            }
-        })
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-                try {
-                    listener.onDialogNegativeClick(CreatePostingDialog.this);
-                }
-                catch (NullPointerException e){ }
-
-            }
-        });*/
 
         builder.setPositiveButton("Create", null);
         builder.setNegativeButton("Cancel", null);
@@ -157,7 +128,8 @@ public class CreatePostingDialog extends DialogFragment {
                             }
                         }
                         catch (JSONException e){
-                            Log.d("JSONException", e.toString());
+                            dialog.dismiss();
+                            //Log.d("JSONException", e.toString());
                         }
                         catch (NullPointerException e){ }
                     }
@@ -179,7 +151,7 @@ public class CreatePostingDialog extends DialogFragment {
         }
         catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
-            Log.d("DIALOGERROR", e.toString() + " must implement CreatePostingDialogListener");
+            // Log.d("DIALOGERROR", e.toString() + " must implement CreatePostingDialogListener");
         }
     }
 
@@ -205,8 +177,10 @@ public class CreatePostingDialog extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String degreeName = parent.getItemAtPosition(position).toString();
+                clearSelectedCourses();
+                courses = new ArrayList<>();
+                notifyCourseAutofill();
                 degreeSelected = degreeMap.get(degreeName);
-                setDegreeSelected();
             }
 
             @Override
@@ -215,17 +189,7 @@ public class CreatePostingDialog extends DialogFragment {
         });
 
         degreesSpinner.setAdapter(adapter);
-    }
-
-    public void setDegreeSelected(){
-        //get courses for the degree
-        try {
-            startLoadingState();
-            RESTClientRequest.getCoursesByDegree(this, degreeSelected);
-        }
-        catch (JSONException e){
-            Log.d("JSONException", e.toString());
-        }
+        initCourseAutofill();
     }
 
     public void setCourseList(List<Course> coursesForThisDegree) {
@@ -233,12 +197,35 @@ public class CreatePostingDialog extends DialogFragment {
     }
 
     public void initCourseAutofill() {
-        courseMap = new HashMap<String, Integer>();
-        for (int i=0; i < courses.size(); i++) courseMap.put(courses.get(i).getName(), courses.get(i).getId());
-        ArrayList<String> courseNames = new ArrayList<String>(courseMap.keySet());
+        final ArrayList<String> courseNames = new ArrayList<String>();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, courseNames);
-        autocomplete.setAdapter(adapter);
+        courseAutofillAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, courseNames);
+        autocomplete.setAdapter(courseAutofillAdapter);
+
+        autocomplete.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String courseText = s.toString();
+                int len = courseText.length();
+
+                if (len > 1 && Character.isDigit(s.charAt(len-1)) && !Character.isDigit(s.charAt(len - 2))){
+                    String courseCode = courseText.substring(0,len-1).trim().toUpperCase();
+
+                    if (laseCourseCodeSearched.compareToIgnoreCase(courseCode) != 0) {
+                        laseCourseCodeSearched = courseCode;
+                        loadCourses(courseCode);
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -249,7 +236,6 @@ public class CreatePostingDialog extends DialogFragment {
 
                 autocomplete.getText().clear();
 
-                Course selectedCourse = new Course(courseId, courseName, com.example.lessonlearned.Singletons.Context.getUser().getSchoolId());
                 boolean duplicate = false;
 
                 for (int i=0; i<selectedCourses.size(); i++){
@@ -260,10 +246,34 @@ public class CreatePostingDialog extends DialogFragment {
                 }
 
                 if (!duplicate){
+                    Course selectedCourse = new Course(courseId, courseName, com.example.lessonlearned.Singletons.Context.getUser().getSchoolId());
                     addSelectedCourse(selectedCourse);
                 }
             }
         });
+    }
+
+    public void notifyCourseAutofill(){
+
+        courseMap = new HashMap<String, Integer>();
+        for (int i=0; i < courses.size(); i++) courseMap.put(courses.get(i).getName(), courses.get(i).getId());
+        ArrayList<String> courseNames = new ArrayList<String>(courseMap.keySet());
+
+        courseAutofillAdapter.notifyDataSetChanged();
+        courseAutofillAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, courseNames);
+        autocomplete.setAdapter(courseAutofillAdapter);
+    }
+
+    public void loadCourses(String courseCode){
+        //get courses for the degree
+        try {
+            startLoadingState();
+            RESTClientRequest.getCoursesByDegreeAndCourse(this, degreeSelected, courseCode);
+        }
+        catch (JSONException e){
+            stopLoadingState();
+            //Log.d("JSONException", e.toString());
+        }
     }
 
     private void addSelectedCourse(final Course course) {
@@ -279,7 +289,7 @@ public class CreatePostingDialog extends DialogFragment {
         courseName.setLayoutParams(params);
         courseName.setText(course.getName() + "  X");
         courseName.setBackgroundResource(R.drawable.course_code_bg);
-        courseName.setTextSize(14);
+        courseName.setTextSize(12);
         courseName.setTextColor(Color.WHITE);
 
         courseContainer.addView(courseName);
@@ -300,16 +310,12 @@ public class CreatePostingDialog extends DialogFragment {
 
     public void startLoadingState(){
         degreesSpinner.setEnabled(false);
-        autocomplete.setEnabled(false);
-
         spinner.setVisibility(View.VISIBLE);
         loadingText.setVisibility(View.VISIBLE);
     }
 
     public void stopLoadingState(){
         degreesSpinner.setEnabled(true);
-        autocomplete.setEnabled(true);
-
         spinner.setVisibility(View.GONE);
         loadingText.setVisibility(View.GONE);
     }

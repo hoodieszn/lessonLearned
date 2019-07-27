@@ -104,7 +104,7 @@ public class StudentProfileActivity extends AppCompatActivity implements ReportA
             RESTClientRequest.postTutorAbuse(currentSelectedTutorId, reason, this);
         }
         catch (JSONException e){
-            Log.d("JSONException", e.toString());
+            //Log.d("JSONException", e.toString());
         }
     }
 
@@ -116,7 +116,7 @@ public class StudentProfileActivity extends AppCompatActivity implements ReportA
             RESTClientRequest.postTutorReview(currentSelectedTutorId, reason, rating, this);
         }
         catch (JSONException e){
-            Log.d("JSONException", e.toString());
+            //Log.d("JSONException", e.toString());
         }
     }
 

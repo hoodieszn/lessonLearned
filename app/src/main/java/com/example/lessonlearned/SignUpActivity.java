@@ -52,11 +52,15 @@ public class SignUpActivity extends AppCompatActivity {
             RESTClientRequest.getSchools(this);
         }
         catch (JSONException e) {
-            Log.d("JSONException", e.toString());
+            // Log.d("JSONException", e.toString());
         }
     }
 
     public void populateSignUp(){
+
+        EditText phone = findViewById(R.id.phone);
+        phone.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+
         final Spinner schoolDropdown = findViewById(R.id.schoolDropdown);
         final Spinner usertypeDropdown = findViewById(R.id.usertypeDropdown);
 
@@ -159,15 +163,16 @@ public class SignUpActivity extends AppCompatActivity {
 
                             try{
                                 RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.student, contactedTutors, SignUpActivity.this);
-                            } catch (JSONException e){
-                            Log.d("JSONException", e.toString());
-                        }
+                            }
+                            catch (JSONException e){
+                                // Log.d("JSONException", e.toString());
+                            }
                     }
                     else if (userType.compareToIgnoreCase(UserType.tutor.toString()) == 0) {
                         try{
                             RESTClientRequest.postAccount(1, firebaseId, schoolID, schoolName, name, phonenumber, lat, longg, UserType.tutor, contactedTutors, SignUpActivity.this);
                         } catch (JSONException e){
-                            Log.d("JSONException", e.toString());
+                            // Log.d("JSONException", e.toString());
                         }
 
                     }
