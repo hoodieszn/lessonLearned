@@ -15,10 +15,63 @@
       },
       "oauth_client": [
         {
+          "client_id": "200519933787-tegjj0j07fsnqg0ufe0snjevb483fke7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lessonlearned",
+            "certificate_hash": "cc5fc667d54aa4479856761d33aa7099c22db112"
+          }
+        },
+        {
+          "client_id": "200519933787-9hhn2h2qfthovhcmo38h41qkkuqicqgn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lessonlearned",
+            "certificate_hash": "ad0df6eac326965eb78a6a555611dc9635fae091"
+          }
+        },
+        {
           "client_id": "200519933787-3gibn1t6h0a6u3dbcc26e4r2nasca0ah.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.lessonlearned",
+            "certificate_hash": "ba42b3cf699b6a8c27c9882f8a012cccd836bf26"
+          }
+        },
+        {
+          "client_id": "200519933787-lhvtv70pqeqm83n3c660fpo7vqkr4iug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFNWXGKHjh8WooHAbsH07RIbQ_d-VrQEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200519933787-lhvtv70pqeqm83n3c660fpo7vqkr4iug.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200519933787:android:87fe0c7ca5201b7b",
+        "android_client_info": {
+          "package_name": "com.lessonlearned.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200519933787-t9vpeegv11a5q88iciaq3c7jtdukg7sm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lessonlearned.app",
             "certificate_hash": "ba42b3cf699b6a8c27c9882f8a012cccd836bf26"
           }
         },
